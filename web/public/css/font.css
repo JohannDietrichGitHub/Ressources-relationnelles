@@ -1,0 +1,62 @@
+/* font-family: 'Marianne-Light','Marianne-Light-Italic', 'Marianne-Thin', 'Marianne-Thin-Italic', 'Marianne-Regular', 'Marianne-Regular-Italic', 'Marianne-Medium', 'Marianne-Medium-Italic', 'Marianne-Bold', 'Marianne-Bold-Italic', 'Marianne-ExtraBold', 'Marianne-ExtraBold-Italic'; */
+
+
+@font-face {
+    font-family: 'Marianne-Light';
+    src: url('../font/Marianne-Light.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Light-Italic';
+    src: url('../font/Marianne-Light_Italic.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Thin';
+    src: url('../font/Marianne-Thin.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Thin-Italic';
+    src: url('../font/Marianne-Thin_Italic.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Regular';
+    src: url('../font/Marianne-Regular.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Regular-Italic';
+    src: url('../font/Marianne-Regular_Italic.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Medium';
+    src: url('../font/Marianne-Medium.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Medium-Italic';
+    src: url('../font/Marianne-Medium_Italic.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Bold';
+    src: url('../font/Marianne-Bold.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-Bold-Italic';
+    src: url('../font/Marianne-Bold_Italic.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-ExtraBold';
+    src: url('../font/Marianne-ExtraBold.woff');
+}
+
+@font-face {
+    font-family: 'Marianne-ExtraBold-Italic';
+    src: url('../font/Marianne-ExtraBold_Italic.woff');
+}
