@@ -19,9 +19,17 @@ protected $allowedFields = [
     'user_datecrea',
     'user_datenaiss',
     'user_adresse',
-    'user_cp',
-    'user_favoris'
+    'user_cp'
 ];
+
+// Définir la table de liaison
+protected $pivotTable = 'user_favoris';
+
+// Définir la clé étrangère pour la table
+protected $foreignKey = 'user_id';
+
+// Définir la clé étrangère pour la table "reponse"
+protected $relatedKey = 'ressource_id';
 
 protected $returnType = 'object';
 }

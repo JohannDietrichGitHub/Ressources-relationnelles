@@ -14,9 +14,18 @@ protected $allowedFields = [
     'ressource_exploite',
     'ressource_valide',
     'ressource_commentaire_id'
-    'ressource_categorie',
-    'ressource_relation'
+    'ressource_categorie'
 ];
+
+// Définir la table de liaison
+protected $pivotTable = 'ressource_relations';
+
+// Définir la clé étrangère pour la table
+protected $foreignKey = 'ressource_id';
+
+// Définir la clé étrangère pour la table "relation"
+protected $relatedKey = 'relation_id';
+
 
 protected $returnType = 'object';
 }

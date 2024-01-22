@@ -10,8 +10,17 @@ protected $primaryKey = 'commentaire_id';
 protected $allowedFields = [
     'commentaire_txt',
     'commentaire_visibilite',
-    'commentaire_reponse_id'
 ];
+
+// Définir la table de liaison
+protected $pivotTable = 'commentaire_reponses';
+
+// Définir la clé étrangère pour la table
+protected $foreignKey = 'commentaire_id';
+
+// Définir la clé étrangère pour la table "reponse"
+protected $relatedKey = 'reponse_id';
+
 
 protected $returnType = 'object';
 }
