@@ -23,9 +23,9 @@ class Login extends BaseController
             }
         }
         
-       // $content  = view('header');
-        $content = view('scr_Login');
-       // $content .= view('footer');
+        $content  = view('header');
+        $content .= view('scr_Login');
+        $content .= view('footer');
 
         // return view('scr_Accueil');
         return $content;

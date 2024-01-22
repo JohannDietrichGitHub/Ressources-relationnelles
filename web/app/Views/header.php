@@ -4,7 +4,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
   <link href="./css/custom.css" rel="stylesheet">  
-  <script src="./bootstrap/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="./bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <title>Ressources Relationnelles</title>
   </head>
 <body>
 <nav class="navbar navbar-dark navbar-expand-lg custom-dark-blue">

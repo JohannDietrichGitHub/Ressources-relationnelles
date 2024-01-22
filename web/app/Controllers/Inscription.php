@@ -24,9 +24,9 @@ class Inscription extends BaseController
         }
         
        // [TODO] Remettre en place le header et footer lorsque ces parties seront faites.
-       // $content  = view('header');
-        $content = view('scr_inscription');
-       // $content .= view('footer');
+        $content  = view('header');
+        $content .= view('scr_inscription');
+        $content .= view('footer');
         return $content;
     }
 

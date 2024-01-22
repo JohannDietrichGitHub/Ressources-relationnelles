@@ -1,138 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Food Seeker Accueil</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- STYLES -->
-    <style {csp-style-nonce}>
-
-        .green-foodseeker{
-            background-color: #2B9348 !important;
-        }
-
-        .btn-primary{
-            background-color: #2B9348 !important;
-            border-color: #2B9348 !important;
-        }
-        .btn-primary:hover{
-            background-color: #1B8338 !important
-        }
-        .btn-primary:active{
-            background-color: #0B7328 !important
-        }
-
-        .btn-secondary{
-            background-color: #80B918 !important;
-            border-color: #80B918 !important;
-        }
-        .btn-secondary:hover{
-            background-color: #70A908 !important
-        }
-        .btn-secondary:active{
-            background-color: #609900 !important
-        }
-
-
-
-      .form-signin {
-  max-width: 350px;
-  min-width: 330px;
-  padding: 1rem;
-}
-
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
-
-.form-signin input {
-    margin-bottom: 2px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;  
-}
-
-.form-signin:focus input {
-    border-color: #0B7328 !important;
-    outline-color: #0B7328 !important;
-}
-    </style>
-</head>
-<body>
-    
-<div class="my-5 py-5">
-
-</div>
-
-<div class="container">
-<main class=" row">
-    <div class="col-md d-flex px-auto justify-content-center">
-       <form action="<?= site_url('login/seConnecter') ?>" method="post" class="form-signin ">
-            <h1 class="h3 mb-3 fw-normal">Connexion</h1>
-
-            <div class="form-floating text-secondary">
-            <input type="text" name="username" class="form-control" id="floatingInput" placeholder="">
-            <label for="floatingInput">Nom d'utilisateur</label>
+  </head>
+  <body>
+    <main>
+      <div class="container h-100 mt-3 mb-5">
+        <div class="row h-100 pb-3">
+          <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+            <div class="d-table-cell align-middle">
+              <div class="text-center mt-4">
+                <h1 class="h2">Connexion</h1>
+                <p class="lead">
+                  Vous pouvez vous connecter via cette page.
+                </p>
+              </div>
+              <form action="<?= site_url('login/seConnecter') ?>" method="post">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="m-sm-4">
+              <form>
+              <div class="form-group">
+              <label>Email</label>
+              <input class="form-control form-control-lg shadow-none" type="email" name="email" placeholder="Entrez votre email">
+              </div>
+              <div class="form-group">
+              <label>Mot de passe</label>
+              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de pass">
+              </div>
+              <div class="form-group pt-2">
+              <input class="form-check-input shadow-none" type="checkbox" name="checkbox" value="remember-me" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+              Rester connecté
+              </label>
+              </div>
+              <div class="text-center mt-3">
+              <button type="submit" class="btn btn-lg btn-primary">S'inscrire</button>
+              <p class="text-secondary" id="mdpOubli">Mot de passe oublié ? Cliquez-ici</p>
+              </div>
+              </form>
+              </div>
+              </div>
+              </div>
+              </form>
             </div>
-            <div class="form-floating text-secondary">
-            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="">
-            <label for="floatingPassword">Mot de passe</label>
-            </div>
-
-            <div class="form-check text-start my-3">
-            <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Rester connecté
-            </label>
-            </div>
-            <button class="btn btn-primary w-100 py-2" type="submit">Se Connecter</button>
-            <p class="text-secondary">Mot de passe oublié ? Cliquez-ici</p>
-        </form>
-    </div>
-    <div class="align-items-center justify-content-center d-flex col-md-2">
-         <p class="h1 text-center">ou..</p>
-    </div>
-    
-
-    <div class=" col-md d-flex mx-auto justify-content-center">
-        <form action="<?= site_url('/login/processRegister') ?>" method="post" class="form-signin">
-            <h1 class="h3 mb-3 fw-normal">Inscription</h1>
-
-            <div class="form-floating text-secondary">
-            <input type="text" name="username" class="form-control" id="floatingInput" placeholder="">
-            <label for="floatingInput">Nom d'utilisateur</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="text" name="civilite" class="form-control" id="floatingCivilite" placeholder="">
-            <label for="floatingCivilite">Civilite</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="mail" name="mail" class="form-control" id="floatingMail" placeholder="">
-            <label for="floatingMail">Mail</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="">
-            <label for="floatingPassword">Mot de passe</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="password" name="confirm_password" class="form-control" id="floatingConfirmPassword" placeholder="">
-            <label for="floatingConfirmPassword">Confirmer le mot de passe</label>
-            </div>
-            <button class="btn btn-secondary w-100 py-2 my-3" type="submit">S'inscrire</button>
-        </form>
-    </div>
-  
-  
-</main>
-</div>
-
-
-
-<div class="my-5 py-5">
-
-</div>
-
-
-</body>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

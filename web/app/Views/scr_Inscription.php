@@ -1,130 +1,96 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Resources Relationnelles</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- STYLES -->
-    <style {csp-style-nonce}>
-
-        .green-foodseeker{
-            background-color: #2B9348 !important;
-        }
-
-        .btn-primary{
-            background-color: #2B9348 !important;
-            border-color: #2B9348 !important;
-        }
-        .btn-primary:hover{
-            background-color: #1B8338 !important
-        }
-        .btn-primary:active{
-            background-color: #0B7328 !important
-        }
-
-        .btn-secondary{
-            background-color: #80B918 !important;
-            border-color: #80B918 !important;
-        }
-        .btn-secondary:hover{
-            background-color: #70A908 !important
-        }
-        .btn-secondary:active{
-            background-color: #609900 !important
-        }
-
-
-
-      .form-signin {
-  max-width: 350px;
-  min-width: 330px;
-  padding: 1rem;
-}
-
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
-
-.form-signin input {
-    margin-bottom: 2px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;  
-}
-
-.form-signin:focus input {
-    border-color: #0B7328 !important;
-    outline-color: #0B7328 !important;
-}
-    </style>
-</head>
-<body>
-    
-<div class="my-5 py-5">
-
-</div>
-    <div class=" col-md d-flex mx-auto justify-content-center">
-        <form action="<?= site_url('/inscription/processRegister') ?>" method="post" class="form-signin">
-            <h1 class="h3 mb-3 fw-normal">Inscription</h1>
-            <div class="form-floating text-secondary">
-            <input type="text" name="civilite" class="form-control" id="floatingCivilite" placeholder="">
-            <label for="floatingCivilite">Civilité</label>
+  </head>
+  <body>
+    <main>
+      <div class="container h-100 mt-3 mb-5">
+        <div class="row h-100 pb-3">
+          <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+            <div class="d-table-cell align-middle">
+              <div class="text-center mt-4">
+                <h1 class="h2">Inscription</h1>
+                <p class="lead">
+                  Merci de remplir les informations ci-dessous.
+                </p>
+              </div>
+              <form action="<?= site_url('/inscription/processRegister') ?>" method="post">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="m-sm-4">
+              <form>
+              <div class="form-group">
+              <label>Civilité</label>
+              <div class="dropdown form-group">
+              <button class="form-control form-button form-control-lg btn dropdown-toggle shadow-none text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Veuillez sélectionner une réponse
+              </button>
+              <ul class="dropdown-menu form-control form-control-lg" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#" onclick="updateDropdown('Monsieur')">Monsieur</a></li>
+              <li><a class="dropdown-item" href="#" onclick="updateDropdown('Madame')">Madame</a></li>
+              <li><a class="dropdown-item" href="#" onclick="updateDropdown('Autre')">Autre</a></li>
+              </ul>
+              </div>
+              <script>
+                function updateDropdown(selectedValue) {
+                    document.getElementById('dropdownMenuButton1').innerText = selectedValue;
+                }
+              </script>
+              </div>
+              <div class="form-group">
+              <label>Nom</label>
+              <input class="form-control form-control-lg shadow-none" type="text" name="nom" placeholder="Entrez votre nom">
+              </div>
+              <div class="form-group">
+              <label>Prénom</label>
+              <input class="form-control form-control-lg shadow-none" type="text" name="prenom" placeholder="Entrez votre prénom">
+              </div>
+              <div class="form-group">
+              <label>Date de naissance</label>
+              <input class="form-control form-control-lg shadow-none" type="date" name="dateNaissance" placeholder="Sélectionnez votre date de naissance">
+              </div>
+              <div class="form-group">
+              <label>Adresse</label>
+              <input class="form-control form-control-lg shadow-none" type="text" name="adresse" placeholder="Entrez votre adresse">
+              </div>
+              <div class="form-group">
+              <label>Code Postal</label>
+              <input class="form-control form-control-lg shadow-none" type="text" name="cp" pattern="[0-9]{1,6}" placeholder="Code Postal">
+              </div>
+              <div class="form-group">
+              <label>Ville</label>
+              <input class="form-control form-control-lg shadow-none" type="text" name="ville" pattern="[0-9]{1,6}" placeholder="Ville">
+              </div>
+              <div class="form-group">
+              <label>Téléphone</label>
+              <input class="form-control form-control-lg shadow-none" type="text" name="tel" pattern="[0-9]{1,6}" placeholder="Entrez votre numéro de téléphone">
+              </div>
+              <div class="form-group">
+              <label>Email</label>
+              <input class="form-control form-control-lg shadow-none" type="email" name="email" placeholder="Entrez votre email">
+              </div>
+              <div class="form-group">
+              <label>Mot de passe</label>
+              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de pass">
+              </div>
+              <div class="form-group">
+              <label>Confirmer Mot de Passe</label>
+              <input class="form-control form-control-lg shadow-none" type="password" name="mdpConfirmer" placeholder="Confirmez votre mot de passe">
+              </div>
+              <div class="text-center mt-3">
+              <button type="submit" class="btn btn-lg btn-primary">S'inscrire</button>
+              </div>
+              </form>
+              </div>
+              </div>
+              </div>
+              </form>
             </div>
-            <div class="form-floating text-secondary">
-            <input type="text" name="name" class="form-control" id="floatingName" placeholder="">
-            <label for="floatingName">Nom</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="text" name="firstname" class="form-control" id="floatingFirstName" placeholder="">
-            <label for="floatingFirstName">Prénom</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="date" name="birthdate" class="form-control" id="floatingBirthdate" placeholder="">
-            <label for="floatingBirthdate">Date de naissance</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="text" name="address" class="form-control" id="floatingAddress" placeholder="">
-            <label for="floatingAddress">Adresse</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="text" name="cp" class="form-control" id="floatingCp" placeholder="" pattern="[0-9]{5}" title="Entrez un code postal correct" required>
-            <label for="floatingCp">Code postal</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="text" name="city" class="form-control" id="floatingCity" placeholder="">
-            <label for="floatingCity">Ville</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="tel" name="phonenumber" class="form-control" id="floatingPhoneNumber" placeholder="" pattern="[0-9]{10}" title="Entrez un numéro de téléphone valide (10 chiffres)" required>
-            <label for="floatingPhoneNumber">Numéro de téléphone</label>
-            </div>        
-            <div class="form-floating text-secondary">
-            <input type="mail" name="mail" class="form-control" id="floatingMail" placeholder="">
-            <label for="floatingMail">Mail</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="">
-            <label for="floatingPassword">Mot de passe</label>
-            </div>
-            <div class="form-floating text-secondary">
-            <input type="password" name="confirm_password" class="form-control" id="floatingConfirmPassword" placeholder="">
-            <label for="floatingConfirmPassword">Confirmer le mot de passe</label>
-            </div>
-            <button class="btn btn-secondary w-100 py-2 my-3" type="submit">S'inscrire</button>
-        </form>
-    </div>
-  
-  
-</main>
-</div>
-
-
-
-<div class="my-5 py-5">
-
-</div>
-
-
-</body>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

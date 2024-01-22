@@ -31,6 +31,18 @@ li,ul{
     border-radius: 30px;
 }
 
+.form-button{
+    border-color: #dee2e6 !important;
+}
+
+.form-button:hover{
+    background-color: #EEEEEE;
+}
+
+.form-button:active{
+    background-color: #DDDDDD !important;
+}
+
 .custom-dark-blue{
     background-color: #003249 !important;
 }
@@ -72,3 +84,10 @@ li,ul{
     color: black !important;
 }
 
+input:invalid[name="cp"] {
+    background: #FFDDDD !important;
+  }
+
+#mdpOubli:hover{
+    text-decoration: underline;
+}
