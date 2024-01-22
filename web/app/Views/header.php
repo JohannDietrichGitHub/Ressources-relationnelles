@@ -29,8 +29,8 @@
         </li>
       </ul>
       
-      <div class="d-flex flex-column ms-5-lg me-2">
-        <button class="btn btn-secondary my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('inscription'); ?>'">Inscription</button>
+      <div class="d-flex flex-column flex-lg-row ms-5-lg me-2">
+        <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('inscription'); ?>'">Inscription</button>
         <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('connexion'); ?>'">Connexion</button>
       </div>
       

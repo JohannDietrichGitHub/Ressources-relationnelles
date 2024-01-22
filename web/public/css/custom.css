@@ -1,13 +1,21 @@
 @import "./font.css";
 
-.h1{
+.marianne-bold{
     font-family: 'Marianne-Bold', sans-serif;
+}
+.marianne-italic{
+    font-family: 'Marianne-Regular-Italic', sans-serif;
 }
 
 body{
     font-family: 'Marianne-Light', sans-serif;
 }
 
+li,ul{
+  list-style: none;
+  list-style-position: outside;
+  padding-left: 0 !important;  
+}
 .search-button{
     background-color: white;
     border-radius: 0px !important;
@@ -29,6 +37,10 @@ body{
 
 .custom-blue{
     background-color: #007EA7 !important;
+}
+
+.custom-text-dark-blue{
+ color: #007EA7 !important;
 }
 
 .custom-light-blue{
