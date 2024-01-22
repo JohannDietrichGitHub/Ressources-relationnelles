@@ -1,5 +1,62 @@
 @import "./font.css";
 
-body{
+.h1{
     font-family: 'Marianne-Bold', sans-serif;
 }
+
+body{
+    font-family: 'Marianne-Light', sans-serif;
+}
+
+.search-button{
+    background-color: white;
+    border-radius: 0px !important;
+    border: 1px solid black !important;
+}
+
+.search-button:active{
+    border: 1px solid black !important;
+    padding: 0px !important; 
+}
+
+.custom-button{
+    border-radius: 30px;
+}
+
+.custom-dark-blue{
+    background-color: #003249 !important;
+}
+
+.custom-blue{
+    background-color: #007EA7 !important;
+}
+
+.custom-light-blue{
+    background-color: #9AD1D4 !important;
+}
+
+.btn-primary{
+    background-color: #9AD1D4 !important;
+    border-color: #FFFFFF !important;
+}
+.btn-primary:hover{
+    background-color: #7AB1B4 !important
+}
+.btn-primary:active{
+    background-color: #5A9194 !important
+}
+
+.btn-secondary{
+    background-color: #FFFFFF !important;
+    border-color: #007EA7 !important;
+    color: black !important;
+}
+.btn-secondary:hover{
+    background-color: #DDDDDD !important;
+    color: black !important;
+}
+.btn-secondary:active{
+    background-color: #BBBBBB !important;
+    color: black !important;
+}
+
