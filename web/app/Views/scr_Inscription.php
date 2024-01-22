@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Food Seeker Accueil</title>
+    <title>Resources Relationnelles</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <!-- STYLES -->
@@ -67,15 +67,38 @@
     <div class=" col-md d-flex mx-auto justify-content-center">
         <form action="<?= site_url('/inscription/processRegister') ?>" method="post" class="form-signin">
             <h1 class="h3 mb-3 fw-normal">Inscription</h1>
-
-            <div class="form-floating text-secondary">
-            <input type="text" name="username" class="form-control" id="floatingInput" placeholder="">
-            <label for="floatingInput">Nom d'utilisateur</label>
-            </div>
             <div class="form-floating text-secondary">
             <input type="text" name="civilite" class="form-control" id="floatingCivilite" placeholder="">
-            <label for="floatingCivilite">Civilite</label>
+            <label for="floatingCivilite">Civilité</label>
             </div>
+            <div class="form-floating text-secondary">
+            <input type="text" name="name" class="form-control" id="floatingName" placeholder="">
+            <label for="floatingName">Nom</label>
+            </div>
+            <div class="form-floating text-secondary">
+            <input type="text" name="firstname" class="form-control" id="floatingFirstName" placeholder="">
+            <label for="floatingFirstName">Prénom</label>
+            </div>
+            <div class="form-floating text-secondary">
+            <input type="date" name="birthdate" class="form-control" id="floatingBirthdate" placeholder="">
+            <label for="floatingBirthdate">Date de naissance</label>
+            </div>
+            <div class="form-floating text-secondary">
+            <input type="text" name="address" class="form-control" id="floatingAddress" placeholder="">
+            <label for="floatingAddress">Adresse</label>
+            </div>
+            <div class="form-floating text-secondary">
+            <input type="text" name="cp" class="form-control" id="floatingCp" placeholder="" pattern="[0-9]{5}" title="Entrez un code postal correct" required>
+            <label for="floatingCp">Code postal</label>
+            </div>
+            <div class="form-floating text-secondary">
+            <input type="text" name="city" class="form-control" id="floatingCity" placeholder="">
+            <label for="floatingCity">Ville</label>
+            </div>
+            <div class="form-floating text-secondary">
+            <input type="tel" name="phonenumber" class="form-control" id="floatingPhoneNumber" placeholder="" pattern="[0-9]{10}" title="Entrez un numéro de téléphone valide (10 chiffres)" required>
+            <label for="floatingPhoneNumber">Numéro de téléphone</label>
+            </div>        
             <div class="form-floating text-secondary">
             <input type="mail" name="mail" class="form-control" id="floatingMail" placeholder="">
             <label for="floatingMail">Mail</label>

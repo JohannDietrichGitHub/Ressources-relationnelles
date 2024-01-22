@@ -24,7 +24,6 @@ class Inscription extends BaseController
         }
         
        // [TODO] Remettre en place le header et footer lorsque ces parties seront faites.
-
        // $content  = view('header');
         $content = view('scr_inscription');
        // $content .= view('footer');
@@ -34,34 +33,49 @@ class Inscription extends BaseController
     public function processRegister()
     {
         // Récupérer les données du formulaire
-        $username = $this->request->getPost('username');
+        $civilite = $this->request->getPost('civilite');
+        $name = $this->request->getPost('name');
+        $firstname = $this->request->getPost('firstname');
+        $birthdate = $this->request->getPost('birthdate');
+        $address = $this->request->getPost('address');
+        $cp = $this->request->getPost('cp');
+        $city = $this->request->getPost('city');
+        $phonenumber = $this->request->getPost('phonenumber');
+        $mail = $this->request->getPost('mail');
         $password = $this->request->getPost('password');
         $confirmPassword = $this->request->getPost('confirm_password');
-        $civilite = $this->request->getPost('civilite');
-        $mail = $this->request->getPost('mail');
-
+    
         // Vérification si le mot de passe correspond à la confirmation         
         if ($password != $confirmPassword) {
             return redirect()->to('login')->with('errorconnect', 'Les mots de passe ne correspondent pas.');
         }
 
-        $roleId = $this->recupIdRole();        
+        // Récupération de l'identifiant du rôle 
+        $roleId = $this->recupIdRole();      
+
         if ($roleId !== null)
         {          
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
             // Enregistrement de l'utilisateur dans la base de données
-       
             $utilisateurModel = new M_Utilisateur();
             $data = [
-                'UTI_Nom' => $username,
-                'UTI_Mdp_Hash' => $hashedPassword,
-                'UTI_Civilite' => $civilite,
-                'UTI_mail' => $mail,
-                'UTI_Rol_Id' => $roleId,
-                'UTI_Date_Creation' => date('Y-m-d H:i:s'), 
+                'UTI_CIVILITE' => $civilite,
+                'UTI_NOM' => $name,
+                'UTI_PRENOM' => $firstname,
+                'UTI_DATE_NAISSANCE' => $birthdate,
+                'UTI_ADRESSE' => $address, 
+                'UTI_CP' => $cp,
+                'UTI_VILLE' => $city,
+                'UTI_MDP' => $hashedPassword,
+                'UTI_NUM_TEL' => $phonenumber,
+                'UTI_MAIL' => $mail,
+                'UTI_ID_ROL' => $roleId,
+                'UTI_DATE_CREATION' => date('Y-m-d H:i:s'), 
                 'UTI_ETAT' => "A", // Par défaut lorsque l'utilisateur est créé il devient actif.
+             //  'UTI_ACT_ID' => '' // Cette zone sera remplie lorsque l'utilisateur participera à une activité.
             ];
+        //    dd($data);
             $utilisateurModel->insert($data);
         
             return redirect()->to('')->with('success', 'Inscription réussie ! Connectez-vous maintenant.');
