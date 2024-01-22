@@ -14,6 +14,8 @@ protected $allowedFields = [
     'ressource_exploite',
     'ressource_valide',
     'ressource_commentaire_id'
+    'ressource_categorie',
+    'ressource_relation'
 ];
 
 protected $returnType = 'object';
