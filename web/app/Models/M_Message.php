@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 
 class M_Message extends Model {
 
-protected $table = 'messsage';
+protected $table = 'message';
 protected $primaryKey = 'message_id';
 protected $allowedFields = [
     'message_txt',
