@@ -2,10 +2,12 @@
 
 use CodeIgniter\Router\RouteCollection;
 
+
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+
+$routes->get('/', 'Accueil::index');
 
 //Page de connexion et d'inscription
 $routes->get('/login', 'Login::login');
@@ -20,4 +22,5 @@ $routes->post('/inscription/processRegister', 'Inscription::processRegister');
 // Connexion
 $routes->get('/login/seConnecter', 'Login::seConnecter');
 $routes->post('/login/seConnecter', 'Login::seConnecter');
+
 
