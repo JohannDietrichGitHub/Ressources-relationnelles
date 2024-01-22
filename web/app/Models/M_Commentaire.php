@@ -10,6 +10,9 @@ protected $primaryKey = 'commentaire_id';
 protected $allowedFields = [
     'commentaire_txt',
     'commentaire_visibilite',
+    'commentaire_date',
+    'commentaire_utilisateur',
+    'commentaire_ressource'
 ];
 
 // Définir la table de liaison
