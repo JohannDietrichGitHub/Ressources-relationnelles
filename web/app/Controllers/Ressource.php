@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\M_Appartenir;
+use App\Models\M_Exploiter;
 use App\Models\M_Ressource;
 use CodeIgniter\I18n\Time;
 
@@ -35,7 +36,6 @@ class Ressource extends BaseController
             $ressourceData = [
                 'RES_NOM' => $this->request->getPost('ressource_titre'),
                 'RES_CONTENU' => $this->request->getPost('ressource_contenu'),
-                'RES_EXPLOITE' => 'O',
                 'RES_ETAT' => 'I',
                 'RES_TYPE' => $this->request->getPost('ressource_type'),
                 'RES_CAT_ID'=> $this->request->getPost('ressource_categorie'),
@@ -59,8 +59,18 @@ class Ressource extends BaseController
                 log_message('error', $e->getMessage());
                 return view('scr_AjouterRessource');
             }
-            //gère l'enregistrement dans la table appartenir pour indiquer les différentes relations
             $ressourceId = $resourceModel->getInsertID();
+            //gère l'enregistrement dans la table exploiter
+            $exploiterModel = new M_Exploiter();
+            $exploiterData = [
+                'EXP_EXPLOITE' => 'O',
+                'EXP_FAVORISE' => 'O',
+                'EXP_RES_ID' => $ressourceId,
+                'EXP_UTI_ID' => 3 // a remplacer avec l'id de l'utilisateur
+            ];
+            $exploiterModel->insert($exploiterData);
+
+            //gère l'enregistrement dans la table appartenir pour indiquer les différentes relations
             if (is_array($idsRelation) && count($idsRelation) > 1) {
                 $relationModel = new M_Appartenir();
                 foreach ($idsRelation as $idRelation) {
