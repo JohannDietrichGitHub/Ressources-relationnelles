@@ -6,14 +6,9 @@ use App\Controllers\Relation;
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Food Seeker Recette</title>
 
     <!-- STYLES -->
     <style {csp-style-nonce}>
-
-        .green-foodseeker{
-            background-color: #2B9348 !important;
-        }
 
         .btn-primary{
             background-color: #2B9348 !important;

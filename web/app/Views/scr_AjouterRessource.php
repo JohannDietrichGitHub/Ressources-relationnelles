@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Food Seeker Recette</title>
 
     <!-- STYLES -->
     <style {csp-style-nonce}>
