@@ -8,18 +8,20 @@ class M_Utilisateur extends Model {
 protected $table = 'utilisateur';
 protected $primaryKey = 'user_id';
 protected $allowedFields = [
-    'user_civilite',
-    'user_etat',
-    'user_email',
-    'user_tel',
-    'user_password',
-    'user_nom',
-    'user_prenom',
-    'user_role_id',
-    'user_datecrea',
-    'user_datenaiss',
-    'user_adresse',
-    'user_cp'
+    'UTI_CIVILITE',
+    'UTI_NOM',
+    'UTI_PRENOM',
+    'UTI_ADRESSE',
+    'UTI_CP',
+    'UTI_VILLE',
+    'UTI_NUM_TEL',
+    'UTI_MAIL',
+    'UTI_ETAT',
+    'UTI_MDP',
+    'UTI_DATE_CREATION',
+    'UTI_DATE_NAISSANCE',
+    'UTI_ID_ROL',
+    'UTI_ACT_ID'
 ];
 
 // Définir la table de liaison

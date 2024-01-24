@@ -6,15 +6,17 @@ use CodeIgniter\Model;
 class M_Ressource extends Model {
 
 protected $table = 'ressource';
-protected $primaryKey = 'ressource_id';
+protected $primaryKey = 'RES_ID';
 protected $allowedFields = [
-    'ressource_titre',
-    'ressource_contenu',
-    'ressource_archive',
-    'ressource_exploite',
-    'ressource_valide',
-    'ressource_commentaire_id'
-    'ressource_categorie'
+    'RES_NOM',
+    'RES_EXPLOITE',
+    'RES_ETAT',
+    'RES_CONTENU',
+    'RES_TYPE',
+    'RES_DATE_CREATION',
+    'RES_DATE_MODIFICATION',
+    'RES_UTI_ID',
+    'RES_CAT_ID',
 ];
 
 // Définir la table de liaison
