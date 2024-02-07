@@ -35,5 +35,8 @@ $routes->post('/ressource/suppression', 'Ressource::supprimerRessource');
 //page permettant la modification de ressources
 $routes->get('/ressource/modification', 'Ressource::modifierRessource');
 $routes->post('/ressource/modification', 'Ressource::modifierRessource');
-
-
+//page permettant la validation des ressources
+$routes->get('/ressource/validation', 'Ressource::validerRessource');
+//route permettant la validation ou la non validation d'une ressource
+$routes->post('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
+$routes->get('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
