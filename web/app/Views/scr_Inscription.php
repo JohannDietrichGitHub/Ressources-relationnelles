@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <main>
+  <?= view('header') ?>
+  <main>
       <div class="container h-100 mt-3 mb-5">
         <div class="row h-100 pb-3">
           <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
@@ -92,5 +93,6 @@
         </div>
       </div>
     </main>
+  <?= view('footer') ?>
   </body>
 </html>

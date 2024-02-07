@@ -9,7 +9,7 @@ protected $table = 'ressource';
 protected $primaryKey = 'RES_ID';
 protected $allowedFields = [
     'RES_NOM',
-    'RES_EXPLOITE',
+    'RES_VALIDE',
     'RES_ETAT',
     'RES_CONTENU',
     'RES_TYPE',

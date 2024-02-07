@@ -6,14 +6,9 @@ use App\Controllers\Relation;
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Food Seeker Recette</title>
 
     <!-- STYLES -->
     <style {csp-style-nonce}>
-
-        .green-foodseeker{
-            background-color: #2B9348 !important;
-        }
 
         .btn-primary{
             background-color: #2B9348 !important;
@@ -69,6 +64,7 @@ use App\Controllers\Relation;
     </style>
 </head>
 <body>
+<?= view('header') ?>
 <?php
 // Récupérez le message FlashData
 $error = session()->getFlashdata('error');
@@ -128,5 +124,6 @@ if (isset($ressource)) {
     <button id="boutonModifierRessource" type="submit">modifier ressource</button>
 </form>
 <?php } ?>
+<?= view('footer') ?>
 </body>
 </html>

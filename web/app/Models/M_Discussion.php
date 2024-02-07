@@ -17,7 +17,7 @@ protected $pivotTable = 'discussion_messages';
 // Définir la clé étrangère pour la table
 protected $foreignKey = 'discussion_id';
 
-// Définir la clé étrangère pour la table "reponse"
+// Définir la clé étrangère pour la table "message"
 protected $relatedKey = 'message_id';
 
 

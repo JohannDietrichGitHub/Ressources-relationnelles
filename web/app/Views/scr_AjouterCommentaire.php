@@ -6,7 +6,6 @@
     <!-- STYLES -->
     <style {csp-style-nonce}>
 
-
         .btn-primary{
             background-color: #2B9348 !important;
             border-color: #2B9348 !important;
@@ -28,7 +27,7 @@
         .btn-secondary:active{
             background-color: #609900 !important
         }
-        #supprimerRessource {
+        #ajouterCommentaire {
             max-width: 500px;
             margin: 50px auto;
             background-color: #fff;
@@ -36,7 +35,7 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .supprimerInput {
+        .ajouterInput {
             width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 15px;
@@ -61,7 +60,6 @@
     </style>
 </head>
 <body>
-<?= view('header') ?>
 <?php
 // Récupérez le message FlashData
 $error = session()->getFlashdata('error');
@@ -71,10 +69,10 @@ if ($error) {
     echo '<div style="color: red;">' . $error . '</div>';
 }
 ?>
-    <form id="supprimerRessource" action="#" method="post">
-        <h2>Entrez l'id de la ressource a supprimer (à rendre inactive)</h2>
-        <input class="supprimerInput" type="text" name="ressource_id" placeholder="Id de la ressource">
-        <button id="boutonSupprimerRessource" type="submit">Supprimer</button>
-    </form>
-<?= view('footer') ?>
+<form id="ajouterCommentaire" action="#" method="post">
+    <input class="ajouterInput" type="text" name="commentaire_txt" placeholder="Contenu du commentaire" required>
+    <button id="boutonAjouterCommentaire" type="submit">Ajouter Commentaire</button>
+</form>
+
 </body>
+</html>

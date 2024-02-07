@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Food Seeker Recette</title>
 
     <!-- STYLES -->
     <style {csp-style-nonce}>
@@ -65,6 +64,7 @@
     </style>
 </head>
 <body>
+<?= view('header') ?>
 <?php
 // Récupérez le message FlashData
 $error = session()->getFlashdata('error');
@@ -116,5 +116,6 @@ if ($error) {
     <button id="boutonAjouterRessource" type="submit">Ajouter ressource</button>
 </form>
 
+<?= view('footer') ?>
 </body>
 </html>

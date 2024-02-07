@@ -2,14 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Food Seeker Recette</title>
+    <title>Ressource</title>
 
     <!-- STYLES -->
     <style {csp-style-nonce}>
-
-        .green-foodseeker{
-    background-color: #2B9348 !important;
-        }
 
         .btn-primary{
     background-color: #2B9348 !important;
@@ -51,6 +47,7 @@
     </style>
 </head>
 <body>
+<?= view('header') ?>
     <div class="ressource-container">
 <?php
     if (!empty($ressource)) {
@@ -70,6 +67,19 @@
         </div>
         <?php
     }
+    if (!empty($ressources)) {
+        foreach ($ressources as $ressource) {
+            ?>
+            <div class="ressource">
+                <h2><?= esc($ressource->RES_NOM) ?></h2>
+                <p><?= substr(esc($ressource->RES_CONTENU), 0, 200) . "..." ?></p>
+                <p><?= esc($ressource->RES_DATE_CREATION) ?></p>
+                <a href="<?= site_url('/ressource/' . $ressource->RES_ID) ?>" class="btn btn-primary">Voir la ressource</a>
+            </div>
+            <?php
+        }
+    }
 ?>
     </div>
+    <?= view('footer') ?>
 </body>
