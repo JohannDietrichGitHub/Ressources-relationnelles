@@ -29,7 +29,8 @@
       </style>
    </head>
    <body class= "bg-body-tertiary">
-      <main class= "mt-5">
+   <?= view('header') ?>
+   <main class= "mt-5">
          <div id="title" class="container d-flex justify-content-center marianne-bold">
             <div class="row align-items-start">
                <div class="col-3 text-end">
@@ -103,5 +104,6 @@
          </div>
 
       </main>
+   <?= view('footer') ?>
    </body>
 </html>

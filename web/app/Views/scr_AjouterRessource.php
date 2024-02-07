@@ -64,6 +64,7 @@
     </style>
 </head>
 <body>
+<?= view('header') ?>
 <?php
 // Récupérez le message FlashData
 $error = session()->getFlashdata('error');
@@ -115,5 +116,6 @@ if ($error) {
     <button id="boutonAjouterRessource" type="submit">Ajouter ressource</button>
 </form>
 
+<?= view('footer') ?>
 </body>
 </html>

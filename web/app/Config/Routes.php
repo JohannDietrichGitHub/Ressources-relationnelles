@@ -26,6 +26,8 @@ $routes->post('/login/seConnecter', 'Login::seConnecter');
 
 //affiche une ressources précise avec tout les détails
 $routes->get('/ressource/(:num)', 'Ressource::afficherRessource/$1');
+//affiche un feed de ressources
+$routes->get('/ressources', 'Ressource::afficherRessources');
 //page permettant l'ajout de ressources
 $routes->get('/ressource/ajout', 'Ressource::ajouterRessource');
 $routes->post('/ressource/ajout', 'Ressource::ajouterRessource');

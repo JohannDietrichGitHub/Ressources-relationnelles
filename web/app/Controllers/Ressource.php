@@ -186,9 +186,15 @@ class Ressource extends BaseController
         return view('scr_ModifierRessource');
     }
 
-    public function afficherFeedRessources($arrayRessourcesId)
+    public function afficherRessources()
     {
-
+        $ressourceModel = new M_Ressource();
+        $ressources = $ressourceModel->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
+        $data = [
+            'ressources' => $ressources
+        ];
+        $content = view('scr_Ressource', $data);
+        return $content;
     }
     public function afficherRessourcesAVerifier() : array
     {

@@ -47,6 +47,7 @@ use App\Controllers\Ressource;
     <script src="<?= base_url('/js/validationRessourceScript.js') ?>"></script>
 </head>
 <body>
+<?= view('header') ?>
 <div class="ressources-container">
     <h1>Ressources a vérifier : </h1>
     <?php
@@ -71,4 +72,5 @@ use App\Controllers\Ressource;
     }
     ?>
 </div>
+<?= view('footer') ?>
 </body>
