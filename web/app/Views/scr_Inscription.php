@@ -25,7 +25,7 @@
               <label>Civilité</label>
               <div class="dropdown form-group">
               <button class="form-control form-button form-control-lg btn dropdown-toggle shadow-none text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-              Veuillez sélectionner une réponse
+                Veuillez sélectionner une réponse
               </button>
               <ul class="dropdown-menu form-control form-control-lg" aria-labelledby="dropdownMenuButton1">
               <li><a class="dropdown-item" href="#" onclick="updateDropdown('Monsieur')">Monsieur</a></li>
@@ -73,7 +73,7 @@
               </div>
               <div class="form-group">
               <label>Mot de passe</label>
-              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de pass">
+              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de passe">
               </div>
               <div class="form-group">
               <label>Confirmer Mot de Passe</label>

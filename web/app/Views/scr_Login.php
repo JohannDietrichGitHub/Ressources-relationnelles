@@ -27,7 +27,7 @@
               </div>
               <div class="form-group">
               <label>Mot de passe</label>
-              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de pass">
+              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de passe">
               </div>
               <div class="form-group pt-2">
               <input class="form-check-input shadow-none" type="checkbox" name="checkbox" value="remember-me" id="flexCheckDefault">
@@ -36,7 +36,7 @@
               </label>
               </div>
               <div class="text-center mt-3">
-              <button type="submit" class="btn btn-lg btn-primary">S'inscrire</button>
+              <button type="submit" class="btn btn-lg btn-primary">Se connecter</button>
               <p class="text-secondary" id="mdpOubli">Mot de passe oublié ? Cliquez-ici</p>
               </div>
               </form>

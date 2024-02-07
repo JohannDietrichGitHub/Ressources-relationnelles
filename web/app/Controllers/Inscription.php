@@ -33,25 +33,28 @@ class Inscription extends BaseController
     public function processRegister()
     {
         // Récupérer les données du formulaire
-        $civilite = $this->request->getPost('civilite');
-        $name = $this->request->getPost('name');
-        $firstname = $this->request->getPost('firstname');
-        $birthdate = $this->request->getPost('birthdate');
-        $address = $this->request->getPost('address');
+        $civilite = $this->request->getPost('dropdownMenuButton1');
+        $name = $this->request->getPost('nom');
+        $firstname = $this->request->getPost('prenom');
+        $birthdate = $this->request->getPost('dateNaissance');
+        $address = $this->request->getPost('adresse');
         $cp = $this->request->getPost('cp');
-        $city = $this->request->getPost('city');
-        $phonenumber = $this->request->getPost('phonenumber');
-        $mail = $this->request->getPost('mail');
-        $password = $this->request->getPost('password');
+        $city = $this->request->getPost('ville');
+        $phonenumber = $this->request->getPost('tel');
+        $mail = $this->request->getPost('email');
+        $password = $this->request->getPost('mdp');
         $confirmPassword = $this->request->getPost('confirm_password');
     
         // Vérification si le mot de passe correspond à la confirmation         
         if ($password != $confirmPassword) {
             return redirect()->to('login')->with('errorconnect', 'Les mots de passe ne correspondent pas.');
         }
+        
 
         // Récupération de l'identifiant du rôle 
-        $roleId = $this->recupIdRole();      
+        $roleId = $this->recupIdRole();     
+        
+        $newCivilite = $this->convertir_civilite($civilite);
 
         if ($roleId !== null)
         {          
@@ -60,7 +63,7 @@ class Inscription extends BaseController
             // Enregistrement de l'utilisateur dans la base de données
             $utilisateurModel = new M_Utilisateur();
             $data = [
-                'UTI_CIVILITE' => $civilite,
+                'UTI_CIVILITE' => $newCivilite,
                 'UTI_NOM' => $name,
                 'UTI_PRENOM' => $firstname,
                 'UTI_DATE_NAISSANCE' => $birthdate,
@@ -103,4 +106,19 @@ class Inscription extends BaseController
             return null;
         }
     }
+
+    private function convertir_civilite($civilite) {
+        switch ($civilite) {
+            case 'Monsieur':
+                return 'M';
+            case 'Madame':
+                return 'Mme';
+            case 'Autre':
+                return 'Aut';
+            default:
+                return '';
+        }
+    }
+
+    
 }
