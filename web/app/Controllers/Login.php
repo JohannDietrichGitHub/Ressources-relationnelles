@@ -109,4 +109,13 @@ class Login extends BaseController
             return null;
         }
     }
+
+    public function getUserNameFromID($id){
+        
+        $roleModel = new M_Utilisateur();
+
+        $name = $roleModel->where('UTI_ID', $id)->first();
+
+        return $name->UTI_NOM;
+    }
 }

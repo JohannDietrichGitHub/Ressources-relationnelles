@@ -11,7 +11,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Accueil::index');
 
 //Page de connexion et d'inscription
-$routes->get('/login', 'Login::login');
+$routes->get('/connexion', 'Login::login');
 
 //Page d'inscription
 $routes->get('/inscription', 'Inscription::inscription');

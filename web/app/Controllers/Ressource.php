@@ -5,6 +5,7 @@ use App\Models\M_Appartenir;
 use App\Models\M_Exploiter;
 use App\Models\M_Ressource;
 use CodeIgniter\I18n\Time;
+use App\Controllers\Login;
 
 class Ressource extends BaseController
 {
@@ -190,10 +191,23 @@ class Ressource extends BaseController
     {
         $ressourceModel = new M_Ressource();
         $ressources = $ressourceModel->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
+
+        $login = new Login();
+        $idUsers = [];
+    
+        foreach ($ressources as $ressource) {
+            $idUser = $login->getUserNameFromID($ressource->RES_UTI_ID);
+            $idUsers[] = $idUser;
+        }
+
         $data = [
-            'ressources' => $ressources
+            'ressources' => $ressources,
+            'idUsers' => $idUsers
         ];
+
+        
         $content = view('scr_Ressource', $data);
+        // dd($content);
         return $content;
     }
     public function afficherRessourcesAVerifier() : array

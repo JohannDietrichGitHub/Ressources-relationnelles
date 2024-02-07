@@ -2,17 +2,17 @@
 <html lang="fr">
   <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-  <link href="./css/custom.css" rel="stylesheet">  
-  <script src="./bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <link href="<?= base_url('bootstrap/css/bootstrap.min.css'); ?>" rel="stylesheet" crossorigin="anonymous">
+  <link href="<?= base_url('css/custom.css');?>" rel="stylesheet">  
+  <script src=" <?= base_url('bootstrap/js/bootstrap.bundle.min.js'); ?>" crossorigin="anonymous"></script>
   <title>Ressources Relationnelles</title>
   </head>
 <body>
 <nav class="navbar navbar-dark navbar-expand-lg custom-dark-blue">
   <div class="container-fluid">
 
-    <a class="navbar-brand" href="#">
-      <img src="./media/banner.png" href="<?= base_url('/'); ?>" alt="" height="60">
+    <a class="navbar-brand" href="<?= base_url('/'); ?>">
+      <img id="img-banner"src="<?= base_url('media/banner.png'); ?>" alt="" height="60">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -37,7 +37,7 @@
       
       <form class="d-flex search-button align-items-center" role="search" action="<?= base_url('/recherche') ?>" method="get">
         <input class="form-control shadow-none border-0" type="text" name=recherche placeholder="Rechercher..." aria-label="Search">
-        <object class="align-middle"data="./icon/search.svg" height="30"> </object>
+        <object class="align-middle"data="<?= base_url('icon/search.svg'); ?>" height="30"> </object>
       </form>
     </div>
     <!-- [TODO] 05/01/2024 - Changer cette partie pour afficher les messages plus proprement -->
