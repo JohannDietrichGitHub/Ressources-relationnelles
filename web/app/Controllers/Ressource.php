@@ -190,6 +190,44 @@ class Ressource extends BaseController
     {
 
     }
+    public function afficherRessourcesAVerifier() : array
+    {
+        $ressourceModel = new M_Ressource();
+
+        $builder = $ressourceModel->builder();
+
+        $query = $builder
+            ->select()
+            ->where('RES_VALIDE', 'N')
+            ->orderBy('RES_DATE_MODIFICATION')
+            ->get();
+
+        $result = $query->getResult();
+
+        return $result;
+    }
+    public function modifierEtatRessource($ressourceId, $action)
+    {
+        //ajouter une vérification que ce soit bien un administrateur qui fait la requête
+        if ($action == 'valider') {
+            $resourceData = [
+                'RES_VALIDE' => 'O',
+            ];
+        } else {
+            $resourceData = [
+                'RES_VALIDE' => 'N',
+            ];
+        }
+        $resourceModel = new M_Ressource();
+        $resourceModel->update($ressourceId, $resourceData);
+
+        return $this->response->setJSON(['status' => 'success']);
+    }
+
+    public function validerRessource()
+    {
+        return view('scr_validerRessources');
+    }
     public static function verifScriptDansArray($data): bool
     {
         foreach ($data as $key => $value) {
