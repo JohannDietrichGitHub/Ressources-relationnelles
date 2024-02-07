@@ -61,6 +61,7 @@
     </style>
 </head>
 <body>
+<?= view('header') ?>
 <?php
 // Récupérez le message FlashData
 $error = session()->getFlashdata('error');
@@ -75,4 +76,5 @@ if ($error) {
         <input class="supprimerInput" type="text" name="ressource_id" placeholder="Id de la ressource">
         <button id="boutonSupprimerRessource" type="submit">Supprimer</button>
     </form>
+<?= view('footer') ?>
 </body>

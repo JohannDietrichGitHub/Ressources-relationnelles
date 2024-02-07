@@ -23,9 +23,7 @@ class Login extends BaseController
             }
         }
         
-        $content  = view('header');
-        $content .= view('scr_Login');
-        $content .= view('footer');
+        $content = view('scr_Login');
 
         // return view('scr_Accueil');
         return $content;
@@ -45,10 +43,7 @@ class Login extends BaseController
                 return redirect()->to('login')->with('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
             }
         }       
-        $content  = view('header');
-        $content .= view('scr_Login');
-        $content .= view('footer');
-
+        $content = view('scr_Login');
         // return view('scr_Accueil');
         return $content;
     }
