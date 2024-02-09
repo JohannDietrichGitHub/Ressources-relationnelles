@@ -5,6 +5,12 @@ use App\Controllers\Relation;
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <script src="https://cdn.tiny.cloud/1/g2g8jz1jhnb770m550zsm7oti8is5tql3lmwla2dah58xvsr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
     <meta charset="UTF-8">
 
     <!-- STYLES -->
@@ -83,11 +89,11 @@ if (!isset($ressource) || empty($ressource)) {
 <?php
 if (isset($ressource)) {
     echo '<h1>Modifier la ressource</h1>';
-?>
+    ?>
 <form id="modifierRessource" action="#" method="post">
-    <input type="hidden" name="ressource_id_cacher" value="<?php echo($ressource->RES_ID) ?>">
-    <input class="modifierInput" type="text" name="ressource_titre" placeholder="Titre de la ressource" value="<?php esc($ressource->RES_NOM) ?>" required>
-    <input class="modifierInput" type="text" name="ressource_contenu" placeholder="Contenu de la ressource"  value="<?php esc($ressource->RES_CONTENU) ?>" required>
+    <input type="hidden" name="ressource_id_cacher" value="<?= esc($ressource->RES_ID) ?>">
+    <input class="modifierInput" type="text" name="ressource_titre" placeholder="Titre de la ressource" value="<?= esc($ressource->RES_NOM) ?>" required>
+    <textarea id="mytextarea" name="ressource_contenu" placeholder="contenu de la ressource" required><?= esc($ressource->RES_CONTENU) ?></textarea>
     <label for="ressource_type">Sélectionnez une type :</label>
     <select name="ressource_type" id="ressource_type">
         <?php
