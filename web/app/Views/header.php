@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-  <link href="./css/custom.css" rel="stylesheet">  
-  <script src="./bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-  <title>Ressources Relationnelles</title>
-  </head>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="<?= base_url('/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet" crossorigin="anonymous">
+    <link href="<?= base_url('/css/custom.css') ?>" rel="stylesheet">
+    <script src="<?= base_url('/bootstrap/js/bootstrap.bundle.min.js') ?>" crossorigin="anonymous"></script>
+    <title>Ressources Relationnelles</title>
+</head>
 <body>
 <nav class="navbar navbar-dark navbar-expand-lg custom-dark-blue">
   <div class="container-fluid">
 
     <a class="navbar-brand" href="#">
-      <img src="./media/banner.png" href="<?= base_url('/'); ?>" alt="" height="60">
+      <img src="/media/banner.png" href="<?= base_url('/'); ?>" alt="" height="60">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

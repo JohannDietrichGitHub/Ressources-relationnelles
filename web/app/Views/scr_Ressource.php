@@ -50,21 +50,20 @@
 <?= view('header') ?>
     <div class="ressource-container">
 <?php
-    if (!empty($ressource)) {
-//        $commentaireArray = getCommentaires($ressource->id)
-        ?>
-        <div class="ressource">
-            <h2><?= esc($ressource->RES_NOM) ?></h2>
-            <p><?= esc($ressource->RES_CONTENU) ?></p>
-            <p><?= esc($ressource->RES_DATE_CREATION) ?></p>
-            <div class="commentaire-container">
-                <?php
-//                foreach ($commentaireArray as $commentaire) {
-//                    esc($commentaire);
-//                }
-                ?>
-            </div>
+if (!empty($ressource)) {
+    ?>
+    <div class="ressource">
+        <h2><?= esc($ressource->RES_NOM) ?></h2>
+        <p><?= html_entity_decode($ressource->RES_CONTENU) ?></p>
+        <p><?= esc($ressource->RES_DATE_CREATION) ?></p>
+        <div class="commentaire-container">
+            <?php
+            // foreach ($commentaireArray as $commentaire) {
+            //     esc($commentaire);
+            // }
+            ?>
         </div>
+    </div>
         <?php
     }
     if (!empty($ressources)) {
@@ -72,7 +71,7 @@
             ?>
             <div class="ressource">
                 <h2><?= esc($ressource->RES_NOM) ?></h2>
-                <p><?= substr(esc($ressource->RES_CONTENU), 0, 200) . "..." ?></p>
+                <p><?= substr(html_entity_decode($ressource->RES_CONTENU), 0, 200) . "..." ?></p>
                 <p><?= esc($ressource->RES_DATE_CREATION) ?></p>
                 <a href="<?= site_url('/ressource/' . $ressource->RES_ID) ?>" class="btn btn-primary">Voir la ressource</a>
             </div>
