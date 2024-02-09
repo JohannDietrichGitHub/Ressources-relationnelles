@@ -34,4 +34,17 @@ protected $foreignKey = 'user_id';
 protected $relatedKey = 'ressource_id';
 
 protected $returnType = 'object';
+
+public function authenticate($mail, $mdp)
+    {
+        // Vérifier les informations d'identification dans la base de données
+        $user = $this->where('UTI_MAIL', $mail)->first();   
+        if ($user && password_verify($mdp, $user->UTI_MDP)) {
+            // Les informations d'identification sont correctes, retourner l'utilisateur
+            return $user;
+        }
+
+        // Les informations d'identification sont incorrectes, retourner null
+        return null;
+    }
 }

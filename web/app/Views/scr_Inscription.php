@@ -17,14 +17,59 @@
                   Merci de remplir les informations ci-dessous.
                 </p>
               </div>
-              <form action="<?= site_url('/inscription/processRegister') ?>" method="post">
+              <form action="<?= site_url('/inscription/sinscrire') ?>" method="post">
                 <div class="card">
                   <div class="card-body">
                     <div class="m-sm-4">
-              <form>
               <div class="form-group">
+              <?php if (session()->has('validation') && session('validation')->getError('civilite') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('civilite')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('nom') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('nom')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('prenom') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('prenom')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('dateNaiss') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('dateNaiss')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('adresse') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('adresse')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('adresse') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('cp')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('ville') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('ville')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('tel') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('tel')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('mail') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('mail')  ?>
+                  </div>
+              <?php endif; ?>
               <label>Civilité</label>
               <div class="dropdown form-group">
+              <input type="hidden" name="civilite" id="hiddenCivilite" value="">
               <button class="form-control form-button form-control-lg btn dropdown-toggle shadow-none text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 Veuillez sélectionner une réponse
               </button>
@@ -37,6 +82,7 @@
               <script>
                 function updateDropdown(selectedValue) {
                     document.getElementById('dropdownMenuButton1').innerText = selectedValue;
+                    document.getElementById('hiddenCivilite').value = selectedValue;
                 }
               </script>
               </div>
@@ -62,15 +108,15 @@
               </div>
               <div class="form-group">
               <label>Ville</label>
-              <input class="form-control form-control-lg shadow-none" type="text" name="ville" pattern="[0-9]{1,6}" placeholder="Ville">
+              <input class="form-control form-control-lg shadow-none" type="text" name="ville" placeholder="Ville">
               </div>
               <div class="form-group">
               <label>Téléphone</label>
-              <input class="form-control form-control-lg shadow-none" type="text" name="tel" pattern="[0-9]{1,6}" placeholder="Entrez votre numéro de téléphone">
+              <input class="form-control form-control-lg shadow-none" type="text" name="tel" pattern="[0-9]{1,10}" placeholder="Entrez votre numéro de téléphone">
               </div>
               <div class="form-group">
               <label>Email</label>
-              <input class="form-control form-control-lg shadow-none" type="email" name="email" placeholder="Entrez votre email">
+              <input class="form-control form-control-lg shadow-none" type="mail" name="mail" placeholder="Entrez votre email">
               </div>
               <div class="form-group">
               <label>Mot de passe</label>
@@ -83,7 +129,6 @@
               <div class="text-center mt-3">
               <button type="submit" class="btn btn-lg btn-primary">S'inscrire</button>
               </div>
-              </form>
               </div>
               </div>
               </div>
