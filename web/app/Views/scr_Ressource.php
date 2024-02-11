@@ -18,56 +18,7 @@
     background-color: #0B7328 !important
         }
 
-        .btn-seco..........................................................................
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        ndary{
+        .btn-secondary{
     background-color: #80B918 !important;
             border-color: #80B918 !important;
         }
