@@ -2,7 +2,7 @@
 <html lang="fr">
    <head>
       <meta charset="UTF-8">
-      <title>Food Seeker Accueil</title>
+      <title>Ressource Relationnelles Accueil</title>
       <!-- STYLES -->
       <style {csp-style-nonce}>
          .bg-accueil {

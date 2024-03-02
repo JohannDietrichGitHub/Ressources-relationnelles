@@ -2,35 +2,24 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-
+    <script src="https://cdn.tiny.cloud/1/g2g8jz1jhnb770m550zsm7oti8is5tql3lmwla2dah58xvsr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea',
+            init_instance_callback : function(editor) {
+                editor.on('NodeChange Change KeyUp SetContent', function(e) {
+                    tinymce.triggerSave();
+                });
+            },
+            setup: function (editor) {
+                editor.on('init', function () {
+                    this.getElement().setAttribute('data-mce-required', true);
+                });
+            }
+        });
+    </script>
     <!-- STYLES -->
     <style {csp-style-nonce}>
-
-        .green-foodseeker{
-            background-color: #2B9348 !important;
-        }
-
-        .btn-primary{
-            background-color: #2B9348 !important;
-            border-color: #2B9348 !important;
-        }
-        .btn-primary:hover{
-            background-color: #1B8338 !important
-        }
-        .btn-primary:active{
-            background-color: #0B7328 !important
-        }
-
-        .btn-secondary{
-            background-color: #80B918 !important;
-            border-color: #80B918 !important;
-        }
-        .btn-secondary:hover{
-            background-color: #70A908 !important
-        }
-        .btn-secondary:active{
-            background-color: #609900 !important
-        }
         #ajouterRessource {
             max-width: 500px;
             margin: 50px auto;
@@ -61,7 +50,6 @@
             background-color: #0B7328;
         }
     </style>
-    </style>
 </head>
 <body>
 <?= view('header') ?>
@@ -76,7 +64,7 @@ if ($error) {
 ?>
 <form id="ajouterRessource" action="#" method="post">
     <input class="ajouterInput" type="text" name="ressource_titre" placeholder="Titre de la ressource" required>
-    <input class="ajouterInput" type="text" name="ressource_contenu" placeholder="Contenu de la ressource" required>
+    <textarea id="mytextarea" class="ajouterInput" name="ressource_contenu" placeholder="contenu de la ressource"></textarea>
     <label for="ressource_type">Sélectionnez une type :</label>
     <select name="ressource_type" id="ressource_type">
         <?php
