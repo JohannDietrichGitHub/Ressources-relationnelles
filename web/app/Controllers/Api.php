@@ -7,6 +7,9 @@ use App\Models\M_Ressource;
 class Api extends BaseController {
 
     public function index($parametre) {
+
+        $this->logger->info('Un message d\'info');
+        
         // Appeler la méthode correspondante en fonction du paramètre
         switch ($parametre) {
             case 'recupererRessources':
