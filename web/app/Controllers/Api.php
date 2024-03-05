@@ -3,10 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\M_Ressource;
+use App\Models\M_Categorie;
 
 class Api extends BaseController {
 
-    public function index($parametre) {
+    public function index($parametre, $parametrePrimaire, $parametreSecondaire) {
 
         $this->logger->info('Un message d\'info');
         
@@ -28,9 +29,25 @@ class Api extends BaseController {
     public function recupererRessources() {
         $ressourceModel = new M_Ressource();
         $ressources = $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
+        
+        $categorieModel = new M_Categorie();
+        $categories = array();  // Tableau pour stocker les catégories
+    
+        foreach ($ressources as $ressource) {
+            // Utilisez find au lieu de findAll pour obtenir une seule catégorie
+            $categorie = $categorieModel->where('CAT_ID', $ressource->RES_CAT_ID)->find();
+    
+            // Ajoutez la catégorie au tableau des catégories
+            if (!empty($categorie)) {
+                $categories[] = $categorie[0];
+            }
+        }
+
         $data = [
-            'ressources' => $ressources
+            'ressources' => $ressources,
+            'categories' => $categories
         ];
+
         // Vous pouvez également appeler une vue pour afficher les données, si nécessaire
         return $this->response->setJSON($data);
     }
