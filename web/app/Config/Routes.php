@@ -13,6 +13,7 @@ $routes->get('/', 'Accueil::index');
 //Page de connexion et d'inscription
 $routes->get('/connexion', 'Utilisateur::connexion');
 
+
 //Page d'inscription
 $routes->get('/inscription', 'Utilisateur::inscription');
 
@@ -42,6 +43,11 @@ $routes->get('/ressource/validation', 'Ressource::validerRessource');
 //route permettant la validation ou la non validation d'une ressource
 $routes->post('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
 $routes->get('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
+
+$routes->post('/ajouterCommentaire', 'Commentaire::ajouterCommentaire');
+
+$routes->post('/bloquerCommentaire/(:num)/(:num)', 'Utilisateur::bloquerCommentaire/$1/$2');
+
 // Permet de se déconnecter
 $routes->get('deconnexion', 'Accueil::deconnexion');
 

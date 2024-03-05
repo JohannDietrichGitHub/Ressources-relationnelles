@@ -91,3 +91,8 @@ input:invalid[name="cp"] {
 #mdpOubli:hover{
     text-decoration: underline;
 }
+
+.ressources-link{
+    text-decoration: none !important;
+    color: black;
+}

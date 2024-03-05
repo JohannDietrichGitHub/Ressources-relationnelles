@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\M_Utilisateur;
 use App\Models\M_Role;
+use App\Models\M_Commentaire;
 
 class Utilisateur extends BaseController
 {
@@ -106,8 +107,6 @@ class Utilisateur extends BaseController
         ];
         
         $validation->setRules($rules);
-        
-     //   dd($validation); 
 
         // Vérifier si les règles de validation sont respectées
         if ($validation->withRequest($this->request)->run()) {
@@ -319,5 +318,51 @@ class Utilisateur extends BaseController
         $content = view('scr_mdpOublie');
 
         return $content;
+    }
+
+    public function recupNomUtilisateurParID($id): string
+    {
+        $utilisateurModel = new M_Utilisateur();
+        $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
+        if ($utilisateur)
+        {
+            return $utilisateur->UTI_PRENOM ." ". $utilisateur->UTI_NOM;
+        }
+        else
+        {
+            return 'steve';
+        }
+    }
+
+    public function recupRoleParID($id): string
+    {
+        $utilisateurModel = new M_Utilisateur();
+        $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
+        if ($utilisateur)
+        {
+            $roleModel = new M_Role();
+            $role = $roleModel->where('ROL_ID', $utilisateur->UTI_ID_ROL)->first();
+            if ($role)
+            {
+                return $role->ROL_NOM;
+            }
+        }
+        return "Utilisateur classique";
+    }
+
+    public function bloquerCommentaire($id, $sessionId): string
+    {
+        if (isset($sessionId) && $this->recupRoleParID($sessionId) === "Modérateur") {
+            $commentaireModel = new M_Commentaire();
+            $commentaire = $commentaireModel->where('COM_ID', $id)->first();
+            if ($commentaire) {
+                $commentaire->COM_VISIBILITE = "I";
+                $commentaireModel->save($commentaire);
+                return "ok";
+            }
+        }
+        else {
+            return "Pas connecté";
+        }
     }
 }
