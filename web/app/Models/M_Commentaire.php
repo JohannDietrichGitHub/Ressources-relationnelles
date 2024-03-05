@@ -6,24 +6,15 @@ use CodeIgniter\Model;
 class M_Commentaire extends Model {
 
 protected $table = 'commentaire';
-protected $primaryKey = 'commentaire_id';
+protected $primaryKey = 'COM_ID';
 protected $allowedFields = [
-    'commentaire_txt',
-    'commentaire_visibilite',
-    'commentaire_date',
-    'commentaire_utilisateur',
-    'commentaire_ressource'
+    'COM_CONTENU',
+    'COM_ID_COMMENTAIRE_REPONDU',
+    'COM_VISIBILITE',
+    'COM_UTI_ID',
+    'COM_RES_ID',
+    'COM_TSP_CRE'
 ];
-
-// Définir la table de liaison
-protected $pivotTable = 'commentaire_reponses';
-
-// Définir la clé étrangère pour la table
-protected $foreignKey = 'commentaire_id';
-
-// Définir la clé étrangère pour la table "reponse"
-protected $relatedKey = 'reponse_id';
-
 
 protected $returnType = 'object';
 }

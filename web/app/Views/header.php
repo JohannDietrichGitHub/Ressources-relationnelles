@@ -8,8 +8,10 @@
   <title>Ressources Relationnelles</title>
   </head>
 <body>
-<?php $userId = $_SESSION['user_id'] ?? null; 
-$idRole = $_SESSION['id_role'] ?? null; ?>
+<?php
+    $userId = $_SESSION['user_id'] ?? null;
+    $idRole = $_SESSION['id_role'] ?? null;
+?>
 <nav class="navbar navbar-dark navbar-expand-lg custom-dark-blue">
   <div class="container-fluid">
 
