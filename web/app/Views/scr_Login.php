@@ -24,11 +24,11 @@
               <form>
               <div class="form-group">
               <label>Email</label>
-              <input class="form-control form-control-lg shadow-none" type="email" name="email" placeholder="Entrez votre email">
+              <input class="form-control form-control-lg shadow-none" type="email" name="mail" placeholder="Entrez votre email">
               </div>
               <div class="form-group">
               <label>Mot de passe</label>
-              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de pass">
+              <input class="form-control form-control-lg shadow-none" type="password" name="mdp" placeholder="Entrez votre mot de passe">
               </div>
               <div class="form-group pt-2">
               <input class="form-check-input shadow-none" type="checkbox" name="checkbox" value="remember-me" id="flexCheckDefault">
@@ -37,8 +37,8 @@
               </label>
               </div>
               <div class="text-center mt-3">
-              <button type="submit" class="btn btn-lg btn-primary">S'inscrire</button>
-              <p class="text-secondary" id="mdpOubli">Mot de passe oublié ? Cliquez-ici</p>
+              <button type="submit" class="btn btn-lg btn-primary">Se connecter</button>
+              <a class="nav-link" href="<?= base_url('/connexion/mdp_oublie') ?>">Mot de passe oublié ? Cliquez-ici</p>
               </div>
               </form>
               </div>

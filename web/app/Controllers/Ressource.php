@@ -37,6 +37,7 @@ class Ressource extends BaseController
             $ressourceData = [
                 'RES_NOM' => $this->request->getPost('ressource_titre'),
                 'RES_CONTENU' => $this->request->getPost('ressource_contenu'),
+                'RES_VALIDE' => 'E',
                 'RES_ETAT' => 'I',
                 'RES_TYPE' => $this->request->getPost('ressource_type'),
                 'RES_CAT_ID'=> $this->request->getPost('ressource_categorie'),
@@ -152,7 +153,8 @@ class Ressource extends BaseController
                 'RES_CONTENU' => $this->request->getPost('ressource_contenu'),
                 'RES_TYPE' => $this->request->getPost('ressource_type'),
                 'RES_CAT_ID' => $this->request->getPost('ressource_categorie'),
-                'RES_DATE_MODIFICATION' => Time::now()
+                'RES_DATE_MODIFICATION' => Time::now(),
+                'RES_VALIDE' => 'E'
             ];
             if (self::verifScriptDansArray($ressourceData)) {
                 session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
@@ -190,16 +192,7 @@ class Ressource extends BaseController
     public function afficherRessources()
     {
         $ressourceModel = new M_Ressource();
-        $ressources = $ressourceModel->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
-
-        $login = new Login();
-        $idUsers = [];
-    
-        foreach ($ressources as $ressource) {
-            $idUser = $login->getUserNameFromID($ressource->RES_UTI_ID);
-            $idUsers[] = $idUser;
-        }
-
+        $ressources = $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
         $data = [
             'ressources' => $ressources,
             'idUsers' => $idUsers
@@ -218,7 +211,7 @@ class Ressource extends BaseController
 
         $query = $builder
             ->select()
-            ->where('RES_VALIDE', 'N')
+            ->where('RES_VALIDE', 'E')
             ->orderBy('RES_DATE_MODIFICATION')
             ->get();
 

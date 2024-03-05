@@ -11,18 +11,19 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Accueil::index');
 
 //Page de connexion et d'inscription
-$routes->get('/connexion', 'Login::login');
+$routes->get('/connexion', 'Utilisateur::connexion');
+
 
 //Page d'inscription
-$routes->get('/inscription', 'Inscription::inscription');
+$routes->get('/inscription', 'Utilisateur::inscription');
 
 // Inscription
-$routes->get('/inscription/processRegister', 'Inscription::processRegister');
-$routes->post('/inscription/processRegister', 'Inscription::processRegister');
+$routes->get('/inscription/sinscrire', 'Utilisateur::sinscrire');
+$routes->post('/inscription/sinscrire', 'Utilisateur::sinscrire');
 
 // Connexion
-$routes->get('/login/seConnecter', 'Login::seConnecter');
-$routes->post('/login/seConnecter', 'Login::seConnecter');
+$routes->get('/login/seConnecter', 'Utilisateur::seConnecter');
+$routes->post('/login/seConnecter', 'Utilisateur::seConnecter');
 
 //affiche une ressources précise avec tout les détails
 $routes->get('/ressource/(:num)', 'Ressource::afficherRessource/$1');
@@ -42,3 +43,17 @@ $routes->get('/ressource/validation', 'Ressource::validerRessource');
 //route permettant la validation ou la non validation d'une ressource
 $routes->post('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
 $routes->get('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
+// Permet de se déconnecter
+$routes->get('deconnexion', 'Accueil::deconnexion');
+
+// Affichage page mot de passe oublié
+$routes->get('/connexion/mdp_oublie', 'Utilisateur::mdpOublie');
+
+// Nouveau mot de passe
+$routes->get('/connexion/mdp_oublie/nouveau_mdp', 'Utilisateur::nouveauMdp');
+$routes->post('/connexion/mdp_oublie/nouveau_mdp', 'Utilisateur::nouveauMdp');
+
+// Connexion à l'API
+$routes->get('/api', 'Api::index');
+$routes->get('/api/(:alpha)', 'Api::index/$1');
+$routes->get('/api/recuperer_ressources', 'Api::recupererRessources');

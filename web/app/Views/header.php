@@ -8,6 +8,8 @@
   <title>Ressources Relationnelles</title>
   </head>
 <body>
+<?php $userId = $_SESSION['user_id'] ?? null; 
+$idRole = $_SESSION['id_role'] ?? null; ?>
 <nav class="navbar navbar-dark navbar-expand-lg custom-dark-blue">
   <div class="container-fluid">
 
@@ -31,33 +33,38 @@
       </ul>
       
       <div class="d-flex flex-column flex-lg-row ms-5-lg me-2">
+      <?php if ($userId !== null): ?>
+          <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('deconnexion'); ?>'">Déconnexion</button>
+      <?php else: ?>
         <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('inscription'); ?>'">Inscription</button>
         <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('connexion'); ?>'">Connexion</button>
+      <?php endif; ?>
       </div>
+      
       
       <form class="d-flex search-button align-items-center" role="search" action="<?= base_url('/recherche') ?>" method="get">
         <input class="form-control shadow-none border-0" type="text" name=recherche placeholder="Rechercher..." aria-label="Search">
         <object class="align-middle"data="<?= base_url('icon/search.svg'); ?>" height="30"> </object>
       </form>
     </div>
-    <!-- [TODO] 05/01/2024 - Changer cette partie pour afficher les messages plus proprement -->
-    <?php if (session()->has('success')) : ?>
-        <div class="alert alert-success" role="alert">
-            <?= session('success') ?>
-        </div>
-    <?php endif; ?>
-    <?php if (session()->has('error')) : ?>
-        <div class="alert alert-error" role="alert">
-            <?= session('error') ?>
-        </div>
-    <?php endif; ?>
-    <?php if (session()->has('errorconnect')) : ?>
-        <div class="alert alert-error" role="alert">
-            <?= session('errorconnect') ?>
-        </div>
-    <?php endif; ?>
   </div>
 </nav>
+
+<?php if (session()->has('success')) : ?>
+      <div class="position-absolute" style="width: 100%; top: 60px;">
+        <div class="alert alert-success inner-message" role="alert">
+            <?= session('success') ?>
+        </div>
+        </div>
+        
+    <?php endif; ?>
+    <?php if (session()->has('error')) : ?>
+      <div class="position-absolute" style="width: 100%; top: 60px;">
+        <div class="alert alert-danger inner-message" role="alert">
+            <?= session('error') ?>
+        </div>
+    </div>
+    <?php endif; ?>
 
   <script>
     function rechercherRecette(){

@@ -38,6 +38,12 @@ class Validation extends BaseConfig
         'single' => 'CodeIgniter\Validation\Views\single',
     ];
 
+    public $customMessages = [
+        'nom' => [
+            'required' => 'Le champ Nom est obligatoire.',
+        ],
+    ];
+
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
