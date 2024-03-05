@@ -5,7 +5,6 @@
     <title>Ressource</title>
     <style>
       body {
-        padding-top: 40px;
         background: #E6E6FA
       }
 
@@ -67,14 +66,12 @@
       <p> <?= esc($ressource->RES_CONTENU) ?> </p>
       <p> <?= esc($ressource->RES_DATE_CREATION) ?> </p>
       <div class="commentaire-container"> <?php
-//                foreach ($commentaireArray as $commentaire) {
-//                    esc($commentaire);
-//                }
+          include_once('scr_feedCommentaires.php');
                 ?> </div>
     </div> <?php
     }
     if (!empty($ressources)) : ?>
-        <?php foreach ($ressources as $key => $ressource) : ?>
+        <?php foreach ($ressources as $ressource) : ?>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -85,16 +82,16 @@
                                     <div class="col-lg-5">
                                         <div class="candidate-list-content mt-3 mt-lg-0">
                                             <h5 class="fs-19 mb-0">
-                                                <a class="ressources-link h4" href="#"> <?= esc($ressource->RES_NOM) ?> </a>
+                                                <a class="ressources-link h4" href="<?= site_url('/ressource/' . $ressource->RES_ID) ?>"> <?= esc($ressource->RES_NOM) ?> </a>
                                             </h5>
-                                            <p class="text-muted mb-2"> <?= isset($idUsers[$key]) ? esc($idUsers[$key]) : '' ?> test </p>
+                                            <p class="text-muted mb-2"> <?= isset($idUsers) ? esc($idUsers) : '' ?></p>
                                             <!-- Affichez les autres informations de ressource ici -->
                                             <ul class="list-inline mb-0 text-muted">
                                                 <li class="list-inline-item">
-                                                    <i class="mdi mdi-map-marker"></i> Oakridge Lane California
+                                                    <i class="mdi mdi-map-marker"></i> <?= substr(html_entity_decode($ressource->RES_CONTENU), 0, 200) . "..." ?>
                                                 </li>
                                                 <li class="list-inline-item">
-                                                    <i class="mdi mdi-wallet"></i> $250 / hours
+                                                    <i class="mdi mdi-wallet"></i><?= esc($ressource->RES_DATE_CREATION) ?>
                                                 </li>
                                             </ul>
                                         </div>
@@ -120,8 +117,7 @@
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
-    
-?>
+
     <!-- </div> --> <?= view('footer') ?>
   </body>
   <script>
