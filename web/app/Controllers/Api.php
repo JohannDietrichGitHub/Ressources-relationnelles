@@ -10,6 +10,7 @@ class Api extends BaseController {
 
         $this->logger->info('Un message d\'info');
         
+
         // Appeler la méthode correspondante en fonction du paramètre
         switch ($parametre) {
             case 'recupererRessources':
