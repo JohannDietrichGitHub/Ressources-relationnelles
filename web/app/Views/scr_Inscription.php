@@ -47,7 +47,7 @@
                       <?= session('validation')->getError('adresse')  ?>
                   </div>
               <?php endif; ?>
-              <?php if (session()->has('validation') && session('validation')->getError('adresse') != NULL) : ?>
+              <?php if (session()->has('validation') && session('validation')->getError('cp') != NULL) : ?>
                   <div class="alert alert-danger">   
                       <?= session('validation')->getError('cp')  ?>
                   </div>
@@ -65,6 +65,11 @@
               <?php if (session()->has('validation') && session('validation')->getError('mail') != NULL) : ?>
                   <div class="alert alert-danger">   
                       <?= session('validation')->getError('mail')  ?>
+                  </div>
+              <?php endif; ?>
+              <?php if (session()->has('validation') && session('validation')->getError('mdp') != NULL) : ?>
+                  <div class="alert alert-danger">   
+                      <?= session('validation')->getError('mdp')  ?>
                   </div>
               <?php endif; ?>
               <label>Civilité</label>

@@ -30,11 +30,16 @@
    </head>
 <body>
 <?= view('header') ?>
-<div class="container">
-<main class=" row">
-    <div class="col-md d-flex px-auto justify-content-center">
-       <form action="<?= site_url('connexion/mdp_oublie/nouveau_mdp') ?>" method="post" class="form-signin ">   
-            <h1 class="h3 mb-3 fw-normal">Mot de passe oublié</h1>
+  <main>
+      <div class="container h-100 mt-3 mb-5">
+        <div class="row h-100 pb-3">
+          <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+            <div class="d-table-cell align-middle">
+              <div class="text-center mt-4">
+                <h1 class="h2">Mot de passe oublié</h1>
+                <br>
+              </div>
+              <form action="<?= site_url('connexion/mdp_oublie/nouveau_mdp') ?>" method="post" class="form-signin ">   
             <div class="form-floating text-secondary">
             <input type="mail" name="mail" class="form-control" id="floatingmail" placeholder="">
             <label for="floatingmail">Email</label>
@@ -49,9 +54,14 @@
             </div>
             <button class="btn btn-primary w-100 py-2" type="submit">Confirmer</button>
         </form>
-    </div> 
-</main>
-</div>
-<?= view('footer') ?>
-</body>
+              </div>
+              </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  <?= view('footer') ?>
 </html>

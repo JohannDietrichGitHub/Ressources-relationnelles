@@ -32,6 +32,11 @@
         <li class="nav-item">
           <a class="nav-link text-light" href="<?= base_url('/FAQ') ?>">FAQ</a>
         </li>
+        <?php if ($idRole == 3): ?>
+          <li class="nav-item">          
+            <a class="nav-link text-light" href="<?= base_url('/administrer_utilisateur') ?>">Gestion des utilisateurs</a>         
+          </li>
+        <?php endif; ?>
       </ul>
       
       <div class="d-flex flex-column flex-lg-row ms-5-lg me-2">

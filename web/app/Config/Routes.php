@@ -62,3 +62,14 @@ $routes->post('/connexion/mdp_oublie/nouveau_mdp', 'Utilisateur::nouveauMdp');
 $routes->get('/api', 'Api::index');
 $routes->get('/api/(:alpha)/(:segment)/(:alpha)', 'Api::index/$1/$2/$3');
 $routes->get('/api/recuperer_ressources', 'Api::recupererRessources');
+
+// Affiche une page de gestion des utilisateurs par l'administrateur
+$routes->get('/administrer_utilisateur', 'Utilisateur::affichageUtilisateurs');
+
+// Promouvoir utilisateur
+$routes->get('/administrer_utilisateur/promouvoir_utilisateur/(:num)/(:num)', 'Utilisateur::promouvoirUtilisateur/$1/$2');
+$routes->post('/administrer_utilisateur/promouvoir_utilisateur/(:num)/(:num)', 'Utilisateur::promouvoirUtilisateur/$1/$2');
+
+// Activer/Désactiver l'utilisateur
+$routes->get('/administrer_utilisateur/activation_utilisateur/(:num)/(:num)', 'Utilisateur::activationUtilisateur/$1/$2');
+$routes->post('/administrer_utilisateur/activation_utilisateur/(:num)/(:num)', 'Utilisateur::activationUtilisateur/$1/$2');

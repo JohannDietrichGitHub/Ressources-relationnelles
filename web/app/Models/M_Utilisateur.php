@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 class M_Utilisateur extends Model {
 
 protected $table = 'utilisateur';
-protected $primaryKey = 'user_id';
+protected $primaryKey = 'UTI_ID';
 protected $allowedFields = [
     'UTI_CIVILITE',
     'UTI_NOM',
@@ -28,7 +28,7 @@ protected $allowedFields = [
 protected $pivotTable = 'user_favoris';
 
 // Définir la clé étrangère pour la table
-protected $foreignKey = 'user_id';
+protected $foreignKey = 'UTI_ID';
 
 // Définir la clé étrangère pour la table "reponse"
 protected $relatedKey = 'ressource_id';

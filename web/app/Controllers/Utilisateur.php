@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\M_Utilisateur;
 use App\Models\M_Role;
 use App\Models\M_Commentaire;
+$session = \Config\Services::session();
 
 class Utilisateur extends BaseController
 {
@@ -61,7 +62,7 @@ class Utilisateur extends BaseController
                 return redirect()->to('')->with('success', 'Connexion réussie !');
             } 
             else {
-                return redirect()->to('login')->with('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
+                return redirect()->to('')->with('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
             }
             
         }       
@@ -104,6 +105,7 @@ class Utilisateur extends BaseController
             'ville' => 'required',
             'tel' => 'required|numeric',
             'mail' => 'required|valid_email',
+            'mdp' => 'required'
         ];
         
         $validation->setRules($rules);
@@ -256,6 +258,14 @@ class Utilisateur extends BaseController
         return $content;
     }
 
+    // Affichage vue mot de passe oublié
+    public function administrerUtilisateur(): string
+    {
+        $content = view('scr_AdministrerUtilisateur');
+
+        return $content;
+    }
+
     // Fonction de modification du mot de passe 
     public function nouveauMdp()
     {
@@ -266,6 +276,10 @@ class Utilisateur extends BaseController
         $utilisateurModel = new M_Utilisateur();
         $utilisateurAModifier = $utilisateurModel->where('UTI_MAIL =', $mail)->first();
         
+        if(empty($utilisateurAModifier)){
+            return redirect()->to('/connexion/mdp_oublie')->with('error', 'Utilisateur inconnu, veuillez réessayer');
+        }
+
         $utilisateurAModifierId = $utilisateurAModifier->UTI_ID;
 
         if($motDePasse){
@@ -284,11 +298,13 @@ class Utilisateur extends BaseController
                 $content .= view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
                 return $content;
             }
+
             // Mise à jour de la ligne dans la base de données
+
             $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
-
-            $user = $utilisateurModel->authenticate($utilisateurAModifier->UTI_NOM, $motDePasse);
-
+            
+            $user = $utilisateurModel->authenticate($utilisateurAModifier->UTI_MAIL, $motDePasse);
+            
             if ($user && $user->UTI_ETAT == 'A') {
                       
                 $resteConnecte = $this->request->getPost('resteconnecte');
@@ -305,7 +321,7 @@ class Utilisateur extends BaseController
                 // On remplit le $session avec les données que l'on souhaite 
                 $session = \Config\Services::session();
                 $session->set('user_id', $user->UTI_ID);
-                $session->set('id_role', $user->UTI_ROL_ID);
+                $session->set('id_role', $user->UTI_ID_ROL);
 
                 return redirect()->to('')->with('success', 'Le mot de passe a été modifié.');
                 
@@ -364,5 +380,97 @@ class Utilisateur extends BaseController
         else {
             return "Pas connecté";
         }
+    }
+
+    // Fonction permettant de récupérer les 20 premiers utilisateurs
+    public function affichageUtilisateurs(): string
+    {
+        $utilisateurConnecte=$_SESSION['user_id'];
+
+        $utilisateurModel = new M_Utilisateur();
+
+        // L'identifiant de l'utilisateur connecté n'est pas récupéré
+        $utilisateurs = $utilisateurModel
+            ->where('UTI_ID !=', $utilisateurConnecte)
+            ->where('UTI_ID !=', 0)
+            ->findAll(20);
+        $data = [
+            'utilisateurs' => $utilisateurs
+        ];
+      
+        $content = view('scr_AdministrerUtilisateur', $data);
+        return $content;
+    }
+
+    // Fonction permettant de promouvoir un utilisateur ($idUtilisateur) à un nouveau rôle ($idRole)
+    public function promouvoirUtilisateur($idRole, $idUtilisateur)
+    {
+       $utilisateurModel = new M_Utilisateur();
+       $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
+
+        $utilisateurData = [
+            'UTI_ID_ROL' => $idRole
+        ];
+
+        if ($this->verifScriptDansDonnees($utilisateurData)) {
+            session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
+            return $content;
+        }
+
+        // Mise à jour de la ligne dans la base de données
+        $utilisateurModel->update($idUtilisateur, $utilisateurData);
+
+        $utilisateurs = $utilisateurModel->findAll(20);
+        $data = [
+            'utilisateurs' => $utilisateurs
+        ];
+
+        return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+
+        $content .= view('scr_AdministrerUtilisateur', $data);
+        return $content;
+    }
+
+    // Fonction permettant d'activer/désactiver ($etatUtilisateur) un utilisateur ($idUtilisateur)
+
+    public function activationUtilisateur($etatUtilisateur, $idUtilisateur)
+    {
+    
+       $utilisateurModel = new M_Utilisateur();
+       $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
+
+       // Si l'utilisateur est désactivé, on le réactive.
+       if($etatUtilisateur == 1){
+            $nouvelEtatUtilisateur = "A";
+       }
+       // Si l'utilisateur est activé, on le désactive
+       elseif($etatUtilisateur == 2){
+            $nouvelEtatUtilisateur = "I";
+       }
+
+        $utilisateurData = [
+            'UTI_ETAT' => $nouvelEtatUtilisateur
+        ];
+
+        if ($this->verifScriptDansDonnees($utilisateurData)) {
+            session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
+            return $content;
+        }
+
+        // Mise à jour de la ligne dans la base de données
+        $utilisateurModel->update($idUtilisateur, $utilisateurData);
+
+        // Nouvelle lecture 
+        $utilisateurs = $utilisateurModel->findAll(20);
+        $data = [
+            'utilisateurs' => $utilisateurs
+        ];
+
+        return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+
+        $content .= view('scr_AdministrerUtilisateur', $data);
+        return $content;
     }
 }
