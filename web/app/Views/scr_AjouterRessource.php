@@ -9,6 +9,7 @@
              selector: '#mytextarea',
              language: 'fr_FR',
              branding: false,
+             plugins: 'link',
              mobile: {
     menubar: true
   },
