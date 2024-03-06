@@ -98,8 +98,5 @@ class Commentaire extends BaseController
         return redirect()->to(site_url('/'));
     }
 
-    public function modifierRessource()
-    {
-        //A voir
-    }
+    //public function modifierCommentaire(){}
 }
