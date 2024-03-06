@@ -13,6 +13,11 @@ class Accueil extends BaseController
         // return view('scr_Accueil');
         return $content;
     }
+    public function faq()
+    {
+        $content = view('scr_FAQ');
+        return $content;
+    }
 
     public function deconnexion()
     {
