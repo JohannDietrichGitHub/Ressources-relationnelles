@@ -8,94 +8,90 @@ use App\Controllers\Relation;
     <script src="https://cdn.tiny.cloud/1/g2g8jz1jhnb770m550zsm7oti8is5tql3lmwla2dah58xvsr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-            selector: '#mytextarea'
-        });
+            selector: '#mytextarea',
+            language: 'fr_FR',
+             branding: false,
+             mobile: {
+    menubar: true
+  },
+             init_instance_callback : function(editor) {
+                 editor.on('NodeChange Change KeyUp SetContent', function(e) {
+                     tinymce.triggerSave();
+                 });
+             },
+             setup: function (editor) {
+                 editor.on('init', function () {
+                     this.getElement().setAttribute('data-mce-required', true);
+                 });
+             }
+         });
     </script>
     <meta charset="UTF-8">
 
     <!-- STYLES -->
-    <style {csp-style-nonce}>
-
-        .btn-primary{
-            background-color: #2B9348 !important;
-            border-color: #2B9348 !important;
-        }
-        .btn-primary:hover{
-            background-color: #1B8338 !important
-        }
-        .btn-primary:active{
-            background-color: #0B7328 !important
-        }
-
-        .btn-secondary{
-            background-color: #80B918 !important;
-            border-color: #80B918 !important;
-        }
-        .btn-secondary:hover{
-            background-color: #70A908 !important
-        }
-        .btn-secondary:active{
-            background-color: #609900 !important
-        }
-        #modifierRessource {
-            max-width: 500px;
+    <style>
+        .ressource-container{
             margin: 50px auto;
             background-color: #fff;
             padding: 30px;
+            margin-top: 0px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .modifierInput {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        #boutonModifierRessource {
-            background-color: #2B9348;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button[type="submit"]:hover {
-            background-color: #1B8338;
-        }
-        button[type="submit"]:active {
-            background-color: #0B7328;
-        }
-    </style>
     </style>
 </head>
-<body>
 <?= view('header') ?>
-<?php
+<body>
+
+<main>
+    <div class="container">
+    <h1 class="my-3">Modifier la ressource</h1>
+    <?php
 // Récupérez le message FlashData
 $error = session()->getFlashdata('error');
 
 // Vérifiez si le message d'erreur existe avant de l'afficher
-if ($error) {
-    echo '<div style="color: red;">' . $error . '</div>';
-}
+
 if (!isset($ressource) || empty($ressource)) {
-    echo '<h1>Selectionnez l\'ID de la ressource à modifier</h1>';
-    echo '<form action="#" method="post">';
-    echo '<input type="number" name="ressource_id" placeholder="ID de la ressource" required>';
-    echo '<button type="submit">Selectionner ressource</button>';
+    ?>
+
+    
+    <form action="#" class="ressource-container" method="post">
+    <p class="">Selectionnez l'ID de la ressource à modifier</p>
+    <input type="number" class="form-control form-number shadow-none"name="ressource_id" placeholder="ID de la ressource" required>
+    <?php
+if ($error) {
+    echo '<div style="color: red;" class="fst-italic">' . $error . '</div>';
+}
+    ?>
+    <button type="submit" class="btn custom-dark-blue text-light mt-4">Modifier la ressource sélectionnée</button>
+    </form>    
+
+    <?php
 }
 ?>
 <?php
 if (isset($ressource)) {
-    echo '<h1>Modifier la ressource</h1>';
     ?>
-<form id="modifierRessource" action="#" method="post">
+
+
+
+<form id="modifierRessource" class="ressource-container" action="#" method="post">
     <input type="hidden" name="ressource_id_cacher" value="<?= esc($ressource->RES_ID) ?>">
     <input class="modifierInput" type="text" name="ressource_titre" placeholder="Titre de la ressource" value="<?= esc($ressource->RES_NOM) ?>" required>
     <textarea id="mytextarea" name="ressource_contenu" placeholder="contenu de la ressource" required><?= esc($ressource->RES_CONTENU) ?></textarea>
-    <label for="ressource_type">Sélectionnez une type :</label>
-    <select name="ressource_type" id="ressource_type">
+    
+    <div class="mt-4">
+    <div>
+               <p for="ressource_type" class="mb-1">Sélectionnez le type de la ressource :</p>
+    <select name="ressource_type" id="ressource_type"  class="form-select shadow-none">
         <?php
 
         $types = ['Defi', 'Document informatif'];
@@ -104,9 +100,10 @@ if (isset($ressource)) {
         }
         ?>
     </select>
-
-    <label for="ressource_categorie">Sélectionnez une catégorie :</label>
-    <select name="ressource_categorie" id="ressource_categorie">
+    </div>
+    <div class="mt-3">
+               <p for="ressource_categorie" class="mb-1">Sélectionnez une catégorie :</p>
+    <select name="ressource_categorie" id="ressource_categorie" class="form-select shadow-none">
         <?php
         $categorie = new Categorie();
         $categories = $categorie->getCategories();
@@ -115,9 +112,10 @@ if (isset($ressource)) {
         }
         ?>
     </select>
-
-    <label for="ressource_relations">Sélectionnez une ou plusieurs relations :</label>
-    <select name="ressource_relations[]" id="ressource_relations" multiple>
+    </div>
+    <div class="mt-3">
+               <p for="ressource_relations" class="mb-1">Sélectionnez une ou plusieurs relations :</p>
+    <select name="ressource_relations[]" id="ressource_relations" class="form-select shadow-none"style="height:100px" multiple>
         <?php
         // Remplacez le tableau suivant par votre propre source de données pour les relations
         $relation = new Relation();
@@ -127,9 +125,16 @@ if (isset($ressource)) {
         }
         ?>
     </select>
-    <button id="boutonModifierRessource" type="submit">modifier ressource</button>
+    </div>
+    
+    <button id="boutonModifierRessource" class="btn custom-dark-blue text-light mt-4" type="submit">Modifier la ressource</button>
+    </div>
 </form>
 <?php } ?>
-<?= view('footer') ?>
+</div>
+
+</main>
 </body>
+<?= view('footer') ?>
+
 </html>
