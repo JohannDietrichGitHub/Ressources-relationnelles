@@ -3,6 +3,8 @@
 namespace App\Controllers;
 use App\Models\M_Appartenir;
 use App\Models\M_Commentaire;
+use App\Models\M_Exploiter;
+use App\Models\M_Ressource;
 use CodeIgniter\I18n\Time;
 
 class Commentaire extends BaseController
@@ -14,72 +16,82 @@ class Commentaire extends BaseController
         $commentaire = $commentaireModel->find($commentaireId);
 
         $data = [
-            'commentaire' =>$commentaire
+            'commentaire' => $commentaire
         ];
 
         $content = view('Commentaire', $data);
 
         return $content;
     }
+    public function afficherFeedCommentaires($idRessource): array
+    {
+        $commentaireModel = new M_Commentaire();
+        $commentaireArray = $commentaireModel->where('COM_RES_ID', $idRessource)->where('COM_ID_COMMENTAIRE_REPONDU', null)->where('COM_VISIBILITE', "A")->findAll('25');
+        return $commentaireArray;
+    }
+
+    public function afficherFeedSousCommentaires($idCommentaire)
+    {
+        $commentaireModel = new M_Commentaire();
+        $commentaireArray = $commentaireModel->where('COM_ID_COMMENTAIRE_REPONDU', $idCommentaire)->where('COM_VISIBILITE', "A")->findAll('3');
+        return $commentaireArray;
+    }
+
 
     public function ajouterCommentaire()
     {
-        if ($this->request->getPost()) {
-            if (empty($this->request->getPost('commentaire_txt')))
+        if ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu'))) {
+            if (empty($this->request->getPost('commentaire_contenu'))) {
                 session()->setFlashdata('error', 'Veuillez remplir tous les champs');
-                $content = view('scr_AjouterCommentaire');//Vue à créer
-                return $content;
             }
-            // Récupérer les données du formulaire
+            $COM_CONTENU = $this->request->getPost('commentaire_contenu');
+            $COM_UTI_ID = $this->request->getPost('commentaire_uti_id');
+            $COM_RES_ID = $this->request->getPost('commentaire_res_id');
             $commentaireData = [
-                'commentaire_txt' => $this->request->getPost('commentaire_txt'),
-                'commentaire_visibilite' => $this->request->getPost('ressource_contenu'),
-                'commentaire_ressource' => $this->request->getPost('commentaire_ressource'),
-                'commentaire_date' => Time::now(),
-                'commentaire_utilisateur' => 3 //a remplacer par le futur id de l'utilisateur
+                'COM_CONTENU' => $COM_CONTENU,
+                'COM_UTI_ID' => $COM_UTI_ID,
+                'COM_RES_ID' => $COM_RES_ID,
+                'COM_TSP_CRE' => Time::now(),
+                'COM_VISIBILITE' => "A"
             ];
-            if (self::verifScriptDansArray($commentaireData)) {
-                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content = view("scr_AjouterCommentaire");//Vue à créer
-                return $content;
+            $commentaireModel = new M_Commentaire();
+            $commentaireModel->insert($commentaireData);
+            return redirect()->to(site_url('/ressource/' . $COM_RES_ID));
+        } elseif ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu_reponse'))) {
+            if (empty($this->request->getPost('commentaire_contenu_reponse'))) {
+                session()->setFlashdata('error', 'Veuillez remplir tous les champs');
             }
-            try {
-                // Insérer les données dans la base de données
-                $commentaireModel = new M_Commentaire();
-                $commentaireModel->insert($commentaireData);
+            if ($this->request->getPost('commentaire_id_commentaire_repondu_reponse') !== null) {
+                $commentaireID = $this->request->getPost('commentaire_id_commentaire_repondu_reponse');
+            } else {
+                session()->setFlashdata('error', 'Veuillez sélectionner un commentaire à répondre');
+                return redirect()->to(site_url('/ressource/' . $this->request->getPost('commentaire_res_id')));
             }
-            catch (\Exception $e) {
-                // Gérer l'exception, par exemple, afficher un message d'erreur
-                session()->setFlashdata('error', 'Une erreur est survenue lors de l\'ajout de la ressource');
-                log_message('error', $e->getMessage());
-                return view('scr_AjouterCommentaire');
-            }
-            $commentaireId = $commentaireModel->getInsertID();
-        }
-        else {
-            $content = view("scr_AjouterCommentaire");
+            $COM_CONTENU = $this->request->getPost('commentaire_contenu_reponse');
+            $COM_UTI_ID = $this->request->getPost('commentaire_uti_id_reponse');
+            $COM_RES_ID = $this->request->getPost('commentaire_res_id_reponse');
+            $commentaireData = [
+                'COM_RES_ID' => $COM_RES_ID,
+                'COM_CONTENU' => $COM_CONTENU,
+                'COM_ID_COMMENTAIRE_REPONDU' => $commentaireID,
+                'COM_UTI_ID' => $COM_UTI_ID,
+                'COM_TSP_CRE' => Time::now(),
+                'COM_VISIBILITE' => "A"
+            ];
+            $commentaireModel = new M_Commentaire();
+            $commentaireModel->insert($commentaireData);
+            return redirect()->to(site_url('/ressource/' . $COM_RES_ID));
+        }else {
+            $content = view("scr_Ressource");
             return $content;
         }
-}
+    }
 
     public function supprimerCommentaire()
     {
         if ($this->request->getPost()) {
-            if (empty($this->request->getPost('commentaire_Id'))){
-                session()->setFlashdata('error', 'Veuillez remplir tous les champs');
-            }
-            $commentaireId = $this->request->getPost('commentaire_Id');
-            $commentaireModel = new M_Commentaire();
-            $commentaire = $commentaireModel->find($commentaireId);
-            if ($commentaire === null) {
-                session()->setFlashdata('error', 'Le commentaire n\'existe pas');
-            }
-            $commentaireData = [
-                'commentaire_visibilite' => 'I',
-            ];
-            $ressourceModel->update($commentaireId, $commentaireData);
-        }
-        else {
+
+        } else {
             $content = view("scr_Ressource");
             return $content;
         }
@@ -90,3 +102,4 @@ class Commentaire extends BaseController
     {
         //A voir
     }
+}

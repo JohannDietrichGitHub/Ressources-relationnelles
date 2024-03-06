@@ -5,6 +5,7 @@ use App\Models\M_Appartenir;
 use App\Models\M_Exploiter;
 use App\Models\M_Ressource;
 use CodeIgniter\I18n\Time;
+use App\Controllers\Login;
 
 class Ressource extends BaseController
 {
@@ -188,7 +189,7 @@ class Ressource extends BaseController
         return view('scr_ModifierRessource');
     }
 
-    public function afficherRessources()
+       public function afficherRessources()
     {
         $ressourceModel = new M_Ressource();
         $ressources = $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);

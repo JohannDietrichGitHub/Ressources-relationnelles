@@ -6,27 +6,6 @@
     <!-- STYLES -->
     <style {csp-style-nonce}>
 
-        .btn-primary{
-            background-color: #2B9348 !important;
-            border-color: #2B9348 !important;
-        }
-        .btn-primary:hover{
-            background-color: #1B8338 !important
-        }
-        .btn-primary:active{
-            background-color: #0B7328 !important
-        }
-
-        .btn-secondary{
-            background-color: #80B918 !important;
-            border-color: #80B918 !important;
-        }
-        .btn-secondary:hover{
-            background-color: #70A908 !important
-        }
-        .btn-secondary:active{
-            background-color: #609900 !important
-        }
         #ajouterCommentaire {
             max-width: 500px;
             margin: 50px auto;
@@ -42,14 +21,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        #boutonAjouterRessource {
-            background-color: #2B9348;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
         button[type="submit"]:hover {
             background-color: #1B8338;
         }
@@ -57,22 +28,24 @@
             background-color: #0B7328;
         }
     </style>
-    </style>
 </head>
 <body>
 <?php
-// Récupérez le message FlashData
-$error = session()->getFlashdata('error');
-
-// Vérifiez si le message d'erreur existe avant de l'afficher
-if ($error) {
-    echo '<div style="color: red;">' . $error . '</div>';
+if (isset($session)) {
+    $uri = current_url(true);
+    $segments = $uri->getSegments();
+    $ressourceId = $segments[count($segments) - 1];
+    ?>
+    <form id="ajouterCommentaire" action="<?= base_url('ajouterCommentaire') ?>" method="post">
+        <input class="ajouterInput" type="text" name="commentaire_contenu" placeholder="Contenu du commentaire" required>
+        <input type="hidden" name="commentaire_uti_id" value="<?= esc($session['id']) ?>">
+        <input type="hidden" name="commentaire_res_id" value="<?= esc($ressourceId) ?>">
+        <button id="boutonAjouterCommentaire" type="submit">Ajouter Commentaire</button>
+    </form>
+<?php }else {
+    echo "<p id='ajouterCommentaire'>Vous devez être connecté pour ajouter un commentaire</p>";
 }
 ?>
-<form id="ajouterCommentaire" action="#" method="post">
-    <input class="ajouterInput" type="text" name="commentaire_txt" placeholder="Contenu du commentaire" required>
-    <button id="boutonAjouterCommentaire" type="submit">Ajouter Commentaire</button>
-</form>
 
 </body>
 </html>

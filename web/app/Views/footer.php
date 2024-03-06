@@ -4,7 +4,7 @@
   <footer class="py-3 custom-blue">
     <div class="d-flex flex-column flex-lg-row justify-content-between pt-5 pb-5">
       <div class=" mx-3 mx-lg-0">
-        <img class="img-fluid mx-lg-0 mx-auto d-lg-flex d-block" src="./media/logo.png" alt="Logo Ressources Relationnelles" width="200">
+        <img class="img-fluid mx-lg-0 mx-auto d-lg-flex d-block" src="<?= base_url('media/logo.png'); ?>" alt="Logo Ressources Relationnelles" width="200">
       </div>
       <div class=" text-center text-lg-end pt-5 px-5 pe-lg-3 text-light">
         <ul class="mx-auto px-auto">

@@ -65,7 +65,7 @@ class Api extends BaseController {
         $data = [
             'utilisateur' => $user
         ];
-        
+
         if($user)
         {
             return $this->response->setJSON($data);
