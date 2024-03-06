@@ -8,6 +8,7 @@ use App\Models\M_Relation;
 use App\Models\M_Ressource;
 use CodeIgniter\I18n\Time;
 use App\Controllers\Login;
+$session = \Config\Services::session();
 
 class Ressource extends BaseController
 {
@@ -201,7 +202,7 @@ class Ressource extends BaseController
             $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
         }
         $data = [
-            'ressources' => $ressources
+            'groupeDeRessources' => $ressources
         ];
         $content = view('scr_Ressource', $data);
         return $content;

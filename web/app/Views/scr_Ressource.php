@@ -87,8 +87,8 @@
          </div>
          <?php
             }
-            if (!empty($ressources)) : ?>
-         <?php foreach ($ressources as $ressource) : ?>
+            if (!empty($groupeDeRessources)) : ?>
+         <?php foreach ($groupeDeRessources as $ressource) : ?>
          <div class="container">
             <div class="row">
                <div class="col-lg-12">
