@@ -6,5 +6,10 @@ use CodeIgniter\Model;
 
 class M_Appartenir extends Model {
     protected $table = 'Appartenir';
-    protected $allowedFields = ['APP_ID_RES', 'APP_ID_REL'];
+    protected $allowedFields = [
+        'APP_ID_RES',
+        'APP_ID_REL'
+    ];
+
+protected $returnType = 'object';
 }

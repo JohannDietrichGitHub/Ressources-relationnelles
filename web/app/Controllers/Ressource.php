@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 use App\Models\M_Appartenir;
+use App\Models\M_Categorie;
 use App\Models\M_Exploiter;
+use App\Models\M_Relation;
 use App\Models\M_Ressource;
 use CodeIgniter\I18n\Time;
 use App\Controllers\Login;
@@ -189,10 +191,15 @@ class Ressource extends BaseController
         return view('scr_ModifierRessource');
     }
 
-       public function afficherRessources()
+    public function afficherRessources()
     {
         $ressourceModel = new M_Ressource();
         $ressources = $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
+        foreach ($ressources as &$ressource) {
+            $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+            $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+            $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+        }
         $data = [
             'ressources' => $ressources
         ];
@@ -248,4 +255,33 @@ class Ressource extends BaseController
         return false;
     }
 
+    public function recupCategorieRessource($ressourceId): string
+    {
+        $modelRessource = new M_Ressource();
+        $ressource = $modelRessource->find($ressourceId);
+        $categorie = $ressource->RES_CAT_ID;
+        $categorieModel = new M_Categorie();
+        $categorie = $categorieModel->find($categorie);
+        return $categorie->CAT_NOM;
+    }
+
+    public function recupTypeRessource($ressourceId): string
+    {
+        $modelRessource = new M_Ressource();
+        $ressource = $modelRessource->find($ressourceId);
+        return $ressource->RES_TYPE;
+    }
+
+    public function recupRelationsRessource($ressourceId): array
+    {
+        $relations = [];
+        $modelAppartenir = new M_Appartenir();
+        $relationsArray = $modelAppartenir->where('APP_ID_RES', $ressourceId)->findAll();
+        foreach ($relationsArray as $relation) {
+            $relationModel = new M_Relation();
+            $relation = $relationModel->find($relation->APP_ID_REL);
+            $relations[] = $relation->REL_TYPE;
+        }
+        return $relations;
+    }
 }

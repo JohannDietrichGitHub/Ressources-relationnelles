@@ -9,6 +9,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 $routes->get('/', 'Accueil::index');
+$routes->get('/FAQ', 'Accueil::faq');
 
 //Page de connexion et d'inscription
 $routes->get('/connexion', 'Utilisateur::connexion');
