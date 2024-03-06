@@ -40,7 +40,7 @@ class Commentaire extends BaseController
 
     public function ajouterCommentaire()
     {
-        if ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu'))) {
+        if ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu')) && empty($this->request->getPost('commentaire_contenu_reponse'))) {
             if (empty($this->request->getPost('commentaire_contenu'))) {
                 session()->setFlashdata('error', 'Veuillez remplir tous les champs');
             }
