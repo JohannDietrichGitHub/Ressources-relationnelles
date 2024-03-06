@@ -32,6 +32,11 @@
         <li class="nav-item">
           <a class="nav-link text-light" href="<?= base_url('/FAQ') ?>">FAQ</a>
         </li>
+        <?php if ($userId !== null): ?>
+          <li class="nav-item">          
+            <a class="nav-link text-light" href="<?= base_url('/gestion_profil') ?>">Gérer son profil</a>         
+          </li>
+        <?php endif; ?>
         <?php if ($idRole == 3): ?>
           <li class="nav-item">          
             <a class="nav-link text-light" href="<?= base_url('/administrer_utilisateur') ?>">Gestion des utilisateurs</a>         
@@ -41,6 +46,7 @@
       
       <div class="d-flex flex-column flex-lg-row ms-5-lg me-2">
       <?php if ($userId !== null): ?>
+        <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('ressource/ajout'); ?>'">Ajouter une ressource </button>
           <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('deconnexion'); ?>'">Déconnexion</button>
       <?php else: ?>
         <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('inscription'); ?>'">Inscription</button>

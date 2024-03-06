@@ -73,3 +73,10 @@ $routes->post('/administrer_utilisateur/promouvoir_utilisateur/(:num)/(:num)', '
 // Activer/Désactiver l'utilisateur
 $routes->get('/administrer_utilisateur/activation_utilisateur/(:num)/(:num)', 'Utilisateur::activationUtilisateur/$1/$2');
 $routes->post('/administrer_utilisateur/activation_utilisateur/(:num)/(:num)', 'Utilisateur::activationUtilisateur/$1/$2');
+
+// Afficher la page de gestion des profils
+$routes->get('/gestion_profil', 'Utilisateur::gestionProfil');
+
+// Modifier son profil
+$routes->get('/gestion_profil/modifier_profil(:num)', 'Utilisateur::modifierProfil/$1');
+$routes->post('/gestion_profil/modifier_profil(:num)', 'Utilisateur::modifierProfil/$1');

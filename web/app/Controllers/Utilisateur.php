@@ -473,4 +473,63 @@ class Utilisateur extends BaseController
         $content .= view('scr_AdministrerUtilisateur', $data);
         return $content;
     }
+
+  // Affichage vue gestion du profil
+    public function gestionProfil(): string
+    {
+        $utilisateurModel = new M_Utilisateur();
+
+        $idUser=$_SESSION['user_id'];
+        $utilisateur = $utilisateurModel->find($idUser);
+
+        $data = [
+            'utilisateur' => $utilisateur
+        ];
+
+        $content = view('scr_GestionProfil', $data);
+
+        return $content;
+    }
+  
+    public function modifierProfil($utilisateurAModifierId)
+    {
+        $utilisateurModel = new M_Utilisateur();
+        $utilisateurAModifier = $utilisateurModel->find($utilisateurAModifierId);
+
+        if ($this->request->getPost()){
+            // Gestion civilité
+            $civilite = $this->request->getPost('civilite');
+            if($civilite != "M" && $civilite != "Mme" && $civilite != "Aut")
+            {
+                $newCivilite = $this->convertir_civilite($civilite);
+            }
+            else {
+                $newCivilite = $civilite;
+            }
+
+            $utilisateurData = [
+                'UTI_CIVILITE' => $newCivilite,
+                'UTI_NOM' => $this->request->getPost('nom'),
+                'UTI_PRENOM' => $this->request->getPost('prenom'), 
+                'UTI_ADRESSE' => $this->request->getPost('adresse'),
+                'UTI_CP' => $this->request->getPost('cp'),
+                'UTI_VILLE' => $this->request->getPost('ville'),
+                'UTI_NUM_TEL' => $this->request->getPost('numTel')
+            ];
+        
+            if ($this->verifScriptDansDonnees($utilisateurData)) {
+                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                $content .= view('scr_GestionProfil', ['utilisateur' => $utilisateurAModifier]);
+                return $content;
+            }
+            // Mise à jour de la ligne dans la base de données
+            $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
+
+            return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mis à jour');
+        }
+
+        $content .= view('scr_GestionProfil');
+        return $content;
+    }
+
 }
