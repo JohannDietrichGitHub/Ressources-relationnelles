@@ -42,17 +42,31 @@
          background-color: rgba(0, 126, 167, .35) !important;
          color: #54586d !important;
          }
-         #favoris-btn {
-         background-color: transparent !important;
-         border: none !important;
-         cursor: pointer;
-         background-color: none;
-         }
-         #favoris-icon.active {
-         fill: #ffbd03;
-         /* Changer la couleur de remplissage en jaune */
-         stroke: #eeac02;
-         }
+         .favoris-btn {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    fill: currentColor; /* Permet d'utiliser la couleur actuelle pour remplir le SVG */
+    stroke: currentColor; /* Permet d'utiliser la couleur actuelle pour le contour du SVG */
+}
+
+.favoris-btn.active .favoris-icon {
+    fill: #ffbd03;
+    stroke: #eeac02;
+}
+
+
+.btnRepondre{
+    background-color: transparent !important;
+    border: none;
+    color: #248db5;
+    padding: 7px;
+    
+}
+
+.enter-reponse{
+   background-color: white;
+}
       </style>
    </head>
    <?= view('header') ?>
@@ -63,7 +77,7 @@
             //        $commentaireArray = getCommentaires($ressource->id)
                 ?>
          <div class="container">
-            <div class="ressource-container">
+            <div class="ressource-container my-5">
             <h2 class="mb-0">
                                     <a class="ressources-link"> <?= esc($ressource->RES_NOM) ?> </a>
                                  </h2>
@@ -79,7 +93,7 @@
 
             </div>
 
-            <div class="commentaire-container">
+            <div class="ressource-container">
               <?php
                   include_once('scr_feedCommentaires.php');
               ?>
@@ -126,8 +140,8 @@
                         </div>
                      </div>
                      <div class="favorite-icon">
-                        <button onclick="toggleFavoris()" id="favoris-btn">
-                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" id="favoris-icon" stroke-linejoin="round">
+                        <button onclick="toggleFavoris(event)" class="favoris-btn">
+                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" class="favoris-icon" stroke-linejoin="round">
                               <path d="M5 3v18l7-5 7 5V3H5z"></path>
                            </svg>
                         </button>
@@ -143,8 +157,12 @@
    </body>
    <?= view('footer') ?>
    <script>
-      function toggleFavoris() {
-        var btn = document.getElementById('favoris-icon');
-        btn.classList.toggle('active');
-      }
+function toggleFavoris(event) {
+    var favorisBtn = event.currentTarget.closest('.favorite-icon').querySelector('.favoris-btn');
+    favorisBtn.classList.toggle('active');
+}
+
+
+
+
    </script>

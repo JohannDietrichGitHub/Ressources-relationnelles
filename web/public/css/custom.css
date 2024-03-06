@@ -105,3 +105,25 @@ input:invalid[name="cp"] {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.commentaire-container{
+    
+    max-width: 500px;
+
+    border: 1px solid black !important;
+    
+
+    margin: 50px auto;
+
+    background-color: #fff;
+
+    padding: 30px;
+
+    border-radius: 8px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.commentaire-padding {
+    padding-left: 20px;
+}
