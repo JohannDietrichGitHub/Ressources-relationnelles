@@ -1,9 +1,8 @@
 <?php
-
-use App\Controllers\Ressource;
-use App\Controllers\Utilisateur;
-
-?>
+   use App\Controllers\Ressource;
+   use App\Controllers\Utilisateur;
+   
+   ?>
 <!DOCTYPE html>
 <html lang="fr">
    <head>
@@ -63,13 +62,28 @@ use App\Controllers\Utilisateur;
             if (!empty($ressource)) {
             //        $commentaireArray = getCommentaires($ressource->id)
                 ?>
-         <div class="ressource">
-            <h2> <?= esc($ressource->RES_NOM) ?> </h2>
-            <p> <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?> </p>
-            <p> <?= esc($ressource->RES_DATE_CREATION) ?> </p>
-            <div class="commentaire-container"> <?php
-               include_once('scr_feedCommentaires.php');
-                     ?> </div>
+         <div class="container">
+            <div class="ressource-container">
+            <h2 class="mb-0">
+                                    <a class="ressources-link"> <?= esc($ressource->RES_NOM) ?> </a>
+                                 </h2>
+                                 <div class="mb-1" >
+                                    <span class="text-muted fst-italic" style="display: inline-block;"><?= esc(Utilisateur::recupNomUtilisateurParID($ressource->RES_UTI_ID)) ?></span>
+                                    <span class="text-muted" style="font-size: 0.8em; display: inline-block; white-space: nowrap;"> posté le <?= esc($ressource->RES_DATE_CREATION) ?></span>
+                                 </div>
+                                 <p class=" mt-3 border-top border-black"></p>
+                                 
+                                 <div>
+                                 <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?>
+                                 </div>
+
+            </div>
+
+            <div class="commentaire-container">
+              <?php
+                  include_once('scr_feedCommentaires.php');
+              ?>
+            </div>
          </div>
          <?php
             }
@@ -102,10 +116,10 @@ use App\Controllers\Utilisateur;
                                     <span>
                                     <span class="badge bg-categorie-tag fs-14 mt-3"><?= esc($ressource->categorie) ?></span>
                                     </span>
-                                     <?php foreach ($ressource->relations as $relation) { ?>
+                                    <?php foreach ($ressource->relations as $relation) { ?>
                                     <span class="badge bg-relation-tag fs-14 mt-3"><?= $relation ?></span>
-                                     <?php } ?>
-                                     <span class="badge bg-info fs-14 mt-3" style="color: #54586d"><?= esc($ressource->type) ?></span>
+                                    <?php } ?>
+                                    <span class="badge bg-info fs-14 mt-3" style="color: #54586d"><?= esc($ressource->type) ?></span>
                                  </div>
                               </div>
                            </div>
