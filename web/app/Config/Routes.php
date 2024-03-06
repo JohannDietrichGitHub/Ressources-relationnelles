@@ -54,5 +54,5 @@ $routes->post('/connexion/mdp_oublie/nouveau_mdp', 'Utilisateur::nouveauMdp');
 
 // Connexion à l'API
 $routes->get('/api', 'Api::index');
-$routes->get('/api/(:alpha)', 'Api::index/$1');
+$routes->get('/api/(:alpha)/(:segment)/(:alpha)', 'Api::index/$1/$2/$3');
 $routes->get('/api/recuperer_ressources', 'Api::recupererRessources');
