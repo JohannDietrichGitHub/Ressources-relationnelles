@@ -320,7 +320,7 @@ class Utilisateur extends BaseController
         return $content;
     }
 
-    public function recupNomUtilisateurParID($id): string
+    public static function recupNomUtilisateurParID($id): string
     {
         $utilisateurModel = new M_Utilisateur();
         $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
@@ -334,7 +334,7 @@ class Utilisateur extends BaseController
         }
     }
 
-    public function recupRoleParID($id): string
+    public static function recupRoleParID($id): string
     {
         $utilisateurModel = new M_Utilisateur();
         $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
@@ -352,7 +352,7 @@ class Utilisateur extends BaseController
 
     public function bloquerCommentaire($id, $sessionId): string
     {
-        if (isset($sessionId) && $this->recupRoleParID($sessionId) === "Modérateur") {
+        if (isset($sessionId) && $this::recupRoleParID($sessionId) === "Modérateur") {
             $commentaireModel = new M_Commentaire();
             $commentaire = $commentaireModel->where('COM_ID', $id)->first();
             if ($commentaire) {

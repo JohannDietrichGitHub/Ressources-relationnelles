@@ -6,9 +6,9 @@ use CodeIgniter\Model;
 class M_Categorie extends Model {
 
 protected $table = 'categorie';
-protected $primaryKey = 'categorie_id';
+protected $primaryKey = 'CAT_ID';
 protected $allowedFields = [
-    'categorie_libel'
+    'CAT_NOM'
 ];
 
 protected $returnType = 'object';

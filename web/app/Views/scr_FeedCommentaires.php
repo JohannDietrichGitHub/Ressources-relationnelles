@@ -39,11 +39,11 @@ if (isset($commentaireArray) && !empty($commentaireArray))
             <?php if (isset($session['id'])): ?>
                 <div id="session" data-session-id="<?php echo $session['id']; ?>"></div>
             <?php endif; ?>
-            <?php $nomUtilisateur = $user->recupNomUtilisateurParID($commentaire->COM_UTI_ID);  ?>
+            <?php $nomUtilisateur = $user::recupNomUtilisateurParID($commentaire->COM_UTI_ID);  ?>
             <p><?= esc($nomUtilisateur) ?></p>
             <p><?= esc($commentaire->COM_CONTENU) ?></p>
             <p><?= esc($commentaire->COM_TSP_CRE) ?></p>
-            <?php $role = isset($session) ? $user->recupRoleParID($session['id']) : 'utilisateur'; ?>
+            <?php $role = isset($session) ? $user::recupRoleParID($session['id']) : 'utilisateur'; ?>
             <?php if (isset($session) && $role === "Modérateur") {
                 echo "<a class='bloquer-commentaire' data-id-commentaire='$commentaire->COM_ID'> X </a>";
             }?>
@@ -62,7 +62,7 @@ if (isset($commentaireArray) && !empty($commentaireArray))
                 {
                     foreach ($commentaireReponseArray as $commentaireReponse) : ?>
                         <div class="commentaire">
-                            <?php $nomUtilisateur = $user->recupNomUtilisateurParID($commentaire->COM_UTI_ID); ?>
+                            <?php $nomUtilisateur = $user::recupNomUtilisateurParID($commentaire->COM_UTI_ID); ?>
                             <p><?= esc($nomUtilisateur) ?></p>
                             <p><?= esc($commentaireReponse->COM_CONTENU) ?></p>
                             <p><?= esc($commentaireReponse->COM_TSP_CRE) ?></p>
