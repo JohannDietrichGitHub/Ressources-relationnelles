@@ -2,7 +2,7 @@
 <html lang="fr">
    <head>
       <meta charset="UTF-8">
-      <title>Ressource</title>
+      <title>Ressources</title>
       <style>
          .card {
          box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
