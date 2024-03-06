@@ -1,3 +1,9 @@
+<?php
+
+use App\Controllers\Ressource;
+use App\Controllers\Utilisateur;
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
    <head>
@@ -56,10 +62,10 @@
          <?php
             if (!empty($ressource)) {
             //        $commentaireArray = getCommentaires($ressource->id)
-                ?> 
+                ?>
          <div class="ressource">
             <h2> <?= esc($ressource->RES_NOM) ?> </h2>
-            <p> <?= esc($ressource->RES_CONTENU) ?> </p>
+            <p> <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?> </p>
             <p> <?= esc($ressource->RES_DATE_CREATION) ?> </p>
             <div class="commentaire-container"> <?php
                include_once('scr_feedCommentaires.php');
@@ -82,7 +88,7 @@
                                     <a class="ressources-link h4" href="<?= site_url('/ressource/' . $ressource->RES_ID) ?>"> <?= esc($ressource->RES_NOM) ?> </a>
                                  </h5>
                                  <div class="mb-1" >
-                                    <span class="text-muted fst-italic" style="display: inline-block;">[Mettre ton auteur wesh]fsfsfdsfsdfsdfd dqsdqsdqsdqsdqdsqs</span>
+                                    <span class="text-muted fst-italic" style="display: inline-block;"><?= esc(Utilisateur::recupNomUtilisateurParID($ressource->RES_UTI_ID)) ?></span>
                                     <span class="text-muted" style="font-size: 0.8em; display: inline-block; white-space: nowrap;"> posté le <?= esc($ressource->RES_DATE_CREATION) ?></span>
                                  </div>
                                  <ul class="list-inline mb-0 text-muted">
@@ -94,12 +100,12 @@
                                  </ul>
                                  <div>
                                     <span>
-                                    <span class="badge bg-categorie-tag fs-14 mt-3">[Mettre ta catégorie wesh]</span>
+                                    <span class="badge bg-categorie-tag fs-14 mt-3"><?= esc($ressource->categorie) ?></span>
                                     </span>
-                                    </span>
-                                    <span class="badge bg-relation-tag fs-14 mt-3">[Mettre ta relation wesh]</span>
-                                    <span class="badge bg-relation-tag fs-14 mt-3">[Mettre ta relation wesh]</span>
-                                    </span>
+                                     <?php foreach ($ressource->relations as $relation) { ?>
+                                    <span class="badge bg-relation-tag fs-14 mt-3"><?= $relation ?></span>
+                                     <?php } ?>
+                                     <span class="badge bg-info fs-14 mt-3" style="color: #54586d"><?= esc($ressource->type) ?></span>
                                  </div>
                               </div>
                            </div>

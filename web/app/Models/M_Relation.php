@@ -6,9 +6,9 @@ use CodeIgniter\Model;
 class M_Relation extends Model {
 
 protected $table = 'relation';
-protected $primaryKey = 'relation_id';
+protected $primaryKey = 'REL_ID';
 protected $allowedFields = [
-    'relation_type'
+    'REL_TYPE'
 ];
 
 protected $returnType = 'object';
