@@ -63,22 +63,22 @@
                         <?php elseif($utilisateur->UTI_ETAT == "I"):  ?> 
                             <td> Inactif </td> 
                         <?php endif; ?>                   
-                        <?php if($utilisateur->UTI_ID_ROL == 1):  ?>
+                        <?php if($utilisateur->UTI_ID_ROL == 3):  ?>
                             <td>Utilisateur</td>  
                             <td>
                                 <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/2/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir modérateur</a>
-                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/3/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir administrateur</a>
+                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/1/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir administrateur</a>
                             </td> 
                         <?php elseif($utilisateur->UTI_ID_ROL == 2):  ?>
                             <td>Modérateur</td>
                             <td>
-                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/1/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir utilisateur</a>
-                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/3/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir administrateur</a>
+                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/3/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir utilisateur</a>
+                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/1/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir administrateur</a>
                             </td>
-                        <?php elseif($utilisateur->UTI_ID_ROL == 3): ?>   
+                        <?php elseif($utilisateur->UTI_ID_ROL == 1): ?>   
                             <td>Administrateur</td>                         
                             <td>
-                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/1/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir utilisateur</a>
+                                <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/3/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir utilisateur</a>
                                 <a href="<?= base_url('administrer_utilisateur/promouvoir_utilisateur/2/' . esc($utilisateur->UTI_ID)) ?>" class="btn btn-primary my-4 my-lg-1 custom-button">Promouvoir modérateur</a>
                             </td> 
                         <?php endif; ?>
