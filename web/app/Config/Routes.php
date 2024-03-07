@@ -11,6 +11,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Accueil::index');
 $routes->get('/FAQ', 'Accueil::faq');
 
+//Affiche les ressources populaires
+$routes->get('/getAccueil/(:num)', 'Ressource::afficherRessourceAccueil/$1');
+
 //Page de connexion et d'inscription
 $routes->get('/connexion', 'Utilisateur::connexion');
 
@@ -45,8 +48,12 @@ $routes->get('/ressource/validation', 'Ressource::validerRessource');
 $routes->post('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
 $routes->get('/ressource/update-ressource-status/(:num)/(:alpha)', 'Ressource::modifierEtatRessource/$1/$2');
 
-$routes->post('/ajouterCommentaire', 'Commentaire::ajouterCommentaire');
+//route pour mettre en favoris une ressource
+$routes->post('/ressource/modifierFavoris/(:num)', 'Ressource::modifierFavoris/$1');
+$routes->get('/ressource/modifierFavoris/(:num)', 'Ressource::modifierFavoris/$1');
 
+//commentaires
+$routes->post('/ajouterCommentaire', 'Commentaire::ajouterCommentaire');
 $routes->post('/bloquerCommentaire/(:num)/(:num)', 'Utilisateur::bloquerCommentaire/$1/$2');
 
 // Permet de se déconnecter
@@ -82,3 +89,7 @@ $routes->get('/gestion_profil', 'Utilisateur::gestionProfil');
 // Modifier son profil
 $routes->get('/gestion_profil/modifier_profil(:num)', 'Utilisateur::modifierProfil/$1');
 $routes->post('/gestion_profil/modifier_profil(:num)', 'Utilisateur::modifierProfil/$1');
+
+//voir les favoris
+$routes->post('/utilisateur/ressourcesfavorites', 'Ressource::afficherFeedRessourcesFavorites');
+$routes->get('/utilisateur/ressourcesfavorites', 'Ressource::afficherFeedRessourcesFavorites');

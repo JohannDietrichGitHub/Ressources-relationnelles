@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const action = this.classList.contains('boutton-valider') ? 'valider' : 'invalider';
             const baseurl = window.location.origin;
 
-            fetch(baseurl + '/ressource/update-ressource-status/' + resourceId + '/' + action, {
+            fetch(baseurl + '/app-ressources-relationnelles/web/public/ressource/update-ressource-status/' + resourceId + '/' + action, {
             })
                 .then(response => {
                     if (response.ok) {

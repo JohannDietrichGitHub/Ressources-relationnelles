@@ -54,6 +54,13 @@ li,ul{
 .custom-text-dark-blue{
  color: #007EA7 !important;
 }
+.custom-text-dark-red{
+    color: #ff3333 !important;
+   }
+
+.custom-dark-red {
+    background-color: #ff3333 !important;
+}
 
 .custom-light-blue{
     background-color: #9AD1D4 !important;
@@ -126,4 +133,13 @@ input:invalid[name="cp"] {
 
 .commentaire-padding {
     padding-left: 20px;
+}
+
+.bg-categorie-tag {
+background-color: rgba(116, 120, 141, .15) !important;
+color: #54586d !important;
+}
+.bg-relation-tag {
+background-color: rgba(0, 126, 167, .35) !important;
+color: #54586d !important;
 }

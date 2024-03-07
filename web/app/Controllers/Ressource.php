@@ -18,6 +18,10 @@ class Ressource extends BaseController
 
         $ressource = $ressourceModel->find($ressourceId);
 
+        $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+        $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+        $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+
         $data = [
             'ressource' =>$ressource
         ];
@@ -46,7 +50,7 @@ class Ressource extends BaseController
                 'RES_CAT_ID'=> $this->request->getPost('ressource_categorie'),
                 'RES_DATE_CREATION' => Time::now(),
                 'RES_DATE_MODIFICATION' => Time::now(),
-                'RES_UTI_ID' => 3 //a remplacer par le futur id de l'utilisateur
+                'RES_UTI_ID' => $_SESSION['user_id']
             ];
             if (self::verifScriptDansArray($ressourceData)) {
                 session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
@@ -71,7 +75,7 @@ class Ressource extends BaseController
                 'EXP_EXPLOITE' => 'O',
                 'EXP_FAVORISE' => 'O',
                 'EXP_RES_ID' => $ressourceId,
-                'EXP_UTI_ID' => 3 // a remplacer avec l'id de l'utilisateur
+                'EXP_UTI_ID' => $_SESSION['user_id']
             ];
             $exploiterModel->insert($exploiterData);
 
@@ -223,7 +227,7 @@ class Ressource extends BaseController
 
         return $result;
     }
-    public function modifierEtatRessource($ressourceId, $action)
+    public function modifierEtatRessource(int $ressourceId, $action)
     {
         //ajouter une vérification que ce soit bien un administrateur qui fait la requête
         if ($action == 'valider') {
@@ -256,7 +260,7 @@ class Ressource extends BaseController
         return false;
     }
 
-    public function recupCategorieRessource($ressourceId): string
+    public function recupCategorieRessource(int $ressourceId): string
     {
         $modelRessource = new M_Ressource();
         $ressource = $modelRessource->find($ressourceId);
@@ -266,14 +270,14 @@ class Ressource extends BaseController
         return $categorie->CAT_NOM;
     }
 
-    public function recupTypeRessource($ressourceId): string
+    public function recupTypeRessource(int $ressourceId): string
     {
         $modelRessource = new M_Ressource();
         $ressource = $modelRessource->find($ressourceId);
         return $ressource->RES_TYPE;
     }
 
-    public function recupRelationsRessource($ressourceId): array
+    public function recupRelationsRessource(int $ressourceId): array
     {
         $relations = [];
         $modelAppartenir = new M_Appartenir();
@@ -284,5 +288,118 @@ class Ressource extends BaseController
             $relations[] = $relation->REL_TYPE;
         }
         return $relations;
+    }
+
+    public function modifierFavoris(int $idRessource)
+    {
+        $modelExploiter = new M_Exploiter();
+        $favorisExistant = $modelExploiter->where('EXP_RES_ID', $idRessource)->where('EXP_UTI_ID', $_SESSION['user_id'])->first();
+
+        if ($favorisExistant) {
+            if ($favorisExistant->EXP_FAVORISE == "O") {
+                $modelExploiter->update($favorisExistant->EXP_ID, ['EXP_FAVORISE' => 'N']);
+            } else {
+                $modelExploiter->update($favorisExistant->EXP_ID, ['EXP_FAVORISE' => 'O']);
+            }
+        } else {
+            $data = [
+                'EXP_EXPLOITE' => 'N',
+                'EXP_FAVORISE' => 'O',
+                'EXP_RES_ID' => $idRessource,
+                'EXP_UTI_ID' => $_SESSION['user_id']
+            ];
+            $modelExploiter->insert($data);
+        }
+    }
+    public static function estEnFavoris(int $idRessource): bool
+    {
+        if(isset($_SESSION['user_id'])) {
+            $idUtilisateur = $_SESSION['user_id'];
+            $modelExploiter = new M_Exploiter();
+            $favorisExistant = $modelExploiter->where('EXP_RES_ID', $idRessource)->where('EXP_UTI_ID', $idUtilisateur)->first();
+            if ($favorisExistant && $favorisExistant->EXP_FAVORISE == "O") {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Fonction qui va afficher 5 ressources dans l'accueil
+    public function afficherRessourceAccueil(int $nombre = 1)
+    {
+        $ressourceModel = new M_Ressource();
+        $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O');
+
+        // Compter le nombre de résultats
+        $idMax = $ressourceModel->countAllResults();
+        $idMin = 1;
+
+
+        //Si jamais on a moins de recettes dans la BDD que celles que l'on veut afficher
+        if($idMax < $nombre){
+            $nombre = $idMax;
+        }
+
+
+        $valeurs = [];
+        while (count($valeurs) < $nombre) {
+        $valeur = $ressourceModel->orderBy('RAND()')->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first()->RES_ID;
+        if (!in_array($valeur, $valeurs)){
+            $valeurs[] = $valeur;
+
+        }
+        }
+
+
+        $ressourcesAAfficher = [];
+        foreach( $valeurs as $valeur){
+            $ressourcesAAfficher[] = $ressourceModel->select()->where('RES_ID', $valeur)->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first();
+        }
+
+
+        $htmlRessource = '';
+
+        foreach ($ressourcesAAfficher as $ressource) {
+
+            $texteRessource = esc($ressource->RES_NOM);
+
+            //Modèle de la CARD affiché sur l'accueil
+            $htmlRessource .= '<div class="card text-black mx-1 bg-light mb-3">
+                                <div class="card-body">
+                                <a class="ressources-link card-title h4" href="./ressource/'. esc($ressource->RES_ID). '">'. $texteRessource .'</a>
+                                <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'...</p>
+                                </div>
+                                <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_CAT_ID).'">'.esc($ressource->RES_CAT_ID).'</a></div>
+                                </div>';
+
+        }
+
+        echo($htmlRessource );
+    }
+
+    public function afficherFeedRessourcesFavorites()
+    {
+        if(isset($_SESSION['user_id'])) {
+            $ressourceModel = new M_Ressource();
+            $relationExploiter = new M_Exploiter();
+            $ressourceFavorites = $relationExploiter->where('EXP_FAVORISE', 'O')->where('EXP_UTI_ID', $_SESSION['user_id'])->findAll();
+            $favoriteResourceIds = [];
+            foreach ($ressourceFavorites as $relation) {
+                $favoriteResourceIds[] = $relation->EXP_RES_ID;
+            }
+            $ressources = $ressourceModel->whereIn('RES_ID', $favoriteResourceIds)->findAll();
+            foreach ($ressources as &$ressource) {
+                $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+                $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+                $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+            }
+            $data = [
+                'ressourcesFavorites' => $ressources
+            ];
+            $content = view('scr_AfficherFavoris', $data);
+            return $content;
+        }else {
+            return false;
+        }
     }
 }

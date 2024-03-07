@@ -62,47 +62,107 @@
             <div class="pb-2 container">
               <p class="h3 text-light">Ressources Populaires</p>
             </div>
-            <div class="container d-flex flex-column justify-content-center flex-lg-row card-group pb-4">
+            <div id="divRessources" class="container d-flex flex-column justify-content-center flex-lg-row card-group pb-4">
 
-                <div class="card text-black mx-1 bg-light mb-3">         
+            <div class="card text-black mx-1 bg-light mb-3">    
                   <div class="card-body">
-                    <h5 class="card-title">Primary card title</h5>
-                    <p class="card-text">Sed quis enim et augue tincidunt porta. Nulla facilisi. Mauris pharetra elementum orci, non dictum purus. Nullam iaculis massa at sapien mollis auctor. Curabitur lacus lacus, ultrices in tempor non, mollis a nunc. In ex.</p>
+                    <h5 class="card-title  placeholder-glow">
+                    <span class="placeholder col-8"></span>
+                    </h5>
+                    <p class="card-text placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                    </p>
                   </div>
-                  <div class="card-header custom-text-dark-blue">Catégorie</div>
+                  <div class="card-header  placeholder-glow custom-text-dark-blue">
+                  <span class="placeholder col-8"></span>
+                  </div>
                 </div>
 
 
-                <div class="card text-black mx-1 bg-light mb-3">
+                <div class="card text-black mx-1 bg-light mb-3">    
                   <div class="card-body">
-                    <h5 class="card-title">Primary card title</h5>
-                    <p class="card-text">Suspendisse sapien ipsum, vehicula sit amet molestie ut, dignissim ac risus. Mauris eget dictum justo, eget porttitor nunc. Nullam ultrices diam et elit ultrices, a placerat nunc pellentesque. Duis vitae sagittis aenean.</p>
+                    <h5 class="card-title  placeholder-glow">
+                    <span class="placeholder col-8"></span>
+                    </h5>
+                    <p class="card-text placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                    </p>
                   </div>
-                  <div class="card-header custom-text-dark-blue">Catégorie</div>
-                </div>
-
-                <div class="card text-black mx-1 bg-light mb-3">
-                  <div class="card-body">
-                    <h5 class="card-title">Primary card title</h5>
-                    <p class="card-text">Mauris interdum placerat diam, ut tempus quam sodales auctor. Nunc sodales orci quis tincidunt lacinia. Nunc vitae aliquet orci, a ultricies enim. Nunc fringilla augue nec faucibus rutrum. Etiam nisi ipsum, aliquet duis.</p>
+                  <div class="card-header  placeholder-glow custom-text-dark-blue">
+                  <span class="placeholder col-8"></span>
                   </div>
-                  <div class="card-header custom-text-dark-blue">Catégorie</div>
                 </div>
 
                 <div class="card text-black mx-1 bg-light mb-3">    
                   <div class="card-body">
-                    <h5 class="card-title">Primary card title</h5>
-                    <p class="card-text">Nullam eu dapibus tellus. Pellentesque sit amet metus eget purus iaculis ullamcorper. Aenean nunc leo, molestie sed eleifend eget, ullamcorper a leo. Cras interdum pharetra maximus. Duis vitae tellus nisi. Etiam vivamus.</p>
+                    <h5 class="card-title  placeholder-glow">
+                    <span class="placeholder col-8"></span>
+                    </h5>
+                    <p class="card-text placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                    </p>
                   </div>
-                  <div class="card-header custom-text-dark-blue">Catégorie</div>
+                  <div class="card-header  placeholder-glow custom-text-dark-blue">
+                  <span class="placeholder col-8"></span>
+                  </div>
                 </div>
 
-                <div class="card text-black mx-1 bg-light mb-3">             
+                <div class="card text-black mx-1 bg-light mb-3">    
                   <div class="card-body">
-                    <h5 class="card-title">Primary card title</h5>
-                    <p class="card-text">Etiam rutrum vestibulum lacus quis pretium. Sed eget tincidunt elit. Vestibulum cursus augue vel lobortis convallis. Vivamus in erat sit amet nisl pulvinar tincidunt. Phasellus euismod, arcu et placerat auctor, erat nec.</p>
+                    <h5 class="card-title  placeholder-glow">
+                    <span class="placeholder col-8"></span>
+                    </h5>
+                    <p class="card-text placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                    </p>
                   </div>
-                  <div class="card-header mx-1 custom-text-dark-blue">Catégorie</div>
+                  <div class="card-header  placeholder-glow custom-text-dark-blue">
+                  <span class="placeholder col-8"></span>
+                  </div>
                 </div>
 
             </div>
@@ -116,8 +176,6 @@
             </div>
           
          </div>
-
-      </main>
 
    <?= view('footer') ?>
 
@@ -140,6 +198,37 @@ document.addEventListener("keydown", function(event) {
     }, 50); // 1000 millisecondes équivalent à 1 seconde
   }
 });
+
+
+
+const divRessources= document.getElementById("divRessources");
+
+// Fonction pour effectuer la requête à la route
+async function chargerRessources() {
+  try {
+    const baseUrl = "<?php echo base_url(); ?>";
+    const response = await fetch(`${baseUrl}/getAccueil/5`);
+    if (!response.ok) {
+      throw new Error('Erreur lors de la récupération des ressources.');
+    }
+
+    const data = await response.text();
+    afficherRessources(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function afficherRessources(ressources) {
+  console.log(ressources);
+
+  divRessources.innerHTML = ressources;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  chargerRessources();
+});
+
+
 
 
 var timer = false;
@@ -175,10 +264,10 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
 // Remplace l'ancienne image par la nouvelle dans le DOM
 // imageAChanger.parentNode.replaceChild(nouvelleImage, imageAChanger);
 
       </script>
    </body>
 </html>
+

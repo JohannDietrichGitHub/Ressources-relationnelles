@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+  <link rel="icon" href="<?= base_url('favicon.ico'); ?>"  type="image/ico" >
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="<?= base_url('bootstrap/css/bootstrap.min.css'); ?>" rel="stylesheet" crossorigin="anonymous">
   <link href="<?= base_url('css/custom.css');?>" rel="stylesheet">  
   <script src=" <?= base_url('bootstrap/js/bootstrap.bundle.min.js'); ?>" crossorigin="anonymous"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <title>Ressources Relationnelles</title>
   </head>
 <body>
@@ -26,6 +29,7 @@
         <li class="nav-item">
           <a class="nav-link active text-light" aria-current="page" href="<?= base_url('/'); ?>">Accueil</a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link text-light" href="<?= base_url('/ressources') ?>">Ressources</a>
         </li>
@@ -34,7 +38,7 @@
         </li>
         <?php if ($userId !== null): ?>
           <li class="nav-item">          
-            <a class="nav-link text-light" href="<?= base_url('/gestion_profil') ?>">Gérer son profil</a>         
+   
           </li>
         <?php endif; ?>
         <?php if ($idRole == 1): ?>
@@ -44,14 +48,28 @@
         <?php endif; ?>
       </ul>
       
-      <div class="d-flex flex-column flex-lg-row ms-5-lg me-2">
-      <?php if ($userId !== null): ?>
-        <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('ressource/ajout'); ?>'">Ajouter une ressource </button>
-          <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('deconnexion'); ?>'">Déconnexion</button>
-      <?php else: ?>
+      <div class="d-flex flex-row justify-content-between ms-5-lg me-2">
+  <?php if ($userId !== null): ?>
+    <div class="d-flex align-items-center flex-grow-1"> <!-- Utilisation de flex-grow-1 pour que ce div prenne toute la largeur disponible -->
+      <button class="btn btn-secondary py-auto me-lg-2 my-lg-1 custom-button w-100" type="submit" onclick="window.location.href='<?= base_url('ressource/ajout'); ?>'">Ajouter une ressource </button>
+    </div>
+    <div class="dropdown">
+      <ion-icon name="person-circle-outline" class="" type="button" data-bs-toggle="dropdown" id="profil" style="color: white;font-size: 50px;"></ion-icon>
+      <ul class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="profil"> <!-- Utilisation de w-100 pour que le dropdown-menu prenne toute la largeur -->
+        <li><a class="dropdown-item" href="<?= base_url('/gestion_profil') ?>">Gérer son profil</a></li>
+        <li><a class="dropdown-item" href="<?= base_url('/utilisateur/ressourcesfavorites') ?>">Tableau de bord</a></li>
+        <li><a class="dropdown-item" href="<?= base_url('/ressources') ?>">Vos ressources</a></li>
+          <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="<?= base_url('deconnexion'); ?>">Déconnexion</a></li>
+      </ul>
+    </div>
+  <?php else: ?>
+    <!-- Votre code pour le cas où l'utilisateur n'est pas connecté -->
+
         <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('inscription'); ?>'">Inscription</button>
         <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('connexion'); ?>'">Connexion</button>
-      <?php endif; ?>
+        <?php endif; ?>
+
       </div>
       
       
