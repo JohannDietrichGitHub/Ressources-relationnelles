@@ -9,7 +9,7 @@
    <body>
       <?php
          $session = \Config\Services::session();
-         
+
          use App\Controllers\Commentaire;
          $uri = current_url(true);
          $segments = $uri->getSegments();
@@ -17,7 +17,7 @@
          $user = new \App\Controllers\Utilisateur();
          $commentaireClass = new Commentaire();
          $commentaireArray = $commentaireClass->afficherFeedCommentaires($ressourceId);
-         
+
          if (isset($_SESSION['user_id']))
          { ?>
       <form action="<?= base_url('ajouterCommentaire') ?>" method="post">
@@ -32,19 +32,19 @@
          } else {
              echo "Connectez-vous pour ajouter un commentaire";
          }
-         
+
          if (isset($commentaireArray) && !empty($commentaireArray))
          {
              foreach ($commentaireArray as $commentaire) : ?>
-      <?php if (isset($session->id)): ?>
+      <?php if (isset($_SESSION['user_id'])) { ?>
       <div id="session" data-session-id="<?php echo $_SESSION['user_id']; ?>"></div>
-      <?php endif; ?>
+      <?php } ?>
       <?php $nomUtilisateur = $user::recupNomUtilisateurParID($commentaire->COM_UTI_ID);  ?>
       <div class="border mt-4 border-2 rounded">
          <div class="commentaire-padding ">
             <span class="text-muted fst-italic" style="display: inline-block;"><?= esc($nomUtilisateur) ?></span>
             <span class="text-muted mb-1" style="font-size: 0.75em; display: inline-block; white-space: nowrap;"> posté le <?= esc($commentaire->COM_TSP_CRE) ?></span>
-         
+
          <p><?= esc($commentaire->COM_CONTENU) ?></p>
          </div>
          <div>
@@ -78,7 +78,7 @@
              foreach ($commentaireReponseArray as $commentaireReponse) : ?>
       <div class="commentaire-padding border border-2 rounded mt-1 ms-5">
          <div class="commentaire">
-            <?php $nomUtilisateur = $user::recupNomUtilisateurParID($commentaire->COM_UTI_ID); ?>
+            <?php $nomUtilisateur = $user::recupNomUtilisateurParID($commentaireReponse->COM_UTI_ID); ?>
             <div class="mb-1">
                <span class="text-muted fst-italic" style="display: inline-block;"><?= esc($nomUtilisateur) ?></span>
                <span class="text-muted" style="font-size: 0.75em; display: inline-block; white-space: nowrap;"> posté le <?= esc($commentaire->COM_TSP_CRE) ?></span>
@@ -108,10 +108,10 @@
              zoneReponse.style.display = (zoneReponse.style.display === 'none') ? 'block' : 'none';
          }
 
-         
-         
-         
-                  
+
+
+
+
       </script>
    </body>
 </html>

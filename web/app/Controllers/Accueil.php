@@ -1,16 +1,14 @@
 <?php
 
 namespace App\Controllers;
+$session = \Config\Services::session();
 
 class Accueil extends BaseController
 {
+
     public function index(): string
     {
-        $session = \Config\Services::session();
-        
         $content = view('Accueil');
-
-        // return view('scr_Accueil');
         return $content;
     }
     public function faq()
@@ -21,9 +19,8 @@ class Accueil extends BaseController
 
     public function deconnexion()
     {
-    // Instanciation de la session
     $session = \Config\Services::session();
-    
+
     // Destruction de la session
     $session->destroy();
 

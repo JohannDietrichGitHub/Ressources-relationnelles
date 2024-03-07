@@ -57,9 +57,9 @@
       <ion-icon name="person-circle-outline" class="" type="button" data-bs-toggle="dropdown" id="profil" style="color: white;font-size: 50px;"></ion-icon>
       <ul class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="profil"> <!-- Utilisation de w-100 pour que le dropdown-menu prenne toute la largeur -->
         <li><a class="dropdown-item" href="<?= base_url('/gestion_profil') ?>">Gérer son profil</a></li>
-        <li><a class="dropdown-item" href="<?= base_url('/tableau_de_bord') ?>">Tableau de bord</a></li>
+        <li><a class="dropdown-item" href="<?= base_url('/utilisateur/ressourcesfavorites') ?>">Tableau de bord</a></li>
         <li><a class="dropdown-item" href="<?= base_url('/ressources') ?>">Vos ressources</a></li>
-        <li><hr class="dropdown-divider"></li>
+          <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="<?= base_url('deconnexion'); ?>">Déconnexion</a></li>
       </ul>
     </div>

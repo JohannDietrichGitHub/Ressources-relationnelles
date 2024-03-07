@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const idCommentaire = this.getAttribute('data-id-commentaire');
             const baseurl = window.location.origin;
-
-            fetch(`${baseurl}/bloquerCommentaire/${idCommentaire}/${sessionId}`, {
+console.log(idCommentaire);
+            fetch(`${baseurl}/app-ressources-relationnelles/web/public/bloquerCommentaire/${idCommentaire}/${sessionId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
