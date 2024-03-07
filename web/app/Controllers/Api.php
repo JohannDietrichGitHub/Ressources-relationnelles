@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\M_Ressource;
 use App\Models\M_Categorie;
 use App\Models\M_Utilisateur;
+use App\Controlers\Utilisateur;
 
 class Api extends BaseController {
 
@@ -17,10 +18,10 @@ class Api extends BaseController {
         switch ($parametre) {
             case 'recupererRessources':
                 return $this->recupererRessources();
-            case 'inscription':
-                return $this->inscription();
             case 'connexion':
                 return $this->connexion($parametrePrimaire, $parametreSecondaire);
+            case 'recupererInfoUtilisateur':
+                return $this->recupererInfoUtilisateur($parametrePrimaire);
             default:
                 // Si le paramètre n'est pas valide, renvoyer une réponse appropriée
                 return 'Paramètre non valide';
@@ -53,11 +54,7 @@ class Api extends BaseController {
         return $this->response->setJSON($data);
     }
 
-    public function inscription() {
-        // Logique pour gérer l'inscription
-        return ['message' => 'Fonction d\'inscription appelée'];
-    }
-
+    // Récupération des informations utilisateur à partir de son mail et mot de passe
     public function connexion($email, $motdepasse) {
         $utilisateurModel = new M_Utilisateur();
         $user = $utilisateurModel->authenticate($email, $motdepasse);
@@ -75,4 +72,98 @@ class Api extends BaseController {
             return $this->response->setJSON(false);
         }
     }
+
+    // Récupération des informations de l'utilisateur à partir de son identifiant unique
+    public function recupererInfoUtilisateur($idUtilisateur) {
+        $utilisateurModel = new M_Utilisateur();
+        $utilisateur = $utilisateurModel->where('UTI_ID', $idUtilisateur)->find();
+
+        $data = [
+            'utilisateur' => $utilisateur
+        ];
+
+        return $this->response->setJSON($data);
+    }
+
+ // Modification des données de l'utilisateur
+    public function modifierUtilisateur($idUtilisateur, $nomUtilisateur, $prenomUtilisateur, $adresseUtilisateur, $cpUtiliasteur, $villeUtilisateur, $telUtilisateur) {
+
+        $adresse_formatee = str_replace("-", " ", $adresseUtilisateur);
+
+        $utilisateurModel = new M_Utilisateur();
+        $utilisateurData = [
+            'UTI_NOM' => $nomUtilisateur,
+            'UTI_PRENOM' => $prenomUtilisateur,
+            'UTI_ADRESSE' => $adresse_formatee,
+            'UTI_CP' =>  $cpUtiliasteur,
+            'UTI_VILLE' => $villeUtilisateur,
+            'UTI_NUM_TEL' => $telUtilisateur
+        ];
+    
+        // Mise à jour de la ligne dans la base de données
+        $utilisateurModel->update($idUtilisateur, $utilisateurData);
+
+        $data = [
+            'utilisateur' => $utilisateurData
+        ];
+
+        return $this->response->setJSON($data);
+    }
+
+    // Inscription d'un utilisateur dans la base de données
+    public function inscription($civiliteUtilisateur, $nomUtilisateur, $prenomUtilisateur, $dateNaiss, $adresseUtilisateur, $cpUtiliasteur, $villeUtilisateur, $telUtilisateur, $mailUtilisateur, $motDePasse, $motDePasseConfirme) {
+
+        $this->logger->info($dateNaiss);
+
+        $adresse_formatee = str_replace("-", " ", $adresseUtilisateur);
+
+        $newCivilite = $this->convertir_civilite($civiliteUtilisateur);
+
+        // Convertir la date au format timestamp
+        $timestamp = strtotime($dateNaiss);
+
+        // Reformater la date en yyyy-mm-dd
+        $dateConvertie = date('Y-m-d', $timestamp);
+
+        if ($motDePasse == $motDePasseConfirme || $motDePasse != null) {
+            $hashedmdp = password_hash($motDePasse, PASSWORD_BCRYPT);
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateurData = [
+                    'UTI_CIVILITE' => $newCivilite,
+                    'UTI_NOM' => $nomUtilisateur,
+                    'UTI_PRENOM' => $prenomUtilisateur,
+                    'UTI_DATE_NAISSANCE' => $dateConvertie,
+                    'UTI_ADRESSE' => $adresse_formatee,
+                    'UTI_CP' => $cpUtiliasteur,
+                    'UTI_VILLE' => $villeUtilisateur,
+                    'UTI_NUM_TEL' => $telUtilisateur,
+                    'UTI_MAIL' => $mailUtilisateur,
+                    'UTI_MDP' => $hashedmdp,
+                    'UTI_DATE_CREATION' => date('Y-m-d H:i:s'), 
+                    'UTI_ETAT' => "A",
+                    'UTI_ID_ROL' => 3
+                    ];
+                $utilisateurModel->insert($utilisateurData);
+
+            $data = [
+                'utilisateur' => $utilisateurData
+            ];
+            
+            return $this->response->setJSON($data);
+        }
+    }
+
+    // Fonction permettant, à partir du libellé de civilité en entrée, de retourner la civilité de l'utilisateur
+    private function convertir_civilite($civilite) {
+        switch ($civilite) {
+            case 'Monsieur':
+                return 'M';
+            case 'Madame':
+                return 'Mme';
+            case 'Autre':
+                return 'Aut';
+            default:
+                return '';
+        }
+    }    
 }
