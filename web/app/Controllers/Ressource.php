@@ -332,8 +332,8 @@ class Ressource extends BaseController
             //Modèle de la CARD affiché sur l'accueil
             $htmlRessource .= '<div class="card text-black mx-1 bg-light mb-3">
                                 <div class="card-body">
-                                <h5 class="card-title">'. $texteRessource .'</h5>
-                                <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'</p>
+                                <a class="ressources-link card-title h4" href="./ressource/'. esc($ressource->RES_ID). '">'. $texteRessource .'</a>
+                                <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'...</p>
                                 </div>
                                 <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_CAT_ID).'">'.esc($ressource->RES_CAT_ID).'</a></div>
                                 </div>';        

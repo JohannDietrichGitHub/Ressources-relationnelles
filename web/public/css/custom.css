@@ -54,6 +54,13 @@ li,ul{
 .custom-text-dark-blue{
  color: #007EA7 !important;
 }
+.custom-text-dark-red{
+    color: #ff3333 !important;
+   }
+
+.custom-dark-red {
+    background-color: #ff3333 !important;
+}
 
 .custom-light-blue{
     background-color: #9AD1D4 !important;

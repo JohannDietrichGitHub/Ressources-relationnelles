@@ -49,8 +49,11 @@
          </div>
          <div>
             <?php $role = isset($_SESSION['user_id']) ? $user::recupRoleParID($_SESSION['user_id']) : 'utilisateur'; ?>
-            <?php if (isset($_SESSION['user_id']) && $role === "Modérateur") {
-               echo "<a class='bloquer-commentaire' data-id-commentaire='$commentaire->COM_ID'> X </a>";
+            <?php if (isset($session) && $role === "Modérateur") { ?>
+               <div class=" position-relative">
+               <button class="btnRepondre bloquer-commentaire position-absolute bottom-0 end-0 mb-0 me-2 custom-text-dark-red text-light"><a data-id-commentaire="<?= $commentaire->COM_ID ?>" class="custom-text-dark-red bloquer-commentaire">Supprimer le commentaire</a></button>
+               </div>
+               <?php
                }?>
          </div>
          <?php if(isset($_SESSION['user_id']))
@@ -81,8 +84,12 @@
                <span class="text-muted" style="font-size: 0.75em; display: inline-block; white-space: nowrap;"> posté le <?= esc($commentaire->COM_TSP_CRE) ?></span>
             </div>
             <p><?= esc($commentaireReponse->COM_CONTENU) ?></p>
-            <?php if (isset($session) && $role === "Modérateur") {
-               echo "<a class='bloquer-commentaire' data-id-commentaire='$commentaireReponse->COM_ID'> X </a>";
+
+            <?php if (isset($session) && $role === "Modérateur") { ?>
+               <div class=" position-relative">
+               <button class="btnRepondre bloquer-commentaire position-absolute bottom-0 end-0 mb-0 me-2 text-light"><a    data-id-commentaire=" <?= $commentaireReponse->COM_ID ?>" class="custom-text-dark-red bloquer-commentaire">Supprimer le commentaire</a></button>
+               </div>
+               <?php
                }?>
          </div>
       </div>

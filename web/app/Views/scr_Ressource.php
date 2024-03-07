@@ -64,6 +64,10 @@
     
 }
 
+
+.bloquer-commentaire{
+ text-decoration: none;  
+}
 .enter-reponse{
    background-color: white;
 }
@@ -77,19 +81,37 @@
             //        $commentaireArray = getCommentaires($ressource->id)
                 ?>
          <div class="container">
-            <div class="ressource-container my-5">
-            <h2 class="mb-0">
-                                    <a class="ressources-link"> <?= esc($ressource->RES_NOM) ?> </a>
-                                 </h2>
-                                 <div class="mb-1" >
-                                    <span class="text-muted fst-italic" style="display: inline-block;"><?= esc(Utilisateur::recupNomUtilisateurParID($ressource->RES_UTI_ID)) ?></span>
-                                    <span class="text-muted" style="font-size: 0.8em; display: inline-block; white-space: nowrap;"> posté le <?= esc($ressource->RES_DATE_CREATION) ?></span>
-                                 </div>
-                                 <p class=" mt-3 border-top border-black"></p>
+            <div class="ressource-container position-relative my-5">
+               <div class="position-absolute favorite-icon top-0 end-0 mt-4 me-3">
+                  <button onclick="toggleFavoris(event)" class="favoris-btn">
+                     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" class="favoris-icon" stroke-linejoin="round">
+                        <path d="M5 3v18l7-5 7 5V3H5z"></path>
+                     </svg>
+                  </button>
+               </div>
+               <h2 class="mb-0">
+                  <a class="ressources-link"> <?= esc($ressource->RES_NOM) ?> </a>
+               </h2>
+               <div class="mb-1" >
+                  <span class="text-muted fst-italic" style="display: inline-block;"><?= esc(Utilisateur::recupNomUtilisateurParID($ressource->RES_UTI_ID)) ?></span>
+                  <span class="text-muted" style="font-size: 0.8em; display: inline-block; white-space: nowrap;"> posté le <?= esc($ressource->RES_DATE_CREATION) ?></span>
+               </div>
+
+               <!-- JOHANNE MET TES BADGES ICI STP CATEGORIES TYPE ET RELATION -->
+               <div>
+                  <span>
+                     <span class="badge bg-categorie-tag fs-14 mt-3"> MET TA CATEGORIE WESH </span>
+                  </span>
+
+                     <span class="badge bg-relation-tag fs-14 mt-3">MET TA RELATION ?</span>
+
+                  <span class="badge bg-info fs-14 mt-3" style="color: #54586d">MET TON TYPE</span>
+               </div>                 
+               <p class=" mt-3 border-top border-black"></p>
                                  
-                                 <div>
-                                 <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?>
-                                 </div>
+               <div>
+                  <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?>
+               </div>
 
             </div>
 
