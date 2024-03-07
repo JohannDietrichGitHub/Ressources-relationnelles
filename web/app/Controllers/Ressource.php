@@ -285,4 +285,63 @@ class Ressource extends BaseController
         }
         return $relations;
     }
+
+
+
+
+
+    //Fonction qui va afficher 5 ressources dans l'accueil
+    public function afficherRessourceAccueil(int $nombre = 1)
+    {
+        $ressourceModel = new M_Ressource();
+        $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O');
+
+        // Compter le nombre de résultats
+        $idMax = $ressourceModel->countAllResults();
+        $idMin = 1;
+        
+
+        //Si jamais on a moins de recettes dans la BDD que celles que l'on veut afficher
+        if($idMax < $nombre){
+            $nombre = $idMax;
+        }
+
+        
+        $valeurs = [];
+        while (count($valeurs) < $nombre) {
+        $valeur = $ressourceModel->orderBy('RAND()')->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first()->RES_ID;
+        if (!in_array($valeur, $valeurs)){
+            $valeurs[] = $valeur;
+            
+        }
+        }
+        
+
+        $ressourcesAAfficher = [];
+        foreach( $valeurs as $valeur){
+            $ressourcesAAfficher[] = $ressourceModel->select()->where('RES_ID', $valeur)->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first();
+        }
+
+
+        $htmlRessource = '';
+
+        foreach ($ressourcesAAfficher as $ressource) {
+
+            $texteRessource = esc($ressource->RES_NOM);
+
+            //Modèle de la CARD affiché sur l'accueil
+            $htmlRessource .= '<div class="card text-black mx-1 bg-light mb-3">
+                                <div class="card-body">
+                                <h5 class="card-title">'. $texteRessource .'</h5>
+                                <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'</p>
+                                </div>
+                                <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_CAT_ID).'">'.esc($ressource->RES_CAT_ID).'</a></div>
+                                </div>';        
+              
+        }
+
+        echo($htmlRessource );
+        //Affichage page web
+
+    }
 }

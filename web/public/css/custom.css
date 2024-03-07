@@ -127,3 +127,12 @@ input:invalid[name="cp"] {
 .commentaire-padding {
     padding-left: 20px;
 }
+
+.bg-categorie-tag {
+background-color: rgba(116, 120, 141, .15) !important;
+color: #54586d !important;
+}
+.bg-relation-tag {
+background-color: rgba(0, 126, 167, .35) !important;
+color: #54586d !important;
+}

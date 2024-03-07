@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+  <link rel="icon" href="<?= base_url('favicon.ico'); ?>"  type="image/ico" >
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="<?= base_url('bootstrap/css/bootstrap.min.css'); ?>" rel="stylesheet" crossorigin="anonymous">
   <link href="<?= base_url('css/custom.css');?>" rel="stylesheet">  

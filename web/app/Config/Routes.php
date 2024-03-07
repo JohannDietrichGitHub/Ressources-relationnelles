@@ -11,6 +11,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Accueil::index');
 $routes->get('/FAQ', 'Accueil::faq');
 
+//Affiche les ressources populaires
+$routes->get('/getAccueil/(:num)', 'Ressource::afficherRessourceAccueil/$1');
+
 //Page de connexion et d'inscription
 $routes->get('/connexion', 'Utilisateur::connexion');
 
