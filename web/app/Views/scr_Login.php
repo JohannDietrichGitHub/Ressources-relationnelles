@@ -38,7 +38,7 @@
               </div>
               <div class="text-center mt-3">
               <button type="submit" class="btn btn-lg btn-primary">Se connecter</button>
-              <a class="nav-link" href="<?= base_url('/connexion/mdp_oublie') ?>">Mot de passe oublié ? Cliquez-ici</p>
+              <a class="nav-link" href="<?= base_url('/connexion/mdp_oublie') ?>">Mot de passe oublié ? Cliquez-ici</a>
               </div>
               </form>
               </div>

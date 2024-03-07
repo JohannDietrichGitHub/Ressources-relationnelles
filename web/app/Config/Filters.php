@@ -27,6 +27,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'allow-origin' => CORS::class,
+        'auth' => \App\Middleware\AuthMiddleware::class,
     ];
 
     /**
@@ -70,6 +71,8 @@ class Filters extends BaseConfig
      * Example:
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
-    public array $filters = [];
+    public array $filters = [
+        'auth' => ['before' => ['/ressource/ajout', '/ressource/suppression', '/ressource/modification', '/ressource/validation', '/ressource/update-ressource-status/(:num)/(:alpha)', '/ressource/modifierFavoris/(:num)', '/ajouterCommentaire', '/bloquerCommentaire/(:num)/(:num)', '/administrer_utilisateur', '/administrer_utilisateur/promouvoir_utilisateur/(:num)/(:num)', '/administrer_utilisateur/activation_utilisateur/(:num)/(:num)', '/gestion_profil', '/gestion_profil/modifier_profil(:num)']],
+    ];
 
 }
