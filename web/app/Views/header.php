@@ -37,7 +37,7 @@
             <a class="nav-link text-light" href="<?= base_url('/gestion_profil') ?>">Gérer son profil</a>         
           </li>
         <?php endif; ?>
-        <?php if ($idRole == 3): ?>
+        <?php if ($idRole == 1): ?>
           <li class="nav-item">          
             <a class="nav-link text-light" href="<?= base_url('/administrer_utilisateur') ?>">Gestion des utilisateurs</a>         
           </li>
