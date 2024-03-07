@@ -57,27 +57,27 @@
                         document.getElementById('hiddenCivilite').value = selectedValue;
                     }
                 </script>         
-        <div class="form-floating text-secondary">
+        <div class="form-floating text-secondary mt-3">
             <input type="text" name="nom" class="form-control" id="floatingNom" value =<?= esc($utilisateur->UTI_NOM) ?>>
             <label for="floatingNom">Nom</label>
         </div>
-        <div class="form-floating text-secondary">
+        <div class="form-floating text-secondary mt-3">
             <input type="text" name="prenom" class="form-control" id="floatingPrenom" value =<?= esc($utilisateur->UTI_PRENOM) ?>>
             <label for="floatingPrenom">Prénom</label>
         </div>
-        <div class="form-floating text-secondary">
+        <div class="form-floating text-secondary mt-3">
             <input type="textarea" name="adresse" class="form-control" id="floatingAdresse" value ="<?= esc($utilisateur->UTI_ADRESSE) ?>">
             <label for="floatingAdresse">Adresse</label>
         </div> 
-        <div class="form-floating text-secondary">
+        <div class="form-floating text-secondary mt-3">
             <input type="text" name="cp" class="form-control" id="floatingCp" value =<?= esc($utilisateur->UTI_CP) ?>>
             <label for="floatingCp">Code postal</label>
         </div> 
-        <div class="form-floating text-secondary">
+        <div class="form-floating text-secondary mt-3">
             <input type="text" name="ville" class="form-control" id="floatingVille" value =<?= esc($utilisateur->UTI_VILLE) ?>>
             <label for="floatingVille">Ville</label>
         </div>
-        <div class="form-floating text-secondary">
+        <div class="form-floating text-secondary mt-3">
             <input type="text" name="numTel" class="form-control" id="floatingNumTel" value =<?= esc($utilisateur->UTI_NUM_TEL) ?>>
             <label for="floatingNumTel">Numéro de téléphone</label>
         </div>  

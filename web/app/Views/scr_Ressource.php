@@ -1,9 +1,8 @@
 <?php
-
-use App\Controllers\Ressource;
-use App\Controllers\Utilisateur;
-
-?>
+   use App\Controllers\Ressource;
+   use App\Controllers\Utilisateur;
+   
+   ?>
 <!DOCTYPE html>
 <html lang="fr">
    <head>
@@ -43,17 +42,31 @@ use App\Controllers\Utilisateur;
          background-color: rgba(0, 126, 167, .35) !important;
          color: #54586d !important;
          }
-         #favoris-btn {
-         background-color: transparent !important;
-         border: none !important;
-         cursor: pointer;
-         background-color: none;
-         }
-         #favoris-icon.active {
-         fill: #ffbd03;
-         /* Changer la couleur de remplissage en jaune */
-         stroke: #eeac02;
-         }
+         .favoris-btn {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    fill: currentColor; /* Permet d'utiliser la couleur actuelle pour remplir le SVG */
+    stroke: currentColor; /* Permet d'utiliser la couleur actuelle pour le contour du SVG */
+}
+
+.favoris-btn.active .favoris-icon {
+    fill: #ffbd03;
+    stroke: #eeac02;
+}
+
+
+.btnRepondre{
+    background-color: transparent !important;
+    border: none;
+    color: #248db5;
+    padding: 7px;
+    
+}
+
+.enter-reponse{
+   background-color: white;
+}
       </style>
    </head>
    <?= view('header') ?>
@@ -63,18 +76,33 @@ use App\Controllers\Utilisateur;
             if (!empty($ressource)) {
             //        $commentaireArray = getCommentaires($ressource->id)
                 ?>
-         <div class="ressource">
-            <h2> <?= esc($ressource->RES_NOM) ?> </h2>
-            <p> <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?> </p>
-            <p> <?= esc($ressource->RES_DATE_CREATION) ?> </p>
-            <div class="commentaire-container"> <?php
-               include_once('scr_feedCommentaires.php');
-                     ?> </div>
+         <div class="container">
+            <div class="ressource-container my-5">
+            <h2 class="mb-0">
+                                    <a class="ressources-link"> <?= esc($ressource->RES_NOM) ?> </a>
+                                 </h2>
+                                 <div class="mb-1" >
+                                    <span class="text-muted fst-italic" style="display: inline-block;"><?= esc(Utilisateur::recupNomUtilisateurParID($ressource->RES_UTI_ID)) ?></span>
+                                    <span class="text-muted" style="font-size: 0.8em; display: inline-block; white-space: nowrap;"> posté le <?= esc($ressource->RES_DATE_CREATION) ?></span>
+                                 </div>
+                                 <p class=" mt-3 border-top border-black"></p>
+                                 
+                                 <div>
+                                 <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?>
+                                 </div>
+
+            </div>
+
+            <div class="ressource-container">
+              <?php
+                  include_once('scr_feedCommentaires.php');
+              ?>
+            </div>
          </div>
          <?php
             }
-            if (!empty($ressources)) : ?>
-         <?php foreach ($ressources as $ressource) : ?>
+            if (!empty($groupeDeRessources)) : ?>
+         <?php foreach ($groupeDeRessources as $ressource) : ?>
          <div class="container">
             <div class="row">
                <div class="col-lg-12">
@@ -102,18 +130,18 @@ use App\Controllers\Utilisateur;
                                     <span>
                                     <span class="badge bg-categorie-tag fs-14 mt-3"><?= esc($ressource->categorie) ?></span>
                                     </span>
-                                     <?php foreach ($ressource->relations as $relation) { ?>
+                                    <?php foreach ($ressource->relations as $relation) { ?>
                                     <span class="badge bg-relation-tag fs-14 mt-3"><?= $relation ?></span>
-                                     <?php } ?>
-                                     <span class="badge bg-info fs-14 mt-3" style="color: #54586d"><?= esc($ressource->type) ?></span>
+                                    <?php } ?>
+                                    <span class="badge bg-info fs-14 mt-3" style="color: #54586d"><?= esc($ressource->type) ?></span>
                                  </div>
                               </div>
                            </div>
                         </div>
                      </div>
                      <div class="favorite-icon">
-                        <button onclick="toggleFavoris()" id="favoris-btn">
-                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" id="favoris-icon" stroke-linejoin="round">
+                        <button onclick="toggleFavoris(event)" class="favoris-btn">
+                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" class="favoris-icon" stroke-linejoin="round">
                               <path d="M5 3v18l7-5 7 5V3H5z"></path>
                            </svg>
                         </button>
@@ -129,8 +157,12 @@ use App\Controllers\Utilisateur;
    </body>
    <?= view('footer') ?>
    <script>
-      function toggleFavoris() {
-        var btn = document.getElementById('favoris-icon');
-        btn.classList.toggle('active');
-      }
+function toggleFavoris(event) {
+    var favorisBtn = event.currentTarget.closest('.favorite-icon').querySelector('.favoris-btn');
+    favorisBtn.classList.toggle('active');
+}
+
+
+
+
    </script>

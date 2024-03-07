@@ -30,14 +30,6 @@ use App\Controllers\Relation;
 
     <!-- STYLES -->
     <style>
-        .ressource-container{
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 30px;
-            margin-top: 0px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
         .modifierInput {
             width: 100%;
             padding: 10px;
