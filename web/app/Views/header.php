@@ -10,6 +10,16 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <title>Ressources Relationnelles</title>
   </head>
+  <style>
+
+.search-icon {
+    width: 30px; /* Largeur de votre icône */
+    height: 30px; /* Hauteur de votre icône */
+    background-image: url('<?= base_url('icon/search.svg'); ?>');
+    background-size: cover; /* Ajuster la taille de l'image pour remplir le conteneur */
+    cursor: pointer; /* Indiquer que le conteneur est cliquable */
+}
+  </style>
 <body>
 <?php
     $userId = $_SESSION['user_id'] ?? null;
@@ -74,8 +84,11 @@
       
       
       <form class="d-flex search-button align-items-center" role="search" action="<?= base_url('/recherche') ?>" method="get">
-        <input class="form-control shadow-none border-0" type="text" name=recherche placeholder="Rechercher..." aria-label="Search">
-        <object class="align-middle"data="<?= base_url('icon/search.svg'); ?>" height="30"> </object>
+        <input class="form-control shadow-none border-0" id="rechercher" type="text" name=nom placeholder="Rechercher..." aria-label="Search">
+        <button style="border: none; background-color: transparent">
+          <div class="search-icon"></div>
+        </button>
+
       </form>
     </div>
   </div>
@@ -97,35 +110,7 @@
     </div>
     <?php endif; ?>
 
-  <script>
-    function rechercherRecette(){
-      var inputData = document.getElementById('rechercher').value;
 
-      console.log(inputData);
-
-      // $.ajax({
-      //   type: "POST",
-      //   url:"";
-      //   data: { nom_de_votre_input: inputData},
-      //   success: function(response){
-      //     console.log(response);
-      //   }
-      // })
-
-
-      fetch('<?= base_url('recherche/rechercheRecette'); ?>',{
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({saisieRecherche: inputData})
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      })
-    }
-  </script>
 
 </body>
 </html>

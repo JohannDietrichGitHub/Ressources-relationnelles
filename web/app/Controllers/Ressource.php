@@ -260,7 +260,7 @@ class Ressource extends BaseController
         return false;
     }
 
-    public function recupCategorieRessource(int $ressourceId): string
+    public static function recupCategorieRessource(int $ressourceId): string
     {
         $modelRessource = new M_Ressource();
         $ressource = $modelRessource->find($ressourceId);
@@ -270,14 +270,14 @@ class Ressource extends BaseController
         return $categorie->CAT_NOM;
     }
 
-    public function recupTypeRessource(int $ressourceId): string
+    public static function recupTypeRessource(int $ressourceId): string
     {
         $modelRessource = new M_Ressource();
         $ressource = $modelRessource->find($ressourceId);
         return $ressource->RES_TYPE;
     }
 
-    public function recupRelationsRessource(int $ressourceId): array
+    public static function recupRelationsRessource(int $ressourceId): array
     {
         $relations = [];
         $modelAppartenir = new M_Appartenir();
