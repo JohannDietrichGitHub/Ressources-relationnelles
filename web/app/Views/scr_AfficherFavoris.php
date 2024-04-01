@@ -45,7 +45,7 @@
       <main>
          <div class="container my-5">
          <h1 class="mb-3">Tableau de Bord</h1>
-         <h4 class="mb-4">Ressources</h3>
+         <h4 class="mb-4">Ressources</h4>
             <div class="accordion" id="dashboard">
                <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
@@ -122,13 +122,13 @@
                </h2>
                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#dashboard">
                   <div class="accordion-body">
-                     <strong>Bientôt disponible :)
+                     <a href="<?= base_url('/ressource/validation') ?>">Voir les ressources à valider </a>
                   </div>
                </div>
             </div>
 
             <div class="my-5">
-               <h4>Paramètres</h3>
+               <h4>Paramètres</h4>
             </div>
          </div>
 
