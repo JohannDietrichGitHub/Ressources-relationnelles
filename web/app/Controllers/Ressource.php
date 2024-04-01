@@ -369,7 +369,7 @@ class Ressource extends BaseController
                                 <a class="ressources-link card-title h4" href="./ressource/'. esc($ressource->RES_ID). '">'. $texteRessource .'</a>
                                 <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'...</p>
                                 </div>
-                                <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_CAT_ID).'">Voir plus</div>
+                                <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_ID).'">Voir plus</div>
                                 </div>';
 
         }

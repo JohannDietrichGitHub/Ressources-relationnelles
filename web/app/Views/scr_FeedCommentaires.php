@@ -30,7 +30,7 @@
       </form>
       <?php
          } else {
-             echo "Connectez-vous pour ajouter un commentaire";
+             echo "<p>Connectez-vous pour ajouter un commentaire.</p>";
          }
 
          if (isset($commentaireArray) && !empty($commentaireArray))
@@ -99,7 +99,7 @@
       <?php   } ?>
       <?php endforeach;
          } else {
-             echo "Aucun commentaire pour cette ressource";
+             echo '<p class="mt-3">Aucun commentaire(s) pour cette ressource</p>';
          }
          ?>
       <script>
