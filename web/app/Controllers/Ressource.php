@@ -233,10 +233,12 @@ class Ressource extends BaseController
         if ($action == 'valider') {
             $resourceData = [
                 'RES_VALIDE' => 'O',
+                'RES_ETAT' => 'A',
             ];
         } else {
             $resourceData = [
                 'RES_VALIDE' => 'N',
+                'RES_ETAT' => 'A',
             ];
         }
         $resourceModel = new M_Ressource();
