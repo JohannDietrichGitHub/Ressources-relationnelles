@@ -172,7 +172,7 @@
             <p class="display-6"> « Le Projet » </p>
             <div class="mx-2">
             <!--<p> C'est un site internet qui est trop cher à mettre en place réellement donc on doit faire un projet infaisable</p>-->
-            <p>Praesent faucibus, lacus non eleifend rhoncus, sem quam euismod nunc, et ultrices nunc nunc in diam. Nunc elit eros, hendrerit eu nibh quis, malesuada bibendum lacus. Mauris rhoncus metus non enim dictum, et semper eget.</p>
+            <p>Ressources relationnelles vise à permettre d'améliorer le quotidien des citoyens et leur permettre d'échanger plus facilement. <br> Il permet aussi l'échange de ressources permettant un accès plus facile à la connaissance.</p>
             </div>
           
          </div>

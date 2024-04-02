@@ -1,11 +1,14 @@
 <?php
-use App\Controllers\Ressource;
-?>
+   use App\Controllers\Ressource;
+   use App\Controllers\Utilisateur;
+   
+   ?>
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <style>
+   <head>
+      <meta charset="UTF-8">
+      <title>Ressources</title>
+      <style>
          .card {
          box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
          }
@@ -73,22 +76,22 @@ use App\Controllers\Ressource;
    background-color: white;
 }
       </style>
-    <script src="<?= base_url('/js/validationRessourceScript.js') ?>"></script>
-</head>
-<body>
-<main>
-<?= view('header') ?>
-
-<div class="container mb-5">
-        <h2 class="mt-4"> Ressources à valider</h2>
+   </head>
+   <?= view('header') ?>
+   <body>
+      <main>
+      <div class="container mb-5">
+        <h2 class="mt-4"> Resultat(s) pour
+                    <?php   $request = service('request');
+                            $nomRecherche = $request->getVar('nom');
+                            echo $nomRecherche ?>
+        </h2>
           <script src="<?= base_url('/js/ajouterFavoris.js') ?>"></script>
          <?php
-             $ressourceController = new Ressource();
-             $ressourcesAValider = $ressourceController->afficherRessourcesAVerifier();
-            if (!empty($ressourcesAValider)) : ?>
-            <?php foreach ($ressourcesAValider as $ressource) : ?>
+            if (!empty($resultats)) : ?>
+            <?php foreach ($resultats as $ressource) : ?>
             
-            <div class="row ressource-container">
+            <div class="row">
                <div class="col-lg-12">
                   <!-- Votre contenu de ressource ici -->
                   <div class="candidate-list-box bookmark-post card mt-4">
@@ -100,7 +103,7 @@ use App\Controllers\Ressource;
                                     <a class="ressources-link h4" href="<?= site_url('/ressource/' . $ressource->RES_ID) ?>"> <?= esc($ressource->RES_NOM) ?> </a>
                                  </h5>
                                  <div class="mb-1" >
-                                    
+                                    <span class="text-muted fst-italic" style="display: inline-block;"><?= esc(Utilisateur::recupNomUtilisateurParID($ressource->RES_UTI_ID)) ?></span>
                                     <span class="text-muted" style="font-size: 0.8em; display: inline-block; white-space: nowrap;"> posté le <?= esc($ressource->RES_DATE_CREATION) ?></span>
                                  </div>
                                  <ul class="list-inline mb-0 text-muted">
@@ -110,6 +113,15 @@ use App\Controllers\Ressource;
                                     <li class="list-item">
                                     </li>
                                  </ul>
+                                 <div>
+                                    <span>
+                                    <span class="badge bg-categorie-tag fs-14 mt-3"><?= esc($ressource->categorie) ?></span>
+                                    </span>
+                                    <?php foreach ($ressource->relations as $relation) { ?>
+                                    <span class="badge bg-relation-tag fs-14 mt-3"><?= $relation ?></span>
+                                    <?php } ?>
+                                    <span class="badge bg-info fs-14 mt-3" style="color: #54586d"><?= esc($ressource->type) ?></span>
+                                 </div>
                               </div>
                            </div>
                         </div>
@@ -121,14 +133,6 @@ use App\Controllers\Ressource;
                            </svg>
                         </button>
                      </div>
-                     <div class="">
-                <div class=" ps-3 pb-1 boutton-valider">
-                    <input id="valider" class="custom-button boutton-valider btn-secondary" style="box-shadow: none;" type="button" data="<?php echo($ressource->RES_ID) ?>" value="valider">
-                </div>
-                <div class=" ps-3 boutton-invalider">
-                    <input id="invalider" class="custom-button boutton-invalider btn-secondary" type="button" data="<?php echo($ressource->RES_ID) ?>" value="invalider">
-                </div>
-            </div>
                   </div>
                </div>
             </div>
@@ -137,17 +141,12 @@ use App\Controllers\Ressource;
             <p class="my-5">Aucun résultat à afficher.</p>
          <?php endif; ?>
          </div>
-
-
-
-
-
-
-
-
-
-
-
-</main>
-</body>
-<?= view('footer') ?>   
+      </main>
+   </body>
+   <?= view('footer') ?>
+   <script>
+      function toggleFavoris() {
+        var btn = document.getElementById('favoris-icon');
+        btn.classList.toggle('active');
+      }
+   </script>

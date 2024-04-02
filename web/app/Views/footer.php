@@ -18,7 +18,7 @@
     </div>
 
     <p class="text-center border-top border-black">&copy; CESI STRASBOURG 2024-2024</p>
-    <p>Icones réseaux sociaux</p>
+    <!-- <p>Icones réseaux sociaux</p> -->
   </footer>
 
 

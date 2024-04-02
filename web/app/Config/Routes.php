@@ -93,3 +93,6 @@ $routes->post('/gestion_profil/modifier_profil(:num)', 'Utilisateur::modifierPro
 //voir les favoris
 $routes->post('/utilisateur/ressourcesfavorites', 'Ressource::afficherFeedRessourcesFavorites');
 $routes->get('/utilisateur/ressourcesfavorites', 'Ressource::afficherFeedRessourcesFavorites');
+
+//Rechercher des ressources
+$routes->get('/recherche', 'Recherche::index');

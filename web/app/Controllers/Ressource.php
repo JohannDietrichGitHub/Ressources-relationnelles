@@ -260,7 +260,7 @@ class Ressource extends BaseController
         return false;
     }
 
-    public function recupCategorieRessource(int $ressourceId): string
+    public static function recupCategorieRessource(int $ressourceId): string
     {
         $modelRessource = new M_Ressource();
         $ressource = $modelRessource->find($ressourceId);
@@ -270,14 +270,14 @@ class Ressource extends BaseController
         return $categorie->CAT_NOM;
     }
 
-    public function recupTypeRessource(int $ressourceId): string
+    public static function recupTypeRessource(int $ressourceId): string
     {
         $modelRessource = new M_Ressource();
         $ressource = $modelRessource->find($ressourceId);
         return $ressource->RES_TYPE;
     }
 
-    public function recupRelationsRessource(int $ressourceId): array
+    public static function recupRelationsRessource(int $ressourceId): array
     {
         $relations = [];
         $modelAppartenir = new M_Appartenir();
@@ -369,7 +369,7 @@ class Ressource extends BaseController
                                 <a class="ressources-link card-title h4" href="./ressource/'. esc($ressource->RES_ID). '">'. $texteRessource .'</a>
                                 <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'...</p>
                                 </div>
-                                <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_CAT_ID).'">'.esc($ressource->RES_CAT_ID).'</a></div>
+                                <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_ID).'">Voir plus</div>
                                 </div>';
 
         }
