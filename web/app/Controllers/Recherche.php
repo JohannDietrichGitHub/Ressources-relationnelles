@@ -63,7 +63,7 @@ class Recherche extends Controller
         $_nomRecherche = strval($_nomRecherche);
         $ressourceModel = new M_Ressource();
         $resultats = $ressourceModel->select('res_id')
-            ->where('res_nom LIKE', '%' . $_nomRecherche . '%')
+            ->like('res_nom', $_nomRecherche)
             ->where('RES_ETAT', 'A')
             ->where('RES_VALIDE', 'O')
             ->findAll();

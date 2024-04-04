@@ -72,8 +72,8 @@ class Ressource extends BaseController
             //gère l'enregistrement dans la table exploiter
             $exploiterModel = new M_Exploiter();
             $exploiterData = [
-                'EXP_EXPLOITE' => 'O',
-                'EXP_FAVORISE' => 'O',
+                'EXP_EXPLOITE' => 'N',
+                'EXP_FAVORISE' => 'N',
                 'EXP_RES_ID' => $ressourceId,
                 'EXP_UTI_ID' => $_SESSION['user_id']
             ];
@@ -385,16 +385,24 @@ class Ressource extends BaseController
             $ressourceModel = new M_Ressource();
             $relationExploiter = new M_Exploiter();
             $ressourceFavorites = $relationExploiter->where('EXP_FAVORISE', 'O')->where('EXP_UTI_ID', $_SESSION['user_id'])->findAll();
-            $favoriteResourceIds = [];
-            foreach ($ressourceFavorites as $relation) {
-                $favoriteResourceIds[] = $relation->EXP_RES_ID;
+
+            
+            if(!$ressourceFavorites == []){
+                $favoriteResourceIds = [];
+                foreach ($ressourceFavorites as $relation) {
+                    $favoriteResourceIds[] = $relation->EXP_RES_ID;
+                }
+
+                $ressources = $ressourceModel->whereIn('RES_ID', $favoriteResourceIds)->findAll();
+                foreach ($ressources as &$ressource) {
+                    $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+                    $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+                    $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+                }  
+            }else{
+                $ressources = '';
             }
-            $ressources = $ressourceModel->whereIn('RES_ID', $favoriteResourceIds)->findAll();
-            foreach ($ressources as &$ressource) {
-                $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
-                $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
-                $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
-            }
+
             $data = [
                 'ressourcesFavorites' => $ressources
             ];
