@@ -8,8 +8,13 @@ class Relation extends BaseController
 {
     public function getRelations(): array
     {
-        $model = new M_Relation();
-        $relations = $model->findAll();
-        return $relations;
-    }
+        try {
+            $model = new M_Relation();
+            $relations = $model->findAll();
+            return $relations;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return []; // Retourne un tableau vide en cas d'erreur
+        }
+    }    
 }

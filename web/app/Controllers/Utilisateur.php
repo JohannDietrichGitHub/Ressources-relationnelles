@@ -12,63 +12,75 @@ class Utilisateur extends BaseController
     // Affichage de la page de connexion
     public function connexion(): string
     {
-        if ($this->request->getMethod() === 'post') {
-            $nomUtilisateur = $this->request->getPost('nomUtilisateur'); 
-            $mdp = $this->request->getPost('mdp');
+        try {
+            if ($this->request->getMethod() === 'post') {
+                $nomUtilisateur = $this->request->getPost('nomUtilisateur'); 
+                $mdp = $this->request->getPost('mdp');
 
-            if ($this->isValidCredentials($nomUtilisateur, $mdp)) {
-                return redirect()->to('Accueil'); 
-            } else {
-                $data['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                if ($this->isValidCredentials($nomUtilisateur, $mdp)) {
+                    return redirect()->to('Accueil'); 
+                } else {
+                    $data['error'] = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                }
             }
-        }
-        $content = view('scr_Login');
+            $content = view('scr_Login');
 
-        return $content;
+            return $content;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            // Gérer l'erreur en renvoyant une vue d'erreur ou une redirection vers une page d'erreur
+            return view('error_view'); // ou redirect()->to('error_page');
+        }
     }
 
     // Fonction de connexion
     // L'utilisateur valide sa connexion
     public function seConnecter()
     {
-        // Test si le formulaire est soumis en entrée
-        if ($this->request->getMethod() === 'post') {
-            $nomUtilisateur = $this->request->getPost('mail'); 
-            $mdp = $this->request->getPost('mdp');
-            $utilisateurModel = new M_Utilisateur();
+        try {
+            // Test si le formulaire est soumis en entrée
+            if ($this->request->getMethod() === 'post') {
+                $nomUtilisateur = $this->request->getPost('mail'); 
+                $mdp = $this->request->getPost('mdp');
+                $utilisateurModel = new M_Utilisateur();
 
-            $user = $utilisateurModel->authenticate($nomUtilisateur, $mdp);
+                $user = $utilisateurModel->authenticate($nomUtilisateur, $mdp);
 
-            // Vérification si l'utilisateur existe, et s'il est bien Actif
-            if ($user && $user->UTI_ETAT == 'A') {
-                      
-                $resteConnecte = $this->request->getPost('resteconnecte');
-                if ($resteConnecte) {
-                    helper('cookie');
-                    $cookie_data = [
-                        'name'   => 'remember_me_cookie',
-                        'value'  => $user->UTI_ID,
-                        'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
-                        'secure' => FALSE, 
-                    ];
-                    set_cookie($cookie_data);
+                // Vérification si l'utilisateur existe, et s'il est bien Actif
+                if ($user && $user->UTI_ETAT == 'A') {
+                        
+                    $resteConnecte = $this->request->getPost('resteconnecte');
+                    if ($resteConnecte) {
+                        helper('cookie');
+                        $cookie_data = [
+                            'name'   => 'remember_me_cookie',
+                            'value'  => $user->UTI_ID,
+                            'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
+                            'secure' => FALSE, 
+                        ];
+                        set_cookie($cookie_data);
+                    }
+
+                    // On remplit le $session avec les données que l'on souhaite 
+                    $session = \Config\Services::session();
+                    $session->set('user_id', $user->UTI_ID);
+                    $session->set('id_role', $user->UTI_ID_ROL);
+
+                    return redirect()->to('')->with('success', 'Connexion réussie !');
+                } 
+                else {
+                    return redirect()->to('')->with('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
                 }
+                
+            }       
+            $content = view('scr_Login');
 
-                // On remplit le $session avec les données que l'on souhaite 
-                $session = \Config\Services::session();
-                $session->set('user_id', $user->UTI_ID);
-                $session->set('id_role', $user->UTI_ID_ROL);
-
-                return redirect()->to('')->with('success', 'Connexion réussie !');
-            } 
-            else {
-                return redirect()->to('')->with('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
-            }
-            
-        }       
-        $content = view('scr_Login');
-
-        return $content;
+            return $content;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            // Gérer l'erreur en renvoyant une vue d'erreur ou une redirection vers une page d'erreur
+            return view('error_view'); // ou redirect()->to('error_page');
+        }
     }
 
     public function inscription()
@@ -195,341 +207,408 @@ class Utilisateur extends BaseController
     // Fonction de récupération de l'ID du rôle à partir du nom du rôle 
     public function recupIdRole()
     {
-        $roleModel = new M_Role();
-        $role = $roleModel->where('ROL_NOM', 'Utilisateur classique')->first();
+        try {
+            $roleModel = new M_Role();
+            $role = $roleModel->where('ROL_NOM', 'Utilisateur classique')->first();
 
-        if ($role)
-        {
-            return $role->ROL_ID;
+            if ($role) {
+                return $role->ROL_ID;
+            } else {
+                return null;
+            }
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une valeur par défaut
+            log_message('error', 'Erreur lors de la récupération de l\'ID du rôle : ' . $e->getMessage());
+            return view('error_view'); // ou redirect()->to('error_page');
         }
-        else
-        {
-            return null;
-        }
-        // Mettez à jour la propriété pour indiquer que la méthode a été appelée
-        $this->recupIdRoleCalled = true;
     }
 
     // Fonction de vérification du compte à partir du mail en entrée
     public function verifCompte($mail)
     {
-        $utilisateurModel = new M_Utilisateur();
-        $utilisateur = $utilisateurModel->where('UTI_MAIL', $mail)->first();
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateur = $utilisateurModel->where('UTI_MAIL', $mail)->first();
 
-        if ($utilisateur)
-        {
-            return $utilisateur->UTI_ID;
-        }
-        else
-        {
-            return null;
+            if ($utilisateur) {
+                return $utilisateur->UTI_ID;
+            } else {
+                return null;
+            }
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une valeur par défaut
+            log_message('error', 'Erreur lors de la vérification du compte : ' . $e->getMessage());
+            // Redirection vers une page d'erreur
+            return view('error_view');
         }
     }
 
     // Fonction permettant, à partir du libellé de civilité en entrée, de retourner la civilité de l'utilisateur
     private function convertir_civilite($civilite) {
-        switch ($civilite) {
-            case 'Monsieur':
-                return 'M';
-            case 'Madame':
-                return 'Mme';
-            case 'Autre':
-                return 'Aut';
-            default:
-                return '';
+        try {
+            switch ($civilite) {
+                case 'Monsieur':
+                    return 'M';
+                case 'Madame':
+                    return 'Mme';
+                case 'Autre':
+                    return 'Aut';
+                default:
+                    return '';
+            }
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une valeur par défaut
+            log_message('error', 'Erreur lors de la conversion de la civilité : ' . $e->getMessage());
+            // Redirection vers une page d'erreur
+            return view('error_view');
         }
-    }
+    }    
 
     private function verifScriptDansDonnees($utilisateurData) {
-        foreach ($utilisateurData as $key => $value) {
-            if (preg_match('/<script>/', $value)) {
-                // Si une balise <script> est trouvée dans une valeur, renvoyez une erreur
-                return true;
+        try {
+            foreach ($utilisateurData as $key => $value) {
+                if (preg_match('/<script>/', $value)) {
+                    // Si une balise <script> est trouvée dans une valeur, renvoyez une erreur
+                    return true;
+                }
             }
+            return false;
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une valeur par défaut
+            log_message('error', 'Erreur lors de la vérification des données : ' . $e->getMessage());
+            // Redirection vers une page d'erreur
+            return view('error_view');
         }
-        return false;
     }
-
+    
     // Affichage vue mot de passe oublié
     public function mdpOublie(): string
     {
-        $content = view('scr_mdpOublie');
-
-        return $content;
+        try {
+            $content = view('scr_mdpOublie');
+            return $content;
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une page d'erreur
+            log_message('error', 'Erreur lors de l\'affichage de la vue mot de passe oublié : ' . $e->getMessage());
+            // Redirection vers une page d'erreur
+            return view('error_view');
+        }
     }
-
-    // Affichage vue mot de passe oublié
+    
+    // Affichage vue administrer utilisateur
     public function administrerUtilisateur(): string
     {
-        $content = view('scr_AdministrerUtilisateur');
-
-        return $content;
+        try {
+            $content = view('scr_AdministrerUtilisateur');
+            return $content;
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une page d'erreur
+            log_message('error', 'Erreur lors de l\'affichage de la vue administrer utilisateur : ' . $e->getMessage());
+            // Redirection vers une page d'erreur
+            return view('error_view');
+        }
     }
-
+    
     // Fonction de modification du mot de passe 
     public function nouveauMdp()
     {
-        // Récupération des données en entrée
-        $mail = $this->request->getPost('mail');
-        $motDePasse = $this->request->getPost('mdp');
-        // Recherche de l'ID utilisateur à partir du mail
-        $utilisateurModel = new M_Utilisateur();
-        $utilisateurAModifier = $utilisateurModel->where('UTI_MAIL =', $mail)->first();
-        
-        if(empty($utilisateurAModifier)){
-            return redirect()->to('/connexion/mdp_oublie')->with('error', 'Utilisateur inconnu, veuillez réessayer');
-        }
+        try {
+            // Récupération des données en entrée
+            $mail = $this->request->getPost('mail');
+            $motDePasse = $this->request->getPost('mdp');
+            // Recherche de l'ID utilisateur à partir du mail
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateurAModifier = $utilisateurModel->where('UTI_MAIL =', $mail)->first();
 
-        $utilisateurAModifierId = $utilisateurAModifier->UTI_ID;
-
-        if($motDePasse){
-            $motDePasseHache = password_hash($motDePasse, PASSWORD_BCRYPT); 
-        }
-        else{
-            return redirect()->to('/connexion/mdp_oublie')->with('error', 'Mot de passe vide, veuillez réessayer');
-        }
-        
-        if ($this->request->getPost()){
-            $utilisateurData = [
-                'UTI_MDP' => $motDePasseHache
-            ];
-            if ($this->verifScriptDansDonnees($utilisateurData)) {
-                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content .= view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
-                return $content;
+            if (empty($utilisateurAModifier)) {
+                return redirect()->to('/connexion/mdp_oublie')->with('error', 'Utilisateur inconnu, veuillez réessayer');
             }
 
-            // Mise à jour de la ligne dans la base de données
+            $utilisateurAModifierId = $utilisateurAModifier->UTI_ID;
 
-            $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
-            
-            $user = $utilisateurModel->authenticate($utilisateurAModifier->UTI_MAIL, $motDePasse);
-            
-            if ($user && $user->UTI_ETAT == 'A') {
-                      
-                $resteConnecte = $this->request->getPost('resteconnecte');
-                if ($resteConnecte) {
-                    helper('cookie');
-                    $cookie_data = [
-                        'name'   => 'remember_me_cookie',
-                        'value'  => $user->UTI_ID,
-                        'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
-                        'secure' => FALSE, // Changez en TRUE si vous utilisez HTTPS
-                    ];
-                    set_cookie($cookie_data);
+            if (empty($motDePasse)) {
+                return redirect()->to('/connexion/mdp_oublie')->with('error', 'Mot de passe vide, veuillez réessayer');
+            }
+
+            $motDePasseHache = password_hash($motDePasse, PASSWORD_BCRYPT);
+
+            if ($this->request->getPost()) {
+                $utilisateurData = [
+                    'UTI_MDP' => $motDePasseHache
+                ];
+                if ($this->verifScriptDansDonnees($utilisateurData)) {
+                    session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                    $content .= view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
+                    return $content;
                 }
-                // On remplit le $session avec les données que l'on souhaite 
-                $session = \Config\Services::session();
-                $session->set('user_id', $user->UTI_ID);
-                $session->set('id_role', $user->UTI_ID_ROL);
 
-                return redirect()->to('')->with('success', 'Le mot de passe a été modifié.');
-                
-            } 
-            else {
-                return redirect()->to('connexion')->with('error', 'Compte introuvable, veuillez réessayer.');
+                // Mise à jour de la ligne dans la base de données
+                $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
+
+                $user = $utilisateurModel->authenticate($utilisateurAModifier->UTI_MAIL, $motDePasse);
+
+                if ($user && $user->UTI_ETAT == 'A') {
+                    $resteConnecte = $this->request->getPost('resteconnecte');
+                    if ($resteConnecte) {
+                        helper('cookie');
+                        $cookie_data = [
+                            'name'   => 'remember_me_cookie',
+                            'value'  => $user->UTI_ID,
+                            'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
+                            'secure' => FALSE, // Changez en TRUE si vous utilisez HTTPS
+                        ];
+                        set_cookie($cookie_data);
+                    }
+                    // On remplit le $session avec les données que l'on souhaite 
+                    $session = \Config\Services::session();
+                    $session->set('user_id', $user->UTI_ID);
+                    $session->set('id_role', $user->UTI_ID_ROL);
+
+                    return redirect()->to('')->with('success', 'Le mot de passe a été modifié.');
+
+                } else {
+                    return redirect()->to('connexion')->with('error', 'Compte introuvable, veuillez réessayer.');
+                }
             }
+
+            $content = view('scr_mdpOublie');
+
+            return $content;
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une page d'erreur
+            log_message('error', 'Erreur lors de la réinitialisation du mot de passe : ' . $e->getMessage());
+            // Redirection vers une page d'erreur
+            return view('error_view');
         }
-
-        $content = view('scr_mdpOublie');
-
-        return $content;
     }
 
     public static function recupNomUtilisateurParID($id): string
     {
-        $utilisateurModel = new M_Utilisateur();
-        $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
-        if ($utilisateur)
-        {
-            return $utilisateur->UTI_PRENOM ." ". $utilisateur->UTI_NOM;
-        }
-        else
-        {
-            return 'steve';
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
+            if ($utilisateur) {
+                return $utilisateur->UTI_PRENOM . " " . $utilisateur->UTI_NOM;
+            } else {
+                return 'steve';
+            }
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une page d'erreur
+            log_message('error', 'Erreur lors de la récupération du nom de l\'utilisateur par ID : ' . $e->getMessage());
+            // Retourner une vue d'erreur
+            return view('error_view');
         }
     }
 
     public static function recupRoleParID($id): string
     {
-        $utilisateurModel = new M_Utilisateur();
-        $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
-        if ($utilisateur)
-        {
-            $roleModel = new M_Role();
-            $role = $roleModel->where('ROL_ID', $utilisateur->UTI_ID_ROL)->first();
-            if ($role)
-            {
-                return $role->ROL_NOM;
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
+            if ($utilisateur) {
+                $roleModel = new M_Role();
+                $role = $roleModel->where('ROL_ID', $utilisateur->UTI_ID_ROL)->first();
+                if ($role) {
+                    return $role->ROL_NOM;
+                }
             }
+            return "Utilisateur classique";
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une page d'erreur
+            log_message('error', 'Erreur lors de la récupération du rôle par ID : ' . $e->getMessage());
+            // Retourner une valeur par défaut
+            return "Erreur de récupération du rôle";
         }
-        return "Utilisateur classique";
     }
 
     public function bloquerCommentaire($id, $sessionId): string
     {
-        if (isset($sessionId) && $this::recupRoleParID($sessionId) === "Modérateur") {
-            $commentaireModel = new M_Commentaire();
-            $commentaire = $commentaireModel->where('COM_ID', $id)->first();
-            if ($commentaire) {
-                $commentaire->COM_VISIBILITE = "I";
-                $commentaireModel->save($commentaire);
-                return "ok";
+        try {
+            if (isset($sessionId) && $this::recupRoleParID($sessionId) === "Modérateur") {
+                $commentaireModel = new M_Commentaire();
+                $commentaire = $commentaireModel->where('COM_ID', $id)->first();
+                if ($commentaire) {
+                    $commentaire->COM_VISIBILITE = "I";
+                    $commentaireModel->save($commentaire);
+                    return "ok";
+                }
+            } else {
+                return "Pas connecté";
             }
-        }
-        else {
-            return "Pas connecté";
+        } catch (\Exception $e) {
+            // Gérer l'erreur ici, par exemple, journaliser l'erreur ou renvoyer une page d'erreur
+            log_message('error', 'Erreur lors du blocage du commentaire : ' . $e->getMessage());
+            // Retourner une vue d'erreur
+            return view('error_view');
         }
     }
 
     // Fonction permettant de récupérer les 20 premiers utilisateurs
     public function affichageUtilisateurs(): string
     {
-        $utilisateurConnecte=$_SESSION['user_id'];
+        try {
+            // Vérifier si l'identifiant de l'utilisateur connecté est défini dans la session
+            if (isset($_SESSION['user_id'])) {
+                $utilisateurConnecte = $_SESSION['user_id'];
 
-        $utilisateurModel = new M_Utilisateur();
+                $utilisateurModel = new M_Utilisateur();
 
-        // L'identifiant de l'utilisateur connecté n'est pas récupéré
-        $utilisateurs = $utilisateurModel
-            ->where('UTI_ID !=', $utilisateurConnecte)
-            ->where('UTI_ID !=', 0)
-            ->findAll(20);
-        $data = [
-            'utilisateurs' => $utilisateurs
-        ];
-      
-        $content = view('scr_AdministrerUtilisateur', $data);
-        return $content;
+                // Récupérer les utilisateurs autres que l'utilisateur connecté
+                $utilisateurs = $utilisateurModel
+                    ->where('UTI_ID !=', $utilisateurConnecte)
+                    ->where('UTI_ID !=', 0)
+                    ->findAll(20);
+
+                $data = [
+                    'utilisateurs' => $utilisateurs
+                ];
+
+                $content = view('scr_AdministrerUtilisateur', $data);
+                return $content;
+            } else {
+                // Rediriger vers une page d'erreur ou une page de connexion si l'utilisateur n'est pas connecté
+                return redirect()->to('error_page')->with('error', 'Utilisateur non connecté');
+            }
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
+        }
     }
+
 
     // Fonction permettant de promouvoir un utilisateur ($idUtilisateur) à un nouveau rôle ($idRole)
     public function promouvoirUtilisateur($idRole, $idUtilisateur)
     {
-       $utilisateurModel = new M_Utilisateur();
-       $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
 
-        $utilisateurData = [
-            'UTI_ID_ROL' => $idRole
-        ];
+            $utilisateurData = [
+                'UTI_ID_ROL' => $idRole
+            ];
 
-        if ($this->verifScriptDansDonnees($utilisateurData)) {
-            session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
-            return $content;
+            if ($this->verifScriptDansDonnees($utilisateurData)) {
+                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                return redirect()->to('/administrer_utilisateur')->with('error', 'Erreur dans les données utilisateur');
+            }
+
+            // Mise à jour de la ligne dans la base de données
+            $utilisateurModel->update($idUtilisateur, $utilisateurData);
+
+            return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
         }
-
-        // Mise à jour de la ligne dans la base de données
-        $utilisateurModel->update($idUtilisateur, $utilisateurData);
-
-        $utilisateurs = $utilisateurModel->findAll(20);
-        $data = [
-            'utilisateurs' => $utilisateurs
-        ];
-
-        return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
-
-        $content .= view('scr_AdministrerUtilisateur', $data);
-        return $content;
     }
 
     // Fonction permettant d'activer/désactiver ($etatUtilisateur) un utilisateur ($idUtilisateur)
-
     public function activationUtilisateur($etatUtilisateur, $idUtilisateur)
     {
-    
-       $utilisateurModel = new M_Utilisateur();
-       $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
 
-       // Si l'utilisateur est désactivé, on le réactive.
-       if($etatUtilisateur == 1){
-            $nouvelEtatUtilisateur = "A";
-       }
-       // Si l'utilisateur est activé, on le désactive
-       elseif($etatUtilisateur == 2){
-            $nouvelEtatUtilisateur = "I";
-       }
-
-        $utilisateurData = [
-            'UTI_ETAT' => $nouvelEtatUtilisateur
-        ];
-
-        if ($this->verifScriptDansDonnees($utilisateurData)) {
-            session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
-            return $content;
-        }
-
-        // Mise à jour de la ligne dans la base de données
-        $utilisateurModel->update($idUtilisateur, $utilisateurData);
-
-        // Nouvelle lecture 
-        $utilisateurs = $utilisateurModel->findAll(20);
-        $data = [
-            'utilisateurs' => $utilisateurs
-        ];
-
-        return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
-
-        $content .= view('scr_AdministrerUtilisateur', $data);
-        return $content;
-    }
-
-  // Affichage vue gestion du profil
-    public function gestionProfil(): string
-    {
-        $utilisateurModel = new M_Utilisateur();
-
-        $idUser=$_SESSION['user_id'];
-        $utilisateur = $utilisateurModel->find($idUser);
-
-        $data = [
-            'utilisateur' => $utilisateur
-        ];
-
-        $content = view('scr_GestionProfil', $data);
-
-        return $content;
-    }
-  
-    public function modifierProfil($utilisateurAModifierId)
-    {
-        $utilisateurModel = new M_Utilisateur();
-        $utilisateurAModifier = $utilisateurModel->find($utilisateurAModifierId);
-
-        if ($this->request->getPost()){
-            // Gestion civilité
-            $civilite = $this->request->getPost('civilite');
-            if($civilite != "M" && $civilite != "Mme" && $civilite != "Aut")
-            {
-                $newCivilite = $this->convertir_civilite($civilite);
+            // Si l'utilisateur est désactivé, on le réactive.
+            if ($etatUtilisateur == 1) {
+                $nouvelEtatUtilisateur = "A";
             }
-            else {
-                $newCivilite = $civilite;
+            // Si l'utilisateur est activé, on le désactive
+            elseif ($etatUtilisateur == 2) {
+                $nouvelEtatUtilisateur = "I";
             }
 
             $utilisateurData = [
-                'UTI_CIVILITE' => $newCivilite,
-                'UTI_NOM' => $this->request->getPost('nom'),
-                'UTI_PRENOM' => $this->request->getPost('prenom'), 
-                'UTI_ADRESSE' => $this->request->getPost('adresse'),
-                'UTI_CP' => $this->request->getPost('cp'),
-                'UTI_VILLE' => $this->request->getPost('ville'),
-                'UTI_NUM_TEL' => $this->request->getPost('numTel')
+                'UTI_ETAT' => $nouvelEtatUtilisateur
             ];
-        
+
             if ($this->verifScriptDansDonnees($utilisateurData)) {
                 session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content .= view('scr_GestionProfil', ['utilisateur' => $utilisateurAModifier]);
-                return $content;
+                return redirect()->to('/administrer_utilisateur')->with('error', 'Erreur dans les données utilisateur');
             }
+
             // Mise à jour de la ligne dans la base de données
-            $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
+            $utilisateurModel->update($idUtilisateur, $utilisateurData);
 
-            return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mis à jour');
+            // Nouvelle lecture 
+            $utilisateurs = $utilisateurModel->findAll(20);
+            $data = [
+                'utilisateurs' => $utilisateurs
+            ];
+
+            return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
         }
+    }
 
-        $content .= view('scr_GestionProfil');
-        return $content;
+    // Affichage vue gestion du profil
+    public function gestionProfil(): string
+    {
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $idUser = $_SESSION['user_id'];
+            $utilisateur = $utilisateurModel->find($idUser);
+
+            $data = [
+                'utilisateur' => $utilisateur
+            ];
+
+            $content = view('scr_GestionProfil', $data);
+
+            return $content;
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
+        }
+    }
+
+    public function modifierProfil($utilisateurAModifierId)
+    {
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $utilisateurAModifier = $utilisateurModel->find($utilisateurAModifierId);
+
+            if ($this->request->getPost()) {
+                // Gestion civilité
+                $civilite = $this->request->getPost('civilite');
+                if ($civilite != "M" && $civilite != "Mme" && $civilite != "Aut") {
+                    $newCivilite = $this->convertir_civilite($civilite);
+                } else {
+                    $newCivilite = $civilite;
+                }
+
+                $utilisateurData = [
+                    'UTI_CIVILITE' => $newCivilite,
+                    'UTI_NOM' => $this->request->getPost('nom'),
+                    'UTI_PRENOM' => $this->request->getPost('prenom'),
+                    'UTI_ADRESSE' => $this->request->getPost('adresse'),
+                    'UTI_CP' => $this->request->getPost('cp'),
+                    'UTI_VILLE' => $this->request->getPost('ville'),
+                    'UTI_NUM_TEL' => $this->request->getPost('numTel')
+                ];
+
+                if ($this->verifScriptDansDonnees($utilisateurData)) {
+                    session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                    return redirect()->to('/gestion_profil')->with('error', 'Erreur dans les données utilisateur');
+                }
+                // Mise à jour de la ligne dans la base de données
+                $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
+
+                return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mises à jour');
+            }
+
+            return view('scr_GestionProfil');
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
+        }
     }
 
 }

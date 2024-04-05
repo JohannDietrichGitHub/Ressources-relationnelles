@@ -8,8 +8,13 @@ class Categorie extends BaseController
 {
     public function getCategories(): array
     {
-        $categorie = new M_Categorie();
-        $categories = $categorie->findAll();
-        return $categories;
+        try {
+            $categorie = new M_Categorie();
+            $categories = $categorie->findAll();
+            return $categories;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return [];
+        }
     }
 }

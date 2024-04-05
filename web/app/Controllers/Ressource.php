@@ -14,21 +14,25 @@ class Ressource extends BaseController
 {
     public function afficherRessource($ressourceId): string
     {
-        $ressourceModel = new M_Ressource();
+        try {
+            $ressourceModel = new M_Ressource();
 
-        $ressource = $ressourceModel->find($ressourceId);
+            $ressource = $ressourceModel->find($ressourceId);
+            $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+            $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+            $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
 
-        $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
-        $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
-        $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+            $data = [
+                'ressource' =>$ressource
+            ];
 
-        $data = [
-            'ressource' =>$ressource
-        ];
+            $content = view('scr_Ressource', $data);
 
-        $content = view('scr_Ressource', $data);
-
-        return $content;
+            return $content;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return 'Une erreur s\'est produite lors de l\'affichage de la ressource.'; // Message d'erreur générique
+        }
     }
 
     public function ajouterRessource()
@@ -107,167 +111,201 @@ class Ressource extends BaseController
 
     public function supprimerRessource()
     {
-        if ($this->request->getPost()) {
-            if (empty($this->request->getPost('ressource_id'))){
-                session()->setFlashdata('error', 'Veuillez remplir tous les champs');
-                $content = view('scr_SupprimerRessource');
+        try {
+            if ($this->request->getPost()) {
+                if (empty($this->request->getPost('ressource_id'))) {
+                    session()->setFlashdata('error', 'Veuillez remplir tous les champs');
+                    $content = view('scr_SupprimerRessource');
+                    return $content;
+                }
+                $ressourceId = $this->request->getPost('ressource_id');
+                $ressourceModel = new M_Ressource();
+                $ressource = $ressourceModel->find($ressourceId);
+                if ($ressource === null) {
+                    session()->setFlashdata('error', 'La ressource n\'existe pas');
+                    $content = view('scr_SupprimerRessource');
+                    return $content;
+                }
+                $ressourceData = [
+                    'RES_ETAT' => 'I',
+                    'RES_DATE_MODIFICATION' => Time::now()
+                ];
+                $ressourceModel->update($ressourceId, $ressourceData);
+            } else {
+                $content = view("scr_SupprimerRessource");
                 return $content;
             }
-            $ressourceId = $this->request->getPost('ressource_id');
-            $ressourceModel = new M_Ressource();
-            $ressource = $ressourceModel->find($ressourceId);
-            if ($ressource === null) {
-                session()->setFlashdata('error', 'La ressource n\'existe pas');
-                $content = view('scr_SupprimerRessource');
-                return $content;
-            }
-            $ressourceData = [
-                'RES_ETAT' => 'I',
-                'RES_DATE_MODIFICATION' => Time::now()
-            ];
-            $ressourceModel->update($ressourceId, $ressourceData);
+            return redirect()->to(site_url('/'));
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return 'Une erreur s\'est produite lors de la suppression de la ressource.'; // Message d'erreur générique
         }
-        else {
-            $content = view("scr_SupprimerRessource");
-            return $content;
-        }
-        return redirect()->to(site_url('/'));
     }
 
     public function modifierRessource()
     {
-        if ($this->request->getPost('ressource_id') && $this->request->getPost('ressource_titre') == null) {
-            if (empty($this->request->getPost('ressource_id'))) {
-                session()->setFlashdata('error', 'Veuillez remplir tous les champs');
-                $content = view('scr_ModifierRessource');
+        try {
+            if ($this->request->getPost('ressource_id') && $this->request->getPost('ressource_titre') == null) {
+                if (empty($this->request->getPost('ressource_id'))) {
+                    session()->setFlashdata('error', 'Veuillez remplir tous les champs');
+                    $content = view('scr_ModifierRessource');
+                    return $content;
+                }
+                $ressourceId = $this->request->getPost('ressource_id');
+                $ressourceModel = new M_Ressource();
+                $ressource = $ressourceModel->find($ressourceId);
+                if ($ressource === null) {
+                    session()->setFlashdata('error', 'La ressource n\'existe pas');
+                    $content = view('scr_ModifierRessource');
+                    return $content;
+                }
+                $data['ressource'] = $ressource;
+                $content = view('scr_ModifierRessource', $data);
                 return $content;
             }
-            $ressourceId = $this->request->getPost('ressource_id');
-            $ressourceModel = new M_Ressource();
-            $ressource = $ressourceModel->find($ressourceId);
-            if ($ressource === null) {
-                session()->setFlashdata('error', 'La ressource n\'existe pas');
-                $content = view('scr_ModifierRessource');
-                return $content;
-            }
-            $data['ressource'] = $ressource;
-            $content = view('scr_ModifierRessource', $data);
-            return $content;
-        }
-        if ($this->request->getPost('ressource_titre')) {
-            $ressourceData = [
-                'RES_NOM' => $this->request->getPost('ressource_titre'),
-                'RES_CONTENU' => $this->request->getPost('ressource_contenu'),
-                'RES_TYPE' => $this->request->getPost('ressource_type'),
-                'RES_CAT_ID' => $this->request->getPost('ressource_categorie'),
-                'RES_DATE_MODIFICATION' => Time::now(),
-                'RES_VALIDE' => 'E'
-            ];
-            if (self::verifScriptDansArray($ressourceData)) {
-                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content = view("scr_ModifierRessource");
-                return $content;
-            }
-            $ressourceId = $this->request->getPost('ressource_id_cacher');
-            $ressourceModel = new M_Ressource();
-            $ressourceModel->update($ressourceId, $ressourceData);
-            $idsRelation = $this->request->getPost('ressource_relations');
-            if (is_array($idsRelation) && count($idsRelation) > 1) {
-                $relationModel = new M_Appartenir();
-                $relationModel->where('APP_ID_RES', $ressourceId)->delete();
-                foreach ($idsRelation as $idRelation) {
+            if ($this->request->getPost('ressource_titre')) {
+                $ressourceData = [
+                    'RES_NOM' => $this->request->getPost('ressource_titre'),
+                    'RES_CONTENU' => $this->request->getPost('ressource_contenu'),
+                    'RES_TYPE' => $this->request->getPost('ressource_type'),
+                    'RES_CAT_ID' => $this->request->getPost('ressource_categorie'),
+                    'RES_DATE_MODIFICATION' => Time::now(),
+                    'RES_VALIDE' => 'E'
+                ];
+                if (self::verifScriptDansArray($ressourceData)) {
+                    session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                    $content = view("scr_ModifierRessource");
+                    return $content;
+                }
+                $ressourceId = $this->request->getPost('ressource_id_cacher');
+                $ressourceModel = new M_Ressource();
+                $ressourceModel->update($ressourceId, $ressourceData);
+                $idsRelation = $this->request->getPost('ressource_relations');
+                if (is_array($idsRelation) && count($idsRelation) > 1) {
+                    $relationModel = new M_Appartenir();
+                    $relationModel->where('APP_ID_RES', $ressourceId)->delete();
+                    foreach ($idsRelation as $idRelation) {
+                        $relationData = [
+                            'APP_ID_RES' => $ressourceId,
+                            'APP_ID_REL' => $idRelation
+                        ];
+                        $relationModel->insert($relationData);
+                    }
+                } elseif ($idsRelation !== null) {
+                    $relationModel = new M_Appartenir();
+                    $relationModel->where('APP_ID_RES', $ressourceId)->delete();
                     $relationData = [
                         'APP_ID_RES' => $ressourceId,
-                        'APP_ID_REL' => $idRelation
+                        'APP_ID_REL' => $idsRelation
                     ];
                     $relationModel->insert($relationData);
                 }
-            } elseif ($idsRelation !== null) {
-                $relationModel = new M_Appartenir();
-                $relationModel->where('APP_ID_RES', $ressourceId)->delete();
-                $relationData = [
-                    'APP_ID_RES' => $ressourceId,
-                    'APP_ID_REL' => $idsRelation
-                ];
-                $relationModel->insert($relationData);
+                return redirect()->to(site_url('/'));
             }
-            return redirect()->to(site_url('/'));
+            return view('scr_ModifierRessource');
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return 'Une erreur s\'est produite lors de la modification de la ressource.'; // Message d'erreur générique
         }
-        return view('scr_ModifierRessource');
     }
+
 
     public function afficherRessources()
     {
-        $ressourceModel = new M_Ressource();
-        $ressources = $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
-        foreach ($ressources as &$ressource) {
-            $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
-            $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
-            $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+        try {
+            $ressourceModel = new M_Ressource();
+            $ressources = $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll(25);
+            foreach ($ressources as &$ressource) {
+                $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+                $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+                $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+            }
+            $data = [
+                'groupeDeRessources' => $ressources
+            ];
+            $content = view('scr_Ressource', $data);
+            return $content;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return 'Une erreur s\'est produite lors de l\'affichage des ressources.'; // Message d'erreur générique
         }
-        $data = [
-            'groupeDeRessources' => $ressources
-        ];
-        $content = view('scr_Ressource', $data);
-        return $content;
     }
 
-    public function afficherRessourcesUtilisateur(){
-        $ressourceModel = new M_Ressource();
-        $ressources = $ressourceModel->where('RES_UTI_ID', $_SESSION['user_id'])->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll();
-        foreach ($ressources as &$ressource) {
-            $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
-            $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
-            $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
-        }
-        $data = [
-            'vosRessources' => $ressources
-        ];
-        $content = view ('scr_VosRessources', $data);
-        // dd($data);
-        return $content;
-    }
 
-    public function afficherRessourcesAVerifier() : array
+    public function afficherRessourcesUtilisateur()
     {
-        $ressourceModel = new M_Ressource();
-
-        $builder = $ressourceModel->builder();
-
-        $query = $builder
-            ->select()
-            ->where('RES_VALIDE', 'E')
-            ->orderBy('RES_DATE_MODIFICATION')
-            ->get();
-
-        $result = $query->getResult();
-
-        return $result;
+        try {
+            $ressourceModel = new M_Ressource();
+            $ressources = $ressourceModel->where('RES_UTI_ID', $_SESSION['user_id'])->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll();
+            foreach ($ressources as &$ressource) {
+                $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+                $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+                $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+            }
+            $data = [
+                'vosRessources' => $ressources
+            ];
+            $content = view('scr_VosRessources', $data);
+            return $content;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return 'Une erreur s\'est produite lors de l\'affichage de vos ressources.'; // Message d'erreur générique
+        }
     }
+
+    public function afficherRessourcesAVerifier(): array
+    {
+        try {
+            $ressourceModel = new M_Ressource();
+
+            $builder = $ressourceModel->builder();
+
+            $query = $builder
+                ->select()
+                ->where('RES_VALIDE', 'E')
+                ->orderBy('RES_DATE_MODIFICATION')
+                ->get();
+
+            $result = $query->getResult();
+            return $result;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return []; // Retourner un tableau vide en cas d'erreur
+        }
+    }
+
     public function modifierEtatRessource(int $ressourceId, $action)
     {
-        //ajouter une vérification que ce soit bien un administrateur qui fait la requête
-        if ($action == 'valider') {
-            $resourceData = [
-                'RES_VALIDE' => 'O',
-                'RES_ETAT' => 'A',
-            ];
-        } else {
-            $resourceData = [
-                'RES_VALIDE' => 'N',
-                'RES_ETAT' => 'A',
-            ];
-        }
-        $resourceModel = new M_Ressource();
-        $resourceModel->update($ressourceId, $resourceData);
+        try {
+            // Ajouter une vérification que ce soit bien un administrateur qui fait la requête
 
-        return $this->response->setJSON(['status' => 'success']);
+            if ($action == 'valider') {
+                $resourceData = [
+                    'RES_VALIDE' => 'O',
+                    'RES_ETAT' => 'A',
+                ];
+            } else {
+                $resourceData = [
+                    'RES_VALIDE' => 'N',
+                    'RES_ETAT' => 'A',
+                ];
+            }
+
+            $resourceModel = new M_Ressource();
+            $resourceModel->update($ressourceId, $resourceData);
+
+            return $this->response->setJSON(['status' => 'success']);
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Une erreur s\'est produite lors de la modification de l\'état de la ressource.']);
+        }
     }
 
     public function validerRessource()
     {
         return view('scr_validerRessources');
     }
+
     public static function verifScriptDansArray($data): bool
     {
         foreach ($data as $key => $value) {
@@ -343,90 +381,92 @@ class Ressource extends BaseController
         return false;
     }
 
-    //Fonction qui va afficher 5 ressources dans l'accueil
     public function afficherRessourceAccueil(int $nombre = 1)
     {
-        $ressourceModel = new M_Ressource();
-        $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O');
+        try {
+            $ressourceModel = new M_Ressource();
+            $ressourceModel->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O');
 
-        // Compter le nombre de résultats
-        $idMax = $ressourceModel->countAllResults();
-        $idMin = 1;
+            // Compter le nombre de résultats
+            $idMax = $ressourceModel->countAllResults();
+            $idMin = 1;
 
+            //Si jamais on a moins de recettes dans la BDD que celles que l'on veut afficher
+            if($idMax < $nombre){
+                $nombre = $idMax;
+            }
 
-        //Si jamais on a moins de recettes dans la BDD que celles que l'on veut afficher
-        if($idMax < $nombre){
-            $nombre = $idMax;
+            $valeurs = [];
+            while (count($valeurs) < $nombre) {
+            $valeur = $ressourceModel->orderBy('RAND()')->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first()->RES_ID;
+            if (!in_array($valeur, $valeurs)){
+                $valeurs[] = $valeur;
+            }
+            }
+
+            $ressourcesAAfficher = [];
+            foreach( $valeurs as $valeur){
+                $ressourcesAAfficher[] = $ressourceModel->select()->where('RES_ID', $valeur)->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first();
+            }
+
+            $htmlRessource = '';
+
+            foreach ($ressourcesAAfficher as $ressource) {
+                $texteRessource = esc($ressource->RES_NOM);
+
+                //Modèle de la CARD affiché sur l'accueil
+                $htmlRessource .= '<div class="card text-black mx-1 bg-light mb-3">
+                                    <div class="card-body">
+                                    <a class="ressources-link card-title h4" href="./ressource/'. esc($ressource->RES_ID). '">'. $texteRessource .'</a>
+                                    <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'...</p>
+                                    </div>
+                                    <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_ID).'">Voir plus</div>
+                                    </div>';
+            }
+
+            echo($htmlRessource );
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            echo 'Une erreur s\'est produite lors de l\'affichage des ressources d\'accueil.';
         }
-
-
-        $valeurs = [];
-        while (count($valeurs) < $nombre) {
-        $valeur = $ressourceModel->orderBy('RAND()')->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first()->RES_ID;
-        if (!in_array($valeur, $valeurs)){
-            $valeurs[] = $valeur;
-
-        }
-        }
-
-
-        $ressourcesAAfficher = [];
-        foreach( $valeurs as $valeur){
-            $ressourcesAAfficher[] = $ressourceModel->select()->where('RES_ID', $valeur)->where('RES_ETAT', 'A')->where('RES_VALIDE', 'O')->first();
-        }
-
-
-        $htmlRessource = '';
-
-        foreach ($ressourcesAAfficher as $ressource) {
-
-            $texteRessource = esc($ressource->RES_NOM);
-
-            //Modèle de la CARD affiché sur l'accueil
-            $htmlRessource .= '<div class="card text-black mx-1 bg-light mb-3">
-                                <div class="card-body">
-                                <a class="ressources-link card-title h4" href="./ressource/'. esc($ressource->RES_ID). '">'. $texteRessource .'</a>
-                                <p class="card-text">' . esc(substr(strip_tags($ressource->RES_CONTENU), 0, 200)) .'...</p>
-                                </div>
-                                <div class="card-header e"><a class="custom-text-dark-blue" style="text-decoration: none" href="./ressource/'.esc($ressource->RES_ID).'">Voir plus</div>
-                                </div>';
-
-        }
-
-        echo($htmlRessource );
     }
 
     public function afficherFeedRessourcesFavorites()
     {
-        if(isset($_SESSION['user_id'])) {
-            $ressourceModel = new M_Ressource();
-            $relationExploiter = new M_Exploiter();
-            $ressourceFavorites = $relationExploiter->where('EXP_FAVORISE', 'O')->where('EXP_UTI_ID', $_SESSION['user_id'])->findAll();
-
-            
-            if(!$ressourceFavorites == []){
-                $favoriteResourceIds = [];
-                foreach ($ressourceFavorites as $relation) {
-                    $favoriteResourceIds[] = $relation->EXP_RES_ID;
+        try {
+            if(isset($_SESSION['user_id'])) {
+                $ressourceModel = new M_Ressource();
+                $relationExploiter = new M_Exploiter();
+                $ressourceFavorites = $relationExploiter->where('EXP_FAVORISE', 'O')->where('EXP_UTI_ID', $_SESSION['user_id'])->findAll();
+    
+                
+                if(!$ressourceFavorites == []){
+                    $favoriteResourceIds = [];
+                    foreach ($ressourceFavorites as $relation) {
+                        $favoriteResourceIds[] = $relation->EXP_RES_ID;
+                    }
+    
+                    $ressources = $ressourceModel->whereIn('RES_ID', $favoriteResourceIds)->findAll();
+                    foreach ($ressources as &$ressource) {
+                        $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+                        $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+                        $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+                    }  
+                }else{
+                    $ressources = '';
                 }
-
-                $ressources = $ressourceModel->whereIn('RES_ID', $favoriteResourceIds)->findAll();
-                foreach ($ressources as &$ressource) {
-                    $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
-                    $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
-                    $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
-                }  
-            }else{
-                $ressources = '';
+    
+                $data = [
+                    'ressourcesFavorites' => $ressources
+                ];
+                $content = view('scr_AfficherFavoris', $data);
+                return $content;
+            }else {
+                return false;
             }
-
-            $data = [
-                'ressourcesFavorites' => $ressources
-            ];
-            $content = view('scr_AfficherFavoris', $data);
-            return $content;
-        }else {
-            return false;
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return false; // Retourner false en cas d'erreur
         }
     }
 }
