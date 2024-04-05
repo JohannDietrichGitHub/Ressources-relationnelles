@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Models\M_Utilisateur;
 use App\Models\M_Role;
 use App\Models\M_Commentaire;
+use Config\Encryption;
+
 $session = \Config\Services::session();
 
 class Utilisateur extends BaseController
@@ -46,10 +48,13 @@ class Utilisateur extends BaseController
                 if ($resteConnecte) {
                     helper('cookie');
                     $cookie_data = [
-                        'name'   => 'remember_me_cookie',
+                        'name'   => 'cookie_id',
                         'value'  => $user->UTI_ID,
-                        'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
-                        'secure' => FALSE, 
+                        'expire' => '3600',
+                        'path'   => '/',
+                        'secure' => TRUE, 
+                        'httponly' => TRUE, 
+                        'encrypt' => TRUE 
                     ];
                     set_cookie($cookie_data);
                 }
@@ -474,10 +479,19 @@ class Utilisateur extends BaseController
         return $content;
     }
 
-  // Affichage vue gestion du profil
+    // Affichage vue gestion du profil
     public function gestionProfil(): string
     {
         $utilisateurModel = new M_Utilisateur();
+        /* ------ CHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+        $encryption = new Encryption();
+
+        $cleCp = $encryption->returnCleCp();
+        $cleTel = $encryption->returnCleTel();
+        
+        $ivLength = $encryption->returnIvLength();
+        $iv = $encryption->returnIv($ivLength);
+        */
 
         $idUser=$_SESSION['user_id'];
         $utilisateur = $utilisateurModel->find($idUser);
@@ -485,6 +499,27 @@ class Utilisateur extends BaseController
         $data = [
             'utilisateur' => $utilisateur
         ];
+
+        /* ------ CHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+        $numTel = $utilisateur->UTI_NUM_TEL;
+        $cp = $utilisateur->UTI_CP;
+
+        $donneesDecryptesAvecIVTel = base64_encode($iv . $numTel);
+        $donneesDecryptesAvecIVCp = base64_encode($iv . $cp);
+
+        // Déchiffrer les données
+        $donneesDecrypteTel = base64_decode($donneesDecryptesAvecIVTel);
+        $donneesDecrypteCp = base64_decode($donneesDecryptesAvecIVCp);
+        $ivTel = substr($donneesDecrypteTel, 0, $ivLength);
+        $ivCp = substr($donneesDecrypteCp, 0, $ivLength);
+    //    dd($ivCp);
+        $donneesDecryptesSansIVTel = substr($donneesDecrypteTel, $ivLength);
+        $donneesDecryptesSansIVCp = substr($donneesDecrypteCp, $ivLength);
+        $cpDeCrypte = openssl_decrypt($donneesDecryptesSansIVCp, 'aes-256-cbc', $cleCp, 0, $ivCp);  
+        $numTelDecrypte = openssl_decrypt($donneesDecryptesSansIVTel, 'aes-256-cbc', $cleTel, 0, $ivTel);
+    //    dd($numTelDecrypte);
+    */
+                
 
         $content = view('scr_GestionProfil', $data);
 
@@ -506,6 +541,33 @@ class Utilisateur extends BaseController
             else {
                 $newCivilite = $civilite;
             }
+          
+        /* ------ CHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+            // Création des clés
+            $encryption = new Encryption();
+
+            $cleCp = $encryption->returnCleCp();
+            $cleTel = $encryption->returnCleTel();
+            
+            // Récupération des IV 
+            $ivLength = $encryption->returnIvLength();
+            $iv = $encryption->returnIv($ivLength);
+            
+            // Récupération du numéro de téléphone
+            $numTel = $this->request->getPost('numTel');
+            // Récupération du numéro de code postal
+            $cp = $this->request->getPost('cp');
+
+            // Chiffrer le numéro de téléphone
+            $numTelCrypte = openssl_encrypt($numTel, 'aes-256-cbc', $cleTel, 0, $iv);
+
+            // Chiffrer le code postal
+            $cpCrypte = openssl_encrypt($cp, 'aes-256-cbc', $cleCp, 0, $iv);
+
+            // Stocker l'IV avec les données chiffrées (par exemple, en les concaténant)
+            $donneesDecryptesAvecIVTel = base64_encode($iv . $numTelCrypte);
+            $donneesDecryptesAvecIVCp = base64_encode($iv . $cpCrypte); 
+            */
 
             $utilisateurData = [
                 'UTI_CIVILITE' => $newCivilite,
@@ -513,8 +575,10 @@ class Utilisateur extends BaseController
                 'UTI_PRENOM' => $this->request->getPost('prenom'), 
                 'UTI_ADRESSE' => $this->request->getPost('adresse'),
                 'UTI_CP' => $this->request->getPost('cp'),
+             //   'UTI_CP' => $cpCrypte,
                 'UTI_VILLE' => $this->request->getPost('ville'),
                 'UTI_NUM_TEL' => $this->request->getPost('numTel')
+             //   'UTI_NUM_TEL' => $numTelCrypte
             ];
         
             if ($this->verifScriptDansDonnees($utilisateurData)) {
@@ -525,10 +589,21 @@ class Utilisateur extends BaseController
             // Mise à jour de la ligne dans la base de données
             $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
 
+        /* ------ DECHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+            // Déchiffrer les données
+            $donneesDecrypteTel = base64_decode($donneesDecryptesAvecIVTel);
+            $donneesDecrypteCp = base64_decode($donneesDecryptesAvecIVCp);
+            $ivTel = substr($donneesDecrypteTel, 0, $ivLength);
+            $ivCp = substr($donneesDecrypteCp, 0, $ivLength);
+            $donneesDecryptesSansIVTel = substr($donneesDecrypteTel, $ivLength);
+            $donneesDecryptesSansIVCp = substr($donneesDecrypteCp, $ivLength);
+            $numTelDecrypte = openssl_decrypt($donneesDecryptesSansIVTel, 'aes-256-cbc', $cleTel, 0, $ivTel);
+            $cpDeCrypte = openssl_decrypt($donneesDecryptesSansIVCp, 'aes-256-cbc', $cleCp, 0, $ivCp);  
+            */
             return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mis à jour');
         }
 
-        $content .= view('scr_GestionProfil');
+        $content .= view('scr_GestionProfil', $data);
         return $content;
     }
 
