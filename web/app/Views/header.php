@@ -4,7 +4,8 @@
   <link rel="icon" href="<?= base_url('favicon.ico'); ?>"  type="image/ico" >
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="<?= base_url('bootstrap/css/bootstrap.min.css'); ?>" rel="stylesheet" crossorigin="anonymous">
-  <link href="<?= base_url('css/custom.css');?>" rel="stylesheet">  
+  <link href="<?= base_url('css/custom.css');?>" rel="stylesheet">
+  <link href="<?= base_url('css/ressource.css');?>" rel="stylesheet">  
   <script src=" <?= base_url('bootstrap/js/bootstrap.bundle.min.js'); ?>" crossorigin="anonymous"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -74,7 +75,6 @@
       </ul>
     </div>
   <?php else: ?>
-    <!-- Votre code pour le cas où l'utilisateur n'est pas connecté -->
 
         <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('inscription'); ?>'">Inscription</button>
         <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('connexion'); ?>'">Connexion</button>
@@ -96,16 +96,18 @@
 
 <?php if (session()->has('success')) : ?>
       <div class="position-absolute" style="width: 100%; top: 60px;">
-        <div class="alert alert-success inner-message" role="alert">
+        <div class="alert alert-success alert-dismissible fade show inner-message" role="alert">
             <?= session('success') ?>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         </div>
         
     <?php endif; ?>
     <?php if (session()->has('error')) : ?>
       <div class="position-absolute" style="width: 100%; top: 60px;">
-        <div class="alert alert-danger inner-message" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show inner-message" role="alert">
             <?= session('error') ?>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
     <?php endif; ?>

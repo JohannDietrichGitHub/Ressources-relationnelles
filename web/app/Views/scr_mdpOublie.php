@@ -3,30 +3,6 @@
 <head>
       <meta charset="UTF-8">
       <title>Resources relationnelles</title>
-      <!-- STYLES -->
-      <style {csp-style-nonce}>
-         .bg-accueil {
-         overflow: hidden;
-         position: relative;
-         }
-         .bg-accueil::before {
-         content: "";
-         position: absolute;
-         left: 0;
-         right: 0;
-         z-index: -1;
-         display: block;
-         background-image: url("./images/bg-title.jpg");
-         background-size:cover;
-         overflow: hidden;
-         background-position-y: -0px;
-         width: 110%;
-         height: 110%;
-         left: -5%;
-         top: -5%;
-         filter: blur(12px);
-         }
-      </style>
    </head>
 <body>
 <?= view('header') ?>

@@ -2,45 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ressource Relationnelles Accueil</title>
+    <title>FAQ</title>
     <!-- STYLES -->
-    <style>
-        .bg-accueil {
-            overflow: hidden;
-            position: relative;
-        }
-        .bg-accueil::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            z-index: -1;
-            display: block;
-            background-image: url("./images/bg-title.jpg");
-            background-size:cover;
-            overflow: hidden;
-            background-position-y: -0px;
-            width: 110%;
-            height: 110%;
-            left: -5%;
-            top: -5%;
-            filter: blur(12px);
-        }
-
-        #specialDiv{
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background-size: 100%;
-            background-color: lightblue;
-            display: none; /* Masquer initialement la div */
-            background-image: url('./media/specialImage.png');
-            background-repeat: repeat;
-            background-position: center;
-        }
-    </style>
 </head>
 <body class= "bg-body-tertiary">
 <?= view('header') ?>
