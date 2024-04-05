@@ -4,7 +4,8 @@
   <link rel="icon" href="<?= base_url('favicon.ico'); ?>"  type="image/ico" >
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="<?= base_url('bootstrap/css/bootstrap.min.css'); ?>" rel="stylesheet" crossorigin="anonymous">
-  <link href="<?= base_url('css/custom.css');?>" rel="stylesheet">  
+  <link href="<?= base_url('css/custom.css');?>" rel="stylesheet">
+  <link href="<?= base_url('css/ressource.css');?>" rel="stylesheet">  
   <script src=" <?= base_url('bootstrap/js/bootstrap.bundle.min.js'); ?>" crossorigin="anonymous"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

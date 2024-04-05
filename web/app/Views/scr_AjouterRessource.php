@@ -25,7 +25,6 @@
              }
          });
       </script>
-      <!-- STYLES -->
       <style>
          #ajouterRessource {
          margin: 50px auto;
@@ -41,10 +40,6 @@
          border: 1px solid #ccc;
          border-radius: 5px;
          }
-
-         /* select[multiple]:focus option:checked {
-  background: gray linear-gradient(45deg, yellow 0%, gray 50%);
-} */
       </style>
    </head>
    <?= view('header') ?>
