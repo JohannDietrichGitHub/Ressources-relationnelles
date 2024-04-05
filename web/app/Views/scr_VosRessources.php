@@ -9,54 +9,7 @@
       <meta charset="UTF-8">
       <title>Vos Ressources</title>
       <style>
-         .card {
-         box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
-         }
-         a {
-         color: #02af74;
-         text-decoration: none;
-         }
-         .bookmark-post .favorite-icon a,
-         .job-box.bookmark-post .favorite-icon a {
-         background-color: #da3746;
-         color: #fff;
-         border-color: danger;
-         }
-         .favorite-icon a {
-         display: inline-block;
-         width: 30px;
-         height: 30px;
-         line-height: 30px;
-         text-align: center;
-         }
-         .candidate-list-box .favorite-icon {
-         position: absolute;
-         right: 22px;
-         top: 22px;
-         }
-         .bg-categorie-tag {
-         background-color: rgba(116, 120, 141, .15) !important;
-         color: #54586d !important;
-         }
-         .bg-relation-tag {
-         background-color: rgba(0, 126, 167, .35) !important;
-         color: #54586d !important;
-         }
-         .favoris-btn {
-         background-color: transparent !important;
-         border: none !important;
-         cursor: pointer;
-         fill: currentColor; /* Permet d'utiliser la couleur actuelle pour remplir le SVG */
-         stroke: currentColor; /* Permet d'utiliser la couleur actuelle pour le contour du SVG */
-         }
-         .favoris-btn.active #favoris-icon {
-         fill: #ffbd03;
-         stroke: #eeac02;
-         }
-         .favoris-btn.active .favoris-icon {
-         fill: #ffbd03;
-         stroke: #eeac02;
-         }
+
       </style>
    </head>
    <?= view('header') ?>
