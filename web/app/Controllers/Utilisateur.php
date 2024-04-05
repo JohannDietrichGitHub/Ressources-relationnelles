@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Models\M_Utilisateur;
 use App\Models\M_Role;
 use App\Models\M_Commentaire;
+use Config\Encryption;
+
 $session = \Config\Services::session();
 
 class Utilisateur extends BaseController
@@ -53,10 +55,13 @@ class Utilisateur extends BaseController
                     if ($resteConnecte) {
                         helper('cookie');
                         $cookie_data = [
-                            'name'   => 'remember_me_cookie',
+                            'name'   => 'cookie_id',
                             'value'  => $user->UTI_ID,
-                            'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
-                            'secure' => FALSE, 
+                            'expire' => '3600',
+                            'path'   => '/',
+                            'secure' => TRUE, 
+                            'httponly' => TRUE, 
+                            'encrypt' => TRUE 
                         ];
                         set_cookie($cookie_data);
                     }
@@ -211,9 +216,14 @@ class Utilisateur extends BaseController
             $roleModel = new M_Role();
             $role = $roleModel->where('ROL_NOM', 'Utilisateur classique')->first();
 
-            if ($role) {
+            // Mettez à jour la propriété pour indiquer que la méthode a été appelée
+            $this->recupIdRoleCalled = true;
+            if ($role)
+            {
                 return $role->ROL_ID;
-            } else {
+            }
+            else
+            {
                 return null;
             }
         } catch (\Exception $e) {
@@ -230,9 +240,12 @@ class Utilisateur extends BaseController
             $utilisateurModel = new M_Utilisateur();
             $utilisateur = $utilisateurModel->where('UTI_MAIL', $mail)->first();
 
-            if ($utilisateur) {
+            if ($utilisateur)
+            {
                 return $utilisateur->UTI_ID;
-            } else {
+            }
+            else
+            {
                 return null;
             }
         } catch (\Exception $e) {
@@ -262,7 +275,7 @@ class Utilisateur extends BaseController
             // Redirection vers une page d'erreur
             return view('error_view');
         }
-    }    
+    }
 
     private function verifScriptDansDonnees($utilisateurData) {
         try {
@@ -280,7 +293,7 @@ class Utilisateur extends BaseController
             return view('error_view');
         }
     }
-    
+
     // Affichage vue mot de passe oublié
     public function mdpOublie(): string
     {
@@ -294,8 +307,8 @@ class Utilisateur extends BaseController
             return view('error_view');
         }
     }
-    
-    // Affichage vue administrer utilisateur
+
+    // Affichage vue mot de passe oublié
     public function administrerUtilisateur(): string
     {
         try {
@@ -308,7 +321,7 @@ class Utilisateur extends BaseController
             return view('error_view');
         }
     }
-    
+
     // Fonction de modification du mot de passe 
     public function nouveauMdp()
     {
@@ -326,25 +339,26 @@ class Utilisateur extends BaseController
 
             $utilisateurAModifierId = $utilisateurAModifier->UTI_ID;
 
-            if (empty($motDePasse)) {
+            if($motDePasse){
+                $motDePasseHache = password_hash($motDePasse, PASSWORD_BCRYPT); 
+            }
+            else{
                 return redirect()->to('/connexion/mdp_oublie')->with('error', 'Mot de passe vide, veuillez réessayer');
             }
-
-            $motDePasseHache = password_hash($motDePasse, PASSWORD_BCRYPT);
-
-            if ($this->request->getPost()) {
+            
+            if ($this->request->getPost()){
                 $utilisateurData = [
                     'UTI_MDP' => $motDePasseHache
                 ];
                 if ($this->verifScriptDansDonnees($utilisateurData)) {
                     session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                    $content .= view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
+                    $content = view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
                     return $content;
                 }
 
                 // Mise à jour de la ligne dans la base de données
-                $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
 
+                $utilisateurModel->update($utilisateurAModifierId, $utilisateurData); 
                 $user = $utilisateurModel->authenticate($utilisateurAModifier->UTI_MAIL, $motDePasse);
 
                 if ($user && $user->UTI_ETAT == 'A') {
@@ -387,9 +401,12 @@ class Utilisateur extends BaseController
         try {
             $utilisateurModel = new M_Utilisateur();
             $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
-            if ($utilisateur) {
-                return $utilisateur->UTI_PRENOM . " " . $utilisateur->UTI_NOM;
-            } else {
+            if ($utilisateur)
+            {
+                return $utilisateur->UTI_PRENOM ." ". $utilisateur->UTI_NOM;
+            }
+            else
+            {
                 return 'steve';
             }
         } catch (\Exception $e) {
@@ -405,10 +422,12 @@ class Utilisateur extends BaseController
         try {
             $utilisateurModel = new M_Utilisateur();
             $utilisateur = $utilisateurModel->where('UTI_ID', $id)->first();
-            if ($utilisateur) {
+            if ($utilisateur)
+            {
                 $roleModel = new M_Role();
                 $role = $roleModel->where('ROL_ID', $utilisateur->UTI_ID_ROL)->first();
-                if ($role) {
+                if ($role)
+                {
                     return $role->ROL_NOM;
                 }
             }
@@ -432,7 +451,8 @@ class Utilisateur extends BaseController
                     $commentaireModel->save($commentaire);
                     return "ok";
                 }
-            } else {
+            }
+            else {
                 return "Pas connecté";
             }
         } catch (\Exception $e) {
@@ -447,35 +467,27 @@ class Utilisateur extends BaseController
     public function affichageUtilisateurs(): string
     {
         try {
-            // Vérifier si l'identifiant de l'utilisateur connecté est défini dans la session
-            if (isset($_SESSION['user_id'])) {
-                $utilisateurConnecte = $_SESSION['user_id'];
+            $utilisateurConnecte=$_SESSION['user_id'];
 
-                $utilisateurModel = new M_Utilisateur();
+            $utilisateurModel = new M_Utilisateur();
 
-                // Récupérer les utilisateurs autres que l'utilisateur connecté
-                $utilisateurs = $utilisateurModel
-                    ->where('UTI_ID !=', $utilisateurConnecte)
-                    ->where('UTI_ID !=', 0)
-                    ->findAll(20);
-
-                $data = [
-                    'utilisateurs' => $utilisateurs
-                ];
-
-                $content = view('scr_AdministrerUtilisateur', $data);
-                return $content;
-            } else {
-                // Rediriger vers une page d'erreur ou une page de connexion si l'utilisateur n'est pas connecté
-                return redirect()->to('error_page')->with('error', 'Utilisateur non connecté');
-            }
+            // L'identifiant de l'utilisateur connecté n'est pas récupéré
+            $utilisateurs = $utilisateurModel
+                ->where('UTI_ID !=', $utilisateurConnecte)
+                ->where('UTI_ID !=', 0)
+                ->findAll(20);
+            $data = [
+                'utilisateurs' => $utilisateurs
+            ];
+        
+            $content = view('scr_AdministrerUtilisateur', $data);
+            return $content;
         } catch (\Exception $e) {
             // Gérer l'exception ici
             log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
             return view('error_view'); // Afficher une vue d'erreur
         }
     }
-
 
     // Fonction permettant de promouvoir un utilisateur ($idUtilisateur) à un nouveau rôle ($idRole)
     public function promouvoirUtilisateur($idRole, $idUtilisateur)
@@ -490,13 +502,22 @@ class Utilisateur extends BaseController
 
             if ($this->verifScriptDansDonnees($utilisateurData)) {
                 session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                return redirect()->to('/administrer_utilisateur')->with('error', 'Erreur dans les données utilisateur');
+                $content = view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
+                return $content;
             }
 
             // Mise à jour de la ligne dans la base de données
             $utilisateurModel->update($idUtilisateur, $utilisateurData);
 
+            $utilisateurs = $utilisateurModel->findAll(20);
+            $data = [
+                'utilisateurs' => $utilisateurs
+            ];
+
             return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+
+            $content = view('scr_AdministrerUtilisateur', $data);
+            return $content;
         } catch (\Exception $e) {
             // Gérer l'exception ici
             log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
@@ -505,20 +526,21 @@ class Utilisateur extends BaseController
     }
 
     // Fonction permettant d'activer/désactiver ($etatUtilisateur) un utilisateur ($idUtilisateur)
+
     public function activationUtilisateur($etatUtilisateur, $idUtilisateur)
     {
         try {
-            $utilisateurModel = new M_Utilisateur();
-            $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
+        $utilisateurModel = new M_Utilisateur();
+        $utilisateurAModifier = $utilisateurModel->find($idUtilisateur);
 
-            // Si l'utilisateur est désactivé, on le réactive.
-            if ($etatUtilisateur == 1) {
+        // Si l'utilisateur est désactivé, on le réactive.
+        if($etatUtilisateur == 1){
                 $nouvelEtatUtilisateur = "A";
-            }
-            // Si l'utilisateur est activé, on le désactive
-            elseif ($etatUtilisateur == 2) {
+        }
+        // Si l'utilisateur est activé, on le désactive
+        elseif($etatUtilisateur == 2){
                 $nouvelEtatUtilisateur = "I";
-            }
+        }
 
             $utilisateurData = [
                 'UTI_ETAT' => $nouvelEtatUtilisateur
@@ -526,7 +548,8 @@ class Utilisateur extends BaseController
 
             if ($this->verifScriptDansDonnees($utilisateurData)) {
                 session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                return redirect()->to('/administrer_utilisateur')->with('error', 'Erreur dans les données utilisateur');
+                $content = view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
+                return $content;
             }
 
             // Mise à jour de la ligne dans la base de données
@@ -539,6 +562,9 @@ class Utilisateur extends BaseController
             ];
 
             return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+
+            $content = view('scr_AdministrerUtilisateur', $data);
+            return $content;
         } catch (\Exception $e) {
             // Gérer l'exception ici
             log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
@@ -551,12 +577,43 @@ class Utilisateur extends BaseController
     {
         try {
             $utilisateurModel = new M_Utilisateur();
-            $idUser = $_SESSION['user_id'];
+            /* ------ CHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+            $encryption = new Encryption();
+
+            $cleCp = $encryption->returnCleCp();
+            $cleTel = $encryption->returnCleTel();
+            
+            $ivLength = $encryption->returnIvLength();
+            $iv = $encryption->returnIv($ivLength);
+            */
+
+            $idUser=$_SESSION['user_id'];
             $utilisateur = $utilisateurModel->find($idUser);
 
             $data = [
                 'utilisateur' => $utilisateur
             ];
+
+            /* ------ CHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+            $numTel = $utilisateur->UTI_NUM_TEL;
+            $cp = $utilisateur->UTI_CP;
+
+            $donneesDecryptesAvecIVTel = base64_encode($iv . $numTel);
+            $donneesDecryptesAvecIVCp = base64_encode($iv . $cp);
+
+            // Déchiffrer les données
+            $donneesDecrypteTel = base64_decode($donneesDecryptesAvecIVTel);
+            $donneesDecrypteCp = base64_decode($donneesDecryptesAvecIVCp);
+            $ivTel = substr($donneesDecrypteTel, 0, $ivLength);
+            $ivCp = substr($donneesDecrypteCp, 0, $ivLength);
+        //    dd($ivCp);
+            $donneesDecryptesSansIVTel = substr($donneesDecrypteTel, $ivLength);
+            $donneesDecryptesSansIVCp = substr($donneesDecrypteCp, $ivLength);
+            $cpDeCrypte = openssl_decrypt($donneesDecryptesSansIVCp, 'aes-256-cbc', $cleCp, 0, $ivCp);  
+            $numTelDecrypte = openssl_decrypt($donneesDecryptesSansIVTel, 'aes-256-cbc', $cleTel, 0, $ivTel);
+        //    dd($numTelDecrypte);
+        */
+                    
 
             $content = view('scr_GestionProfil', $data);
 
@@ -574,36 +631,80 @@ class Utilisateur extends BaseController
             $utilisateurModel = new M_Utilisateur();
             $utilisateurAModifier = $utilisateurModel->find($utilisateurAModifierId);
 
-            if ($this->request->getPost()) {
+            if ($this->request->getPost()){
                 // Gestion civilité
                 $civilite = $this->request->getPost('civilite');
-                if ($civilite != "M" && $civilite != "Mme" && $civilite != "Aut") {
+                if($civilite != "M" && $civilite != "Mme" && $civilite != "Aut")
+                {
                     $newCivilite = $this->convertir_civilite($civilite);
-                } else {
+                }
+                else {
                     $newCivilite = $civilite;
                 }
+            
+            /* ------ CHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+                // Création des clés
+                $encryption = new Encryption();
+
+                $cleCp = $encryption->returnCleCp();
+                $cleTel = $encryption->returnCleTel();
+                
+                // Récupération des IV 
+                $ivLength = $encryption->returnIvLength();
+                $iv = $encryption->returnIv($ivLength);
+                
+                // Récupération du numéro de téléphone
+                $numTel = $this->request->getPost('numTel');
+                // Récupération du numéro de code postal
+                $cp = $this->request->getPost('cp');
+
+                // Chiffrer le numéro de téléphone
+                $numTelCrypte = openssl_encrypt($numTel, 'aes-256-cbc', $cleTel, 0, $iv);
+
+                // Chiffrer le code postal
+                $cpCrypte = openssl_encrypt($cp, 'aes-256-cbc', $cleCp, 0, $iv);
+
+                // Stocker l'IV avec les données chiffrées (par exemple, en les concaténant)
+                $donneesDecryptesAvecIVTel = base64_encode($iv . $numTelCrypte);
+                $donneesDecryptesAvecIVCp = base64_encode($iv . $cpCrypte); 
+                */
 
                 $utilisateurData = [
                     'UTI_CIVILITE' => $newCivilite,
                     'UTI_NOM' => $this->request->getPost('nom'),
-                    'UTI_PRENOM' => $this->request->getPost('prenom'),
+                    'UTI_PRENOM' => $this->request->getPost('prenom'), 
                     'UTI_ADRESSE' => $this->request->getPost('adresse'),
                     'UTI_CP' => $this->request->getPost('cp'),
+                //   'UTI_CP' => $cpCrypte,
                     'UTI_VILLE' => $this->request->getPost('ville'),
                     'UTI_NUM_TEL' => $this->request->getPost('numTel')
+                //   'UTI_NUM_TEL' => $numTelCrypte
                 ];
-
+            
                 if ($this->verifScriptDansDonnees($utilisateurData)) {
                     session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                    return redirect()->to('/gestion_profil')->with('error', 'Erreur dans les données utilisateur');
+                    $content = view('scr_GestionProfil', ['utilisateur' => $utilisateurAModifier]);
+                    return $content;
                 }
                 // Mise à jour de la ligne dans la base de données
                 $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
 
-                return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mises à jour');
+            /* ------ DECHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+                // Déchiffrer les données
+                $donneesDecrypteTel = base64_decode($donneesDecryptesAvecIVTel);
+                $donneesDecrypteCp = base64_decode($donneesDecryptesAvecIVCp);
+                $ivTel = substr($donneesDecrypteTel, 0, $ivLength);
+                $ivCp = substr($donneesDecrypteCp, 0, $ivLength);
+                $donneesDecryptesSansIVTel = substr($donneesDecrypteTel, $ivLength);
+                $donneesDecryptesSansIVCp = substr($donneesDecrypteCp, $ivLength);
+                $numTelDecrypte = openssl_decrypt($donneesDecryptesSansIVTel, 'aes-256-cbc', $cleTel, 0, $ivTel);
+                $cpDeCrypte = openssl_decrypt($donneesDecryptesSansIVCp, 'aes-256-cbc', $cleCp, 0, $ivCp);  
+                */
+                return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mis à jour');
             }
 
-            return view('scr_GestionProfil');
+            $content = view('scr_GestionProfil', $data);
+            return $content;
         } catch (\Exception $e) {
             // Gérer l'exception ici
             log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs

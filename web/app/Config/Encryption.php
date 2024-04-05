@@ -22,7 +22,35 @@ class Encryption extends BaseConfig
      * See the user guide for more info.
      */
     public string $key = '';
+    
+    /* ------ CHIFFRAGE/DECHIFFRAGE DES DONNEES - A LAISSER EN COMMENTAIRE POUR L'INSTANT ------
+    // Retourne la clé du postal postal
+    public function returnCleCp()
+    {
+        $cleCp = bin2hex(random_bytes(32));
+        return $cleCp;
+    }
 
+    // Récupérer la clé pour le téléphone
+    public function returnCleTel()
+    {
+        $cleTel = bin2hex(random_bytes(32));
+        return $cleTel;
+    }
+
+    public function returnIvLength()
+    {
+        $ivLength = openssl_cipher_iv_length('aes-256-cbc');
+        return $ivLength;
+    }
+
+    public function returnIv($ivLength)
+    {
+        $iv = openssl_random_pseudo_bytes($ivLength);
+        return $iv;
+    } 
+    /*
+    
     /**
      * --------------------------------------------------------------------------
      * Encryption Driver to Use

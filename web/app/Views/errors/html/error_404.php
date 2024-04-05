@@ -2,83 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title><?= lang('Errors.pageNotFound') ?></title>
+    <title>404 : Page Non Trouvée</title>
 
     <style>
-        div.logo {
-            height: 200px;
-            width: 155px;
-            display: inline-block;
-            opacity: 0.08;
-            position: absolute;
-            top: 2rem;
-            left: 50%;
-            margin-left: -73px;
-        }
-        body {
-            height: 100%;
-            background: #fafafa;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #777;
-            font-weight: 300;
-        }
-        h1 {
-            font-weight: lighter;
-            letter-spacing: normal;
-            font-size: 3rem;
-            margin-top: 0;
-            margin-bottom: 0;
-            color: #222;
-        }
         .wrap {
             max-width: 1024px;
             margin: 5rem auto;
             padding: 2rem;
-            background: #fff;
+
             text-align: center;
             border: 1px solid #efefef;
             border-radius: 0.5rem;
             position: relative;
         }
-        pre {
-            white-space: normal;
-            margin-top: 1.5rem;
+
+
+        #star-pattern{
+            background-image: url('./media/pattern.svg');
+            background-size: 10%;  
+            top: 0;
+            left: 0;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            opacity: 0.2;
+            z-index: -1;
+            animation: pan 80s linear infinite;
+            will-change: background-position;
         }
-        code {
-            background: #fafafa;
-            border: 1px solid #efefef;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            display: block;
-        }
-        p {
-            margin-top: 1.5rem;
-        }
-        .footer {
-            margin-top: 2rem;
-            border-top: 1px solid #efefef;
-            padding: 1em 2em 0 2em;
-            font-size: 85%;
-            color: #999;
-        }
-        a:active,
-        a:link,
-        a:visited {
-            color: #dd4814;
-        }
+
+        @keyframes pan {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% -100%;
+  }
+}
     </style>
 </head>
 <body>
-    <div class="wrap">
-        <h1>404</h1>
-
-        <p>
+<?= view('header') ?>
+<main>
+<div id="star-pattern"></div>
+<div class="wrap">
+        <h1>Erreur 404 : Page non trouvée</h1>
+        <p class="mt-3">
             <?php if (ENVIRONMENT !== 'production') : ?>
-                <?= nl2br(esc($message)) ?>
+                Frero je trouve pas ta route
             <?php else : ?>
-                <?= lang('Errors.sorryCannotFind') ?>
+                <p>La page demandée est introuvable.</p>
             <?php endif; ?>
         </p>
+        </div>
+        
+
     </div>
+</main>
+<?= view('footer') ?>
 </body>
+</html>
 </html>
