@@ -295,7 +295,7 @@ class Utilisateur extends BaseController
             ];
             if ($this->verifScriptDansDonnees($utilisateurData)) {
                 session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content .= view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
+                $content = view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
                 return $content;
             }
 
@@ -414,7 +414,7 @@ class Utilisateur extends BaseController
 
         if ($this->verifScriptDansDonnees($utilisateurData)) {
             session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
+            $content = view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
             return $content;
         }
 
@@ -428,7 +428,7 @@ class Utilisateur extends BaseController
 
         return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
 
-        $content .= view('scr_AdministrerUtilisateur', $data);
+        $content = view('scr_AdministrerUtilisateur', $data);
         return $content;
     }
 
@@ -455,7 +455,7 @@ class Utilisateur extends BaseController
 
         if ($this->verifScriptDansDonnees($utilisateurData)) {
             session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
+            $content = view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
             return $content;
         }
 
@@ -470,7 +470,7 @@ class Utilisateur extends BaseController
 
         return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
 
-        $content .= view('scr_AdministrerUtilisateur', $data);
+        $content = view('scr_AdministrerUtilisateur', $data);
         return $content;
     }
 
@@ -519,7 +519,7 @@ class Utilisateur extends BaseController
         
             if ($this->verifScriptDansDonnees($utilisateurData)) {
                 session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content .= view('scr_GestionProfil', ['utilisateur' => $utilisateurAModifier]);
+                $content = view('scr_GestionProfil', ['utilisateur' => $utilisateurAModifier]);
                 return $content;
             }
             // Mise à jour de la ligne dans la base de données
@@ -528,7 +528,7 @@ class Utilisateur extends BaseController
             return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mis à jour');
         }
 
-        $content .= view('scr_GestionProfil');
+        $content = view('scr_GestionProfil');
         return $content;
     }
 
