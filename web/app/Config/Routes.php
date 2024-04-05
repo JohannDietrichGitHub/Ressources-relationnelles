@@ -96,3 +96,6 @@ $routes->get('/utilisateur/ressourcesfavorites', 'Ressource::afficherFeedRessour
 
 //Rechercher des ressources
 $routes->get('/recherche', 'Recherche::index');
+
+//Afficher ses ressources
+$routes->get('/utilisateur/vosressources', 'Ressource::afficherRessourcesUtilisateur');

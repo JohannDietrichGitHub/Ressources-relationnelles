@@ -110,6 +110,8 @@
                            </div>
                         </div>
                      <?php endforeach; ?>
+                     <?php else: ?>
+                        <p>Vous n'avez pas de ressources favorites.</p>
                      <?php endif; ?>
                   </div>
                </div>

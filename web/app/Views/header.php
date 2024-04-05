@@ -68,9 +68,9 @@
       <ul class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="profil"> <!-- Utilisation de w-100 pour que le dropdown-menu prenne toute la largeur -->
         <li><a class="dropdown-item" href="<?= base_url('/gestion_profil') ?>">Gérer son profil</a></li>
         <li><a class="dropdown-item" href="<?= base_url('/utilisateur/ressourcesfavorites') ?>">Tableau de bord</a></li>
-        <li><a class="dropdown-item" href="<?= base_url('/ressources') ?>">Vos ressources</a></li>
+        <li><a class="dropdown-item" href="<?= base_url('/utilisateur/vosressources') ?>">Vos ressources</a></li>
           <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="<?= base_url('deconnexion'); ?>">Déconnexion</a></li>
+        <li><a class="dropdown-item" href="<?= base_url('/deconnexion'); ?>">Déconnexion</a></li>
       </ul>
     </div>
   <?php else: ?>

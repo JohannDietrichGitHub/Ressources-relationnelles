@@ -211,6 +211,23 @@ class Ressource extends BaseController
         $content = view('scr_Ressource', $data);
         return $content;
     }
+
+    public function afficherRessourcesUtilisateur(){
+        $ressourceModel = new M_Ressource();
+        $ressources = $ressourceModel->where('RES_UTI_ID', $_SESSION['user_id'])->orderBy('RES_DATE_MODIFICATION', 'DESC')->findAll();
+        foreach ($ressources as &$ressource) {
+            $ressource->categorie = $this->recupCategorieRessource($ressource->RES_ID);
+            $ressource->type = $this->recupTypeRessource($ressource->RES_ID);
+            $ressource->relations = $this->recupRelationsRessource($ressource->RES_ID);
+        }
+        $data = [
+            'vosRessources' => $ressources
+        ];
+        $content = view ('scr_VosRessources', $data);
+        // dd($data);
+        return $content;
+    }
+
     public function afficherRessourcesAVerifier() : array
     {
         $ressourceModel = new M_Ressource();

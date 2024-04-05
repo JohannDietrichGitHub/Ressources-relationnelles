@@ -43,94 +43,31 @@
          color: #54586d !important;
          }
          .favoris-btn {
-    background-color: transparent !important;
-    border: none !important;
-    cursor: pointer;
-    fill: currentColor; /* Permet d'utiliser la couleur actuelle pour remplir le SVG */
-    stroke: currentColor; /* Permet d'utiliser la couleur actuelle pour le contour du SVG */
-}
-
-.favoris-btn.active #favoris-icon {
-    fill: #ffbd03;
-    stroke: #eeac02;
-}
-.favoris-btn.active .favoris-icon {
-     fill: #ffbd03;
-     stroke: #eeac02;
-}
-
-
-.btnRepondre{
-    background-color: transparent !important;
-    border: none;
-    color: #248db5;
-    padding: 7px;
-
-}
-
-
-.bloquer-commentaire{
- text-decoration: none;
-}
-.enter-reponse{
-   background-color: white;
-}
+         background-color: transparent !important;
+         border: none !important;
+         cursor: pointer;
+         fill: currentColor; /* Permet d'utiliser la couleur actuelle pour remplir le SVG */
+         stroke: currentColor; /* Permet d'utiliser la couleur actuelle pour le contour du SVG */
+         }
+         .favoris-btn.active #favoris-icon {
+         fill: #ffbd03;
+         stroke: #eeac02;
+         }
+         .favoris-btn.active .favoris-icon {
+         fill: #ffbd03;
+         stroke: #eeac02;
+         }
       </style>
    </head>
    <?= view('header') ?>
    <body>
       <main>
-          <script src="<?= base_url('/js/ajouterFavoris.js') ?>"></script>
-          <?php
-            if (!empty($ressource)) {
-            //        $commentaireArray = getCommentaires($ressource->id)
-                ?>
-         <div class="container">
-            <div class="ressource-container position-relative my-5">
-               <div class="position-absolute favorite-icon top-0 end-0 mt-4 me-3">
-                   <button class="favoris-btn <?php if(Ressource::estEnFavoris($ressource->RES_ID)) { echo 'active'; }?>" value="<?= esc($ressource->RES_ID) ?>" onclick="ajouterAuxFavoris(this)">
-                     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" class="favoris-icon" stroke-linejoin="round">
-                        <path d="M5 3v18l7-5 7 5V3H5z"></path>
-                     </svg>
-                  </button>
-               </div>
-               <h2 class="mb-0">
-                  <a class="ressources-link"> <?= esc($ressource->RES_NOM) ?> </a>
-               </h2>
-               <div class="mb-1" >
-                  <span class="text-muted fst-italic" style="display: inline-block;"><?= esc(Utilisateur::recupNomUtilisateurParID($ressource->RES_UTI_ID)) ?></span>
-                  <span class="text-muted" style="font-size: 0.8em; display: inline-block; white-space: nowrap;"> posté le <?= esc($ressource->RES_DATE_CREATION) ?></span>
-               </div>
-
-               <div>
-                  <span>
-                     <span class="badge bg-categorie-tag fs-14 mt-3"><?= esc($ressource->categorie) ?></span>
-                  </span>
-                   <?php if(isset($ressource->relations)) {
-                       foreach ($ressource->relations as $relation) { ?>
-                     <span class="badge bg-relation-tag fs-14 mt-3"><?= esc($relation) ?></span>
-                   <?php } }?>
-                  <span class="badge bg-info fs-14 mt-3" style="color: #54586d"><?= esc($ressource->type)?></span>
-               </div>
-               <p class=" mt-3 border-top border-black"></p>
-
-               <div>
-                  <?= html_entity_decode( esc($ressource->RES_CONTENU)) ?>
-               </div>
-
-            </div>
-
-            <div class="ressource-container">
-              <?php
-                  include_once('scr_feedCommentaires.php');
-              ?>
-            </div>
-         </div>
-         <?php
-            }
-            if (!empty($groupeDeRessources)) : ?>
-            <?php foreach ($groupeDeRessources as $ressource) : ?>
-         <div class="container">
+         <script src="<?= base_url('/js/ajouterFavoris.js') ?>"></script>
+         <div class="container my-5">
+            <h2 class="mt-4"> Vos ressources</h2>
+            <?php
+               if (!empty($vosRessources)) : ?>
+            <?php foreach ($vosRessources as $ressource) : ?>
             <div class="row">
                <div class="col-lg-12">
                   <!-- Votre contenu de ressource ici -->
@@ -176,10 +113,9 @@
                   </div>
                </div>
             </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
          </div>
-         </div>
-         <?php endforeach; ?>
-         <?php endif; ?>
       </main>
    </body>
    <?= view('footer') ?>
