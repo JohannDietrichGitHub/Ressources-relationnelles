@@ -75,7 +75,6 @@
       </ul>
     </div>
   <?php else: ?>
-    <!-- Votre code pour le cas où l'utilisateur n'est pas connecté -->
 
         <button class="btn btn-secondary me-lg-2 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('inscription'); ?>'">Inscription</button>
         <button class="btn btn-primary my-4 my-lg-1 custom-button" type="submit" onclick="window.location.href='<?= base_url('connexion'); ?>'">Connexion</button>
@@ -97,16 +96,18 @@
 
 <?php if (session()->has('success')) : ?>
       <div class="position-absolute" style="width: 100%; top: 60px;">
-        <div class="alert alert-success inner-message" role="alert">
+        <div class="alert alert-success alert-dismissible fade show inner-message" role="alert">
             <?= session('success') ?>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         </div>
         
     <?php endif; ?>
     <?php if (session()->has('error')) : ?>
       <div class="position-absolute" style="width: 100%; top: 60px;">
-        <div class="alert alert-danger inner-message" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show inner-message" role="alert">
             <?= session('error') ?>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
     <?php endif; ?>
