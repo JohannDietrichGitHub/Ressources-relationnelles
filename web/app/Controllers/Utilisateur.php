@@ -4,8 +4,6 @@ namespace App\Controllers;
 use App\Models\M_Utilisateur;
 use App\Models\M_Role;
 use App\Models\M_Commentaire;
-use Config\Encryption;
-
 $session = \Config\Services::session();
 
 class Utilisateur extends BaseController
@@ -48,20 +46,20 @@ class Utilisateur extends BaseController
 
                 $user = $utilisateurModel->authenticate($nomUtilisateur, $mdp);
 
-            // Vérification si l'utilisateur existe, et s'il est bien Actif
-            if ($user && $user->UTI_ETAT == 'A') {
-                      
-                $resteConnecte = $this->request->getPost('resteconnecte');
-                if ($resteConnecte) {
-                    helper('cookie');
-                    $cookie_data = [
-                        'name'   => 'remember_me_cookie',
-                        'value'  => $user->UTI_ID,
-                        'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
-                        'secure' => FALSE, 
-                    ];
-                    set_cookie($cookie_data);
-                }
+                // Vérification si l'utilisateur existe, et s'il est bien Actif
+                if ($user && $user->UTI_ETAT == 'A') {
+                        
+                    $resteConnecte = $this->request->getPost('resteconnecte');
+                    if ($resteConnecte) {
+                        helper('cookie');
+                        $cookie_data = [
+                            'name'   => 'remember_me_cookie',
+                            'value'  => $user->UTI_ID,
+                            'expire' => 86400 * 30, // Expiration du cookie (30 jours ici)
+                            'secure' => FALSE, 
+                        ];
+                        set_cookie($cookie_data);
+                    }
 
                     // On remplit le $session avec les données que l'on souhaite 
                     $session = \Config\Services::session();
@@ -328,22 +326,21 @@ class Utilisateur extends BaseController
 
             $utilisateurAModifierId = $utilisateurAModifier->UTI_ID;
 
-        if($motDePasse){
-            $motDePasseHache = password_hash($motDePasse, PASSWORD_BCRYPT); 
-        }
-        else{
-            return redirect()->to('/connexion/mdp_oublie')->with('error', 'Mot de passe vide, veuillez réessayer');
-        }
-        
-        if ($this->request->getPost()){
-            $utilisateurData = [
-                'UTI_MDP' => $motDePasseHache
-            ];
-            if ($this->verifScriptDansDonnees($utilisateurData)) {
-                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content .= view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
-                return $content;
+            if (empty($motDePasse)) {
+                return redirect()->to('/connexion/mdp_oublie')->with('error', 'Mot de passe vide, veuillez réessayer');
             }
+
+            $motDePasseHache = password_hash($motDePasse, PASSWORD_BCRYPT);
+
+            if ($this->request->getPost()) {
+                $utilisateurData = [
+                    'UTI_MDP' => $motDePasseHache
+                ];
+                if ($this->verifScriptDansDonnees($utilisateurData)) {
+                    session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                    $content .= view('scr_mdpOublie', ['utilisateur' => $utilisateurAModifier]);
+                    return $content;
+                }
 
                 // Mise à jour de la ligne dans la base de données
                 $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
@@ -491,19 +488,20 @@ class Utilisateur extends BaseController
                 'UTI_ID_ROL' => $idRole
             ];
 
-        if ($this->verifScriptDansDonnees($utilisateurData)) {
-            session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
-            return $content;
-        }
+            if ($this->verifScriptDansDonnees($utilisateurData)) {
+                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                return redirect()->to('/administrer_utilisateur')->with('error', 'Erreur dans les données utilisateur');
+            }
 
             // Mise à jour de la ligne dans la base de données
             $utilisateurModel->update($idUtilisateur, $utilisateurData);
 
-        return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
-
-        $content .= view('scr_AdministrerUtilisateur', $data);
-        return $content;
+            return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
+        }
     }
 
     // Fonction permettant d'activer/désactiver ($etatUtilisateur) un utilisateur ($idUtilisateur)
@@ -526,11 +524,10 @@ class Utilisateur extends BaseController
                 'UTI_ETAT' => $nouvelEtatUtilisateur
             ];
 
-        if ($this->verifScriptDansDonnees($utilisateurData)) {
-            session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-            $content .= view('scr_AdministrerUtilisateur', ['utilisateur' => $idUtilisateur]);
-            return $content;
-        }
+            if ($this->verifScriptDansDonnees($utilisateurData)) {
+                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                return redirect()->to('/administrer_utilisateur')->with('error', 'Erreur dans les données utilisateur');
+            }
 
             // Mise à jour de la ligne dans la base de données
             $utilisateurModel->update($idUtilisateur, $utilisateurData);
@@ -541,25 +538,27 @@ class Utilisateur extends BaseController
                 'utilisateurs' => $utilisateurs
             ];
 
-        return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
-
-        $content .= view('scr_AdministrerUtilisateur', $data);
-        return $content;
+            return redirect()->to('/administrer_utilisateur')->with('success', 'Utilisateur mis à jour');
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
+        }
     }
 
     // Affichage vue gestion du profil
     public function gestionProfil(): string
     {
-        $utilisateurModel = new M_Utilisateur();
-
-        $idUser=$_SESSION['user_id'];
-        $utilisateur = $utilisateurModel->find($idUser);
+        try {
+            $utilisateurModel = new M_Utilisateur();
+            $idUser = $_SESSION['user_id'];
+            $utilisateur = $utilisateurModel->find($idUser);
 
             $data = [
                 'utilisateur' => $utilisateur
             ];
 
-        $content = view('scr_GestionProfil', $data);
+            $content = view('scr_GestionProfil', $data);
 
             return $content;
         } catch (\Exception $e) {
@@ -575,40 +574,41 @@ class Utilisateur extends BaseController
             $utilisateurModel = new M_Utilisateur();
             $utilisateurAModifier = $utilisateurModel->find($utilisateurAModifierId);
 
-        if ($this->request->getPost()){
-            // Gestion civilité
-            $civilite = $this->request->getPost('civilite');
-            if($civilite != "M" && $civilite != "Mme" && $civilite != "Aut")
-            {
-                $newCivilite = $this->convertir_civilite($civilite);
-            }
-            else {
-                $newCivilite = $civilite;
+            if ($this->request->getPost()) {
+                // Gestion civilité
+                $civilite = $this->request->getPost('civilite');
+                if ($civilite != "M" && $civilite != "Mme" && $civilite != "Aut") {
+                    $newCivilite = $this->convertir_civilite($civilite);
+                } else {
+                    $newCivilite = $civilite;
+                }
+
+                $utilisateurData = [
+                    'UTI_CIVILITE' => $newCivilite,
+                    'UTI_NOM' => $this->request->getPost('nom'),
+                    'UTI_PRENOM' => $this->request->getPost('prenom'),
+                    'UTI_ADRESSE' => $this->request->getPost('adresse'),
+                    'UTI_CP' => $this->request->getPost('cp'),
+                    'UTI_VILLE' => $this->request->getPost('ville'),
+                    'UTI_NUM_TEL' => $this->request->getPost('numTel')
+                ];
+
+                if ($this->verifScriptDansDonnees($utilisateurData)) {
+                    session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
+                    return redirect()->to('/gestion_profil')->with('error', 'Erreur dans les données utilisateur');
+                }
+                // Mise à jour de la ligne dans la base de données
+                $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
+
+                return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mises à jour');
             }
 
-            $utilisateurData = [
-                'UTI_CIVILITE' => $newCivilite,
-                'UTI_NOM' => $this->request->getPost('nom'),
-                'UTI_PRENOM' => $this->request->getPost('prenom'), 
-                'UTI_ADRESSE' => $this->request->getPost('adresse'),
-                'UTI_CP' => $this->request->getPost('cp'),
-                'UTI_VILLE' => $this->request->getPost('ville'),
-                'UTI_NUM_TEL' => $this->request->getPost('numTel')
-            ];
-        
-            if ($this->verifScriptDansDonnees($utilisateurData)) {
-                session()->setFlashdata('error', 'Veuillez ne pas utiliser de balises script');
-                $content .= view('scr_GestionProfil', ['utilisateur' => $utilisateurAModifier]);
-                return $content;
-            }
-            // Mise à jour de la ligne dans la base de données
-            $utilisateurModel->update($utilisateurAModifierId, $utilisateurData);
-
-            return redirect()->to('/gestion_profil')->with('success', 'Les données du profil ont été mis à jour');
+            return view('scr_GestionProfil');
+        } catch (\Exception $e) {
+            // Gérer l'exception ici
+            log_message('error', $e->getMessage()); // Enregistrer l'erreur dans les logs
+            return view('error_view'); // Afficher une vue d'erreur
         }
-
-        $content .= view('scr_GestionProfil');
-        return $content;
     }
 
 }
