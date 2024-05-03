@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Navigate to web directory
+        run: cd web
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
