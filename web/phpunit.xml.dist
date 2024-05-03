@@ -30,6 +30,12 @@
 		<testsuite name="App">
 			<directory>./tests</directory>
 		</testsuite>
+		<testsuite name="Database">
+			<directory>./tests/database</directory>
+		</testsuite>
+		<testsuite name="Commentaire">
+			<directory>./tests/integration/commentaire/MyCommentaireShould.php</directory>
+		</testsuite>
 	</testsuites>
 	<logging>
 		<testdoxHtml outputFile="build/logs/testdox.html"/>
