@@ -33,5 +33,5 @@ jobs:
           php -r "unlink('composer-setup.php');"
           php composer.phar install --ignore-platform-req=ext-intl
 
-      - name: Run CodeIgniter tests
-        run: php index.php test
+      - name: Run integration tests for 'Commentaire'
+        run: vendor/bin/phpunit --testsuite Commentaire --testdox
