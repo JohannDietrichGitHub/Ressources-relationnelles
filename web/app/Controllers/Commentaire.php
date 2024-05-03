@@ -68,7 +68,22 @@ class Commentaire extends BaseController
     public function ajouterCommentaire()
     {
         try {
-            if ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu')) && empty($this->request->getPost('commentaire_contenu_reponse'))) {
+            // METHODE DE TEST
+            if(!empty($_POST['commentaire_contenu']) && !empty($_POST['commentaire_uti_id']) && !empty($_POST['commentaire_res_id'])){
+                $COM_CONTENU = $_POST['commentaire_contenu'];
+                $COM_UTI_ID = $_POST['commentaire_uti_id'];
+                $COM_RES_ID = $_POST['commentaire_res_id'];
+                $commentaireData = [
+                    'COM_CONTENU' => $COM_CONTENU,
+                    'COM_UTI_ID' => $COM_UTI_ID,
+                    'COM_RES_ID' => $COM_RES_ID,
+                    'COM_TSP_CRE' => Time::now(),
+                    'COM_VISIBILITE' => "A"
+                ];
+                $commentaireModel = new M_Commentaire();
+                $commentaireModel->insert($commentaireData);
+                return redirect()->to(site_url('/ressource/' . $COM_RES_ID));
+            }elseif ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu')) && empty($this->request->getPost('commentaire_contenu_reponse'))) {
                 if (empty($this->request->getPost('commentaire_contenu'))) {
                     session()->setFlashdata('error', 'Veuillez remplir tous les champs');
                 }
@@ -108,8 +123,8 @@ class Commentaire extends BaseController
                 ];
                 $commentaireModel = new M_Commentaire();
                 $commentaireModel->insert($commentaireData);
-                return redirect()->to(site_url('/ressource/' . $COM_RES_ID));
-            }else {
+                return redirect()->to(site_url('/ressource/' . $COM_RES_ID)); 
+            } else {
                 $content = view("scr_Ressource");
                 return $content;
             }
@@ -145,8 +160,15 @@ class Commentaire extends BaseController
     public function modifierCommentaire()
     {
         try {
-        $commentaireId = $this->request->getPost('commentaire_id');
-        $nouveauContenu = $this->request->getPost('nouveau_contenu');
+        // Méthode de test 
+        if(!empty($_POST['commentaire_id']) && !empty($_POST['nouveau_contenu'])){
+            $commentaireId = $_POST['commentaire_id'];
+            $nouveauContenu = $_POST['nouveau_contenu'];
+        }
+        else{
+            $commentaireId = $this->request->getPost('commentaire_id');
+            $nouveauContenu = $this->request->getPost('nouveau_contenu');
+        }
 
         // Vérifier si les données requises sont présentes
         if (empty($commentaireId) || empty($nouveauContenu)) {
