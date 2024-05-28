@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -33,5 +33,6 @@ jobs:
           php -r "unlink('composer-setup.php');"
           php composer.phar install --ignore-platform-req=ext-intl
 
-      - name: Run CodeIgniter tests
-        run: php index.php test
+      - name: Run integration tests
+        run: vendor/bin/phpunit tests
+
