@@ -7,13 +7,13 @@ use App\Models\M_Commentaire;
 class MyCommentaireShould extends CIUnitTestCase
 {
     
-    public function CommentaireNonExistant()
+    public function testCommentaireNonExistant()
     {
         // Créer une instance contrôleur
         $controller = new \App\Controllers\Commentaire();
     
         // Appelle la méthode à tester
-        $result = $controller->afficherFeedCommentaires(99999);
+        $result = $controller->afficherFeedCommentaires(40);
     
         // Effectuez les assertions appropriées sur le résultat retourné
         $this->assertEmpty($result);
@@ -22,8 +22,8 @@ class MyCommentaireShould extends CIUnitTestCase
         var_dump($result);
     }
 
-    // Test unitaire
-    public function testAjouterCommentaire()
+    /// A décommenter quand pas d'appel à la base
+    /*public function testAjouterCommentaire()
     {
         $_POST['commentaire_contenu'] = 'Test commentaire contenu';
         $_POST['commentaire_uti_id'] = 3; // ID de l'utilisateur
@@ -48,38 +48,5 @@ class MyCommentaireShould extends CIUnitTestCase
         dd($result);
         // Vérifier le comportement
         $this->assertTrue($result); // Vérifier si l'ajout s'est effectué avec succès
-    }
-
-
-
-    public function DeleteCommentaireId1()
-    {
-        // Créer une instance contrôleur
-        $controller = new \App\Controllers\Commentaire();
-        
-        // Mettre en place vos préconditions de test si nécessaire
-        $commentaireId = 1;
-        $create = $controller->ajouterCommentaire($commentaireId);
-            
-        // Appelle la méthode à tester
-        $result = $controller->supprimerCommentaire($commentaireId);
-    
-        // Effectuez les assertions appropriées sur le résultat retourné
-        $this->assertStringContainsString('<div class="commentaire">', $result);
-    }
-
-    public function DeleteRessourceNonExisting()
-    {
-        // Mettre en place vos préconditions de test si nécessaire
-        $commentaireId = 999;
-    
-        // Créer une instance contrôleur
-        $controller = new \App\Controllers\Commentaire();
-    
-        // Appelle la méthode à tester
-        $result = $controller->supprimerCommentaire($commentaireId);
-    
-        // Effectuez les assertions appropriées sur le résultat retourné
-        $this->assertStringContainsString('<div class="commentaire">', $result);
-    }
+    }*/
 }
