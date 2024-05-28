@@ -62,8 +62,8 @@ class MyCommentaireShould extends CIUnitTestCase
         echo 'Résultat : ';
         var_dump($result);
     }
-
-    public function testAjouterCommentaire()
+    /// A décommenter si pas de modification en base
+    /*public function testAjouterCommentaire()
     {
         // Récupération du dernier commentaire par ID de commentaire
         $commentaireModel = new \App\Models\M_Commentaire();
@@ -89,5 +89,5 @@ class MyCommentaireShould extends CIUnitTestCase
         $this->assertGreaterThan($commentaireDernier, $commentaireAjoute, 'L\'ID du commentaire ajouté doit être supérieur à l\'ID du dernier commentaire.');
         echo 'Résultat : ID de commentaire suivant ajouté dans la base de données - ';
         var_dump($commentaireAjoute->COM_ID);
-    }
+    }*/
 }

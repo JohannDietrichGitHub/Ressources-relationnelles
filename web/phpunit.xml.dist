@@ -36,6 +36,9 @@
 		<testsuite name="Commentaire">
 			<directory>./tests/integration/commentaire/MyCommentaireShould.php</directory>
 		</testsuite>
+		<testsuite name="Commentaire2" >
+			<directory>./tests/unit/commentaire/MyCommentaireShould.php</directory>
+		</testsuite>
 	</testsuites>
 	<logging>
 		<testdoxHtml outputFile="build/logs/testdox.html"/>
