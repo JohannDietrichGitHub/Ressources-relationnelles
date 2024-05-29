@@ -1,0 +1,27 @@
+name: Run PHPUnit Tests
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  phpunit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0' 
+        extensions: mbstring, intl, pdo_mysql
+        ini-values: post_max_size=256M, upload_max_filesize=256M
+
+    - name: Install dependencies
+      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Run PHPUnit
+      run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
+      working-directory: xampp/htdocs/Ressources-relationnelles/web
