@@ -25,4 +25,4 @@ jobs:
 
     - name: Run PHPUnit
       run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
-      working-directory: Ressources-relationnelles/web
+ #     working-directory: Ressources-relationnelles/web
