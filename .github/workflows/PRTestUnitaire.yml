@@ -15,12 +15,13 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0' 
+        php-version: '8.0' # Vous pouvez spécifier la version PHP que vous utilisez
         extensions: mbstring, intl, pdo_mysql
         ini-values: post_max_size=256M, upload_max_filesize=256M
 
     - name: Install dependencies
-      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      run: composer install --no-progress --prefer-dist --optimize-autoloader
+      working-directory: xampp/htdocs/Ressources-relationnelles/web
 
     - name: Run PHPUnit
       run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
