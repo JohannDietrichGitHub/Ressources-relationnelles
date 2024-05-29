@@ -19,9 +19,9 @@ jobs:
         extensions: mbstring, intl, pdo_mysql
         ini-values: post_max_size=256M, upload_max_filesize=256M
 
-    - name: Install dependencies
-      run: composer install --no-progress --prefer-dist --optimize-autoloader
-      working-directory: Ressources-relationnelles/web
+ #   - name: Install dependencies
+ #     run: composer install --no-progress --prefer-dist --optimize-autoloader
+ #     working-directory: Ressources-relationnelles/web
 
     - name: Run PHPUnit
       run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
