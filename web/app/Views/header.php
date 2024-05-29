@@ -54,7 +54,7 @@
         <?php endif; ?>
         <?php if ($idRole == 1): ?>
           <li class="nav-item">          
-            <a class="nav-link text-light" href="<?= base_url('/administrer_utilisateur') ?>">Gestion des utilisateurs</a>         
+            <a class="nav-link text-light" href="<?= base_url('/administrer_utilisateur') ?>">Gesion des utilisateurs</a>
           </li>
         <?php endif; ?>
       </ul>
