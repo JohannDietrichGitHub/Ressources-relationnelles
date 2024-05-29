@@ -24,6 +24,5 @@ jobs:
       working-directory: ./web
 
     - name: Run PHPUnit
-      run: echo "Lancement des tests unitaires"
-      vendor/bin/phpunit --testsuite Commentaire2 --testdox
+      run: vendor/bin/phpunit --testsuite Commentaire2 --testdox     
       working-directory: ./web
