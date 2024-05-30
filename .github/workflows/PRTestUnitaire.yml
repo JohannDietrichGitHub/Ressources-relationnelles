@@ -21,8 +21,9 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: resources_relationnelles
-          MYSQL_USER: root
-          MYSQL_PASSWORD: ''
+          # Remove MYSQL_USER and MYSQL_PASSWORD as they cannot be used for root user
+          # MYSQL_USER: root
+          # MYSQL_PASSWORD: ''
 
     steps:
     - name: Checkout code
@@ -43,18 +44,21 @@ jobs:
       run: composer install --no-progress --prefer-dist --optimize-autoloader
       working-directory: web
 
-    - name: Check MySQL logs for debugging
+    - name: Wait for MySQL to be ready
       run: |
-        docker logs $(docker ps -q -f name=mysql)
+        # Wait for MySQL to be ready
+        for i in {1..30}; do
+          if mysqladmin ping -h 127.0.0.1 -P 3306 --silent; then
+            echo "MySQL is up and running!"
+            break
+          fi
+          echo "Waiting for MySQL to be connectable..."
+          sleep 2
+        done
       shell: bash
 
     - name: Set up database
       run: |
-        # Wait for MySQL to be ready
-        until mysqladmin ping -h 127.0.0.1 --silent; do
-          echo 'waiting for mysql to be connectable...'
-          sleep 5
-        done
         # Initialize the database schema
         mysql -h 127.0.0.1 -P 3306 -u root -proot resources_relationnelles < web/database/schema.sql
       shell: bash
@@ -65,7 +69,12 @@ jobs:
         DB_PORT: 3306
         DB_DATABASE: resources_relationnelles
         DB_USERNAME: root
-        DB_PASSWORD: ''
+        DB_PASSWORD: root
         CI_ENVIRONMENT: testing
       run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
       working-directory: web
+
+    - name: Check MySQL logs for debugging
+      if: failure()
+      run: docker logs $(docker ps -q -f name=mysql)
+      shell: bash
