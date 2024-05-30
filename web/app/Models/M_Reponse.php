@@ -3,7 +3,7 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class M_Commentaire extends Model {
+class M_Reponse extends Model {
 
 protected $table = 'reponse';
 protected $primaryKey = 'reponse_id';
