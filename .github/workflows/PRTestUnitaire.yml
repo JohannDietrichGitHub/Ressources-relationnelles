@@ -77,8 +77,3 @@ jobs:
         CI_ENVIRONMENT: testing
       run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
       working-directory: web
-
-    - name: Check MySQL logs for debugging
-      if: failure()
-      run: docker logs $(docker ps -q -f name=mysql)
-      shell: bash
