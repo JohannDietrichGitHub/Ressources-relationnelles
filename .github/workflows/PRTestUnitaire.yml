@@ -19,6 +19,7 @@ jobs:
           --health-timeout=10s
           --health-retries=5
         env:
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: resources_relationnelles
 
     steps:
@@ -58,12 +59,12 @@ jobs:
 
     - name: Test database connection
       run: |
-        mysql -h 127.0.0.1 -P 3306 -u root -e "SHOW DATABASES;"
+        mysql -h 127.0.0.1 -P 3306 -u root -proot -e "SHOW DATABASES;"
       shell: bash
 
     - name: Set up database
       run: |
-        mysql -h 127.0.0.1 -P 3306 -u root resources_relationnelles < web/database/schema.sql
+        mysql -h 127.0.0.1 -P 3306 -u root -proot resources_relationnelles < web/database/schema.sql
       shell: bash
 
     - name: Run PHPUnit
@@ -72,6 +73,7 @@ jobs:
         DB_PORT: 3306
         DB_DATABASE: resources_relationnelles
         DB_USERNAME: root
+       # DB_PASSWORD: root
         CI_ENVIRONMENT: testing
       run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
       working-directory: web
