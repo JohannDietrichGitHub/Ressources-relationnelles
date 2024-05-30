@@ -16,8 +16,8 @@ jobs:
         options: >-
           --health-cmd="mysqladmin ping -h localhost --silent"
           --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+          --health-timeout=10s
+          --health-retries=5
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: resources_relationnelles
@@ -43,10 +43,18 @@ jobs:
       run: composer install --no-progress --prefer-dist --optimize-autoloader
       working-directory: web
 
+    - name: Check MySQL logs for debugging
+      run: |
+        docker logs $(docker ps -q -f name=mysql)
+      shell: bash
+
     - name: Set up database
       run: |
         # Wait for MySQL to be ready
-        docker exec $(docker ps -q -f name=mysql) sh -c 'until mysqladmin ping -h localhost --silent; do sleep 1; done'
+        until mysqladmin ping -h 127.0.0.1 --silent; do
+          echo 'waiting for mysql to be connectable...'
+          sleep 5
+        done
         # Initialize the database schema
         mysql -h 127.0.0.1 -P 3306 -u root -proot resources_relationnelles < web/database/schema.sql
       shell: bash
