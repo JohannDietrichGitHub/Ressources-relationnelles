@@ -257,7 +257,7 @@ class Utilisateur extends BaseController
     }
 
     // Fonction permettant, à partir du libellé de civilité en entrée, de retourner la civilité de l'utilisateur
-    private function convertir_civilite($civilite) {
+    public function convertir_civilite($civilite) {
         try {
             switch ($civilite) {
                 case 'Monsieur':

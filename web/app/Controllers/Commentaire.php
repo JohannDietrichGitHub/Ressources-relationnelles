@@ -9,35 +9,6 @@ use CodeIgniter\I18n\Time;
 
 class Commentaire extends BaseController
 {
-    public function afficherCommentaire($commentaireId): string
-    {
-        try {
-            $commentaireModel = new M_Commentaire();
-    
-            // Récupérer le commentaire par son ID
-            $commentaire = $commentaireModel->find($commentaireId);
-    
-            // Vérifier si le commentaire existe
-            if ($commentaire === null) {
-                throw new Exception('Le commentaire demandé n\'existe pas.');
-            }
-    
-            // Si le commentaire existe, préparer les données à passer à la vue
-            $data = [
-                'commentaire' => $commentaire
-            ];
-    
-            // Charger la vue du commentaire avec les données
-            $content = view('Commentaire', $data);
-    
-            // Retourner le contenu de la vue
-            return $content;
-        } catch (Exception $e) {
-            // En cas d'erreur, journaliser l'erreur et retourner un message d'erreur générique
-            log_message('error', $e->getMessage());
-            return 'Une erreur s\'est produite lors de l\'affichage du commentaire.';
-        }
-    }
     public function afficherFeedCommentaires($idRessource): array
     {
         try {
@@ -63,7 +34,6 @@ class Commentaire extends BaseController
             return [];
         }
     }
-
 
     public function ajouterCommentaire()
     {

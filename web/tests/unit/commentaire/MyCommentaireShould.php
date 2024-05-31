@@ -7,7 +7,7 @@ use App\Models\M_Commentaire;
 class MyCommentaireShould extends CIUnitTestCase
 {
     
-    public function testCommentaireNonExistant()
+    public function testCommentaireNonExistantAPartirIdRessource()
     {
         // Créer une instance contrôleur
         $controller = new \App\Controllers\Commentaire();
