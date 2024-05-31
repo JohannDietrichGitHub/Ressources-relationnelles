@@ -13,7 +13,7 @@ class MyCommentaireShould extends CIUnitTestCase
         $controller = new \App\Controllers\Commentaire();
     
         // Appelle la méthode à tester
-        $result = $controller->afficherFeedCommentaires(40);
+        $result = $controller->afficherFeedCommentaires(1);
     
         // Effectuez les assertions appropriées sur le résultat retourné
         $this->assertEmpty($result);
