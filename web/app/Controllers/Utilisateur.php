@@ -90,7 +90,7 @@ class Utilisateur extends BaseController
 
     public function inscription()
     {
-        $content = view('scr_inscription');
+        $content = view('scr_Inscription');
         return $content;
     }
 
