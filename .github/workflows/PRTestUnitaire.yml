@@ -67,7 +67,7 @@ jobs:
         mysql -h 127.0.0.1 -P 3306 -u root resources_relationnelles < web/database/schema.sql
       shell: bash
 
-    - name: Run PHPUnit
+    - name: Lancement tests unitaires Commentaire
       env:
         DB_HOST: 127.0.0.1
         DB_PORT: 3306
@@ -77,6 +77,17 @@ jobs:
         CI_ENVIRONMENT: testing
       run: vendor/bin/phpunit --testsuite Commentaire2 --testdox
       working-directory: web
+
+    - name: Lancement tests unitaires Utilisateur
+      env:
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: resources_relationnelles
+        DB_USERNAME: root
+        DB_PASSWORD: ''
+        CI_ENVIRONMENT: testing
+      run: vendor/bin/phpunit --testsuite Utilisateur --testdox
+      working-directory: web      
 
     - name: Check MySQL logs for debugging
       if: failure()

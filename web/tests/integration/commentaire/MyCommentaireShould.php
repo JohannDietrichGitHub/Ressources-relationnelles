@@ -33,13 +33,13 @@ class MyCommentaireShould extends CIUnitTestCase
     public function testAffichageCommentaireAvecIdCommentaireReponse()
     {
         // Mettre en place vos préconditions de test si nécessaire
-        $commentaireReponseId = 3;
+        $commentaireReponseId = 1;
     
         // Créer une instance contrôleur
         $controller = new \App\Controllers\Commentaire();
     
         // Appelle la méthode à tester
-        $result = $controller->afficherFeedCommentaires($commentaireReponseId);
+        $result = $controller->afficherFeedSousCommentaires($commentaireReponseId);
         
         // Vérification si donnée non vide en retour
         $this->assertNotEmpty($result);
@@ -47,6 +47,7 @@ class MyCommentaireShould extends CIUnitTestCase
         echo 'Résultat : ';
         var_dump($result);
     }
+
 
     public function testCommentaireNonExistant()
     {
@@ -62,7 +63,7 @@ class MyCommentaireShould extends CIUnitTestCase
         echo 'Résultat : ';
         var_dump($result);
     }
-    /// A décommenter si pas de modification en base
+
     public function testAjouterCommentaire()
     {
         // Récupération du dernier commentaire par ID de commentaire
