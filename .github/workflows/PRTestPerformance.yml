@@ -19,5 +19,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y k6
 
+      - name: Verify file location
+        run: |
+          echo "Displaying directory structure..."
+          ls -R
+
       - name: Run performance test
-        run: k6 run tests/performance/test.js
+        run: k6 run web/tests/performance/test.js
