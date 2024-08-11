@@ -1,0 +1,28 @@
+# Utilisez une image PHP avec Apache
+FROM php:8.1-apache
+
+# Installez les extensions PHP nécessaires
+RUN docker-php-ext-install pdo pdo_mysql
+
+RUN apt-get -y update \
+&& apt-get install -y libicu-dev \
+&& docker-php-ext-configure intl \
+&& docker-php-ext-install intl
+
+# Activez le module de réécriture Apache
+RUN a2enmod rewrite
+
+# Copiez le contenu de votre projet dans le répertoire web de l'image
+COPY . /var/www/html/
+
+# Définissez le répertoire de travail
+WORKDIR /var/www/html
+
+# Changez les permissions pour permettre à Apache d'écrire dans les répertoires de cache et de log
+RUN chown -R www-data:www-data /var/www/html/writable /var/www/html/public
+
+# Exposez le port 80 pour accéder à l'application via HTTP
+EXPOSE 80
+
+# Commande pour démarrer Apache dans le conteneur
+CMD ["apache2-foreground"]
