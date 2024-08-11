@@ -22,7 +22,7 @@ class MyCommentaireShould extends CIUnitTestCase
         var_dump($result);
     }
 
-    /// A décommenter quand pas d'appel à la base
+    /// A décommenter quand pas d'appel à la base test
     /*public function testAjouterCommentaire()
     {
         $_POST['commentaire_contenu'] = 'Test commentaire contenu';
