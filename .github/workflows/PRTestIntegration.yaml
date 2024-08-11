@@ -1,0 +1,84 @@
+name: Run PHPIntegration Tests
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  phpunit-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost --silent"
+          --health-interval=10s
+          --health-timeout=10s
+          --health-retries=5
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: resources_relationnelles
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, intl, pdo_mysql
+        ini-values: post_max_size=256M, upload_max_filesize=256M
+
+    - name: List directory contents
+      run: |
+        echo "Contents of the web directory:"
+        ls -R web
+        echo "Contents of the web/database directory:"
+        ls -R web/database
+      shell: bash
+
+    - name: Install dependencies
+      run: composer install --no-progress --prefer-dist --optimize-autoloader
+      working-directory: web
+
+    - name: Wait for MySQL to be ready
+      run: |
+        for i in {1..30}; do
+          if mysqladmin ping -h 127.0.0.1 -P 3306 --silent; then
+            echo "MySQL is up and running!"
+            break
+          fi
+          echo "Waiting for MySQL to be connectable..."
+          sleep 2
+        done
+      shell: bash
+
+    - name: Test database connection
+      run: |
+        mysql -h 127.0.0.1 -P 3306 -u root -e "SHOW DATABASES;"
+      shell: bash
+
+    - name: Set up database
+      run: |
+        mysql -h 127.0.0.1 -P 3306 -u root resources_relationnelles < web/database/schema.sql
+      shell: bash
+
+    - name: Run PHPIntegration
+      env:
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: resources_relationnelles
+        DB_USERNAME: root
+        DB_PASSWORD: ''
+        CI_ENVIRONMENT: testing
+      run: vendor/bin/phpunit --testsuite Commentaire --testdox
+      working-directory: web
+
+    - name: Check MySQL logs for debugging
+      if: failure()
+      run: docker logs $(docker ps -q -f name=mysql)
+      shell: bash

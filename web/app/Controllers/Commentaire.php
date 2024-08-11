@@ -9,35 +9,6 @@ use CodeIgniter\I18n\Time;
 
 class Commentaire extends BaseController
 {
-    public function afficherCommentaire($commentaireId): string
-    {
-        try {
-            $commentaireModel = new M_Commentaire();
-    
-            // Récupérer le commentaire par son ID
-            $commentaire = $commentaireModel->find($commentaireId);
-    
-            // Vérifier si le commentaire existe
-            if ($commentaire === null) {
-                throw new Exception('Le commentaire demandé n\'existe pas.');
-            }
-    
-            // Si le commentaire existe, préparer les données à passer à la vue
-            $data = [
-                'commentaire' => $commentaire
-            ];
-    
-            // Charger la vue du commentaire avec les données
-            $content = view('Commentaire', $data);
-    
-            // Retourner le contenu de la vue
-            return $content;
-        } catch (Exception $e) {
-            // En cas d'erreur, journaliser l'erreur et retourner un message d'erreur générique
-            log_message('error', $e->getMessage());
-            return 'Une erreur s\'est produite lors de l\'affichage du commentaire.';
-        }
-    }
     public function afficherFeedCommentaires($idRessource): array
     {
         try {
@@ -64,11 +35,25 @@ class Commentaire extends BaseController
         }
     }
 
-
     public function ajouterCommentaire()
     {
         try {
-            if ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu')) && empty($this->request->getPost('commentaire_contenu_reponse'))) {
+            // METHODE DE TEST
+            if(!empty($_POST['commentaire_contenu']) && !empty($_POST['commentaire_uti_id']) && !empty($_POST['commentaire_res_id'])){
+                $COM_CONTENU = $_POST['commentaire_contenu'];
+                $COM_UTI_ID = $_POST['commentaire_uti_id'];
+                $COM_RES_ID = $_POST['commentaire_res_id'];
+                $commentaireData = [
+                    'COM_CONTENU' => $COM_CONTENU,
+                    'COM_UTI_ID' => $COM_UTI_ID,
+                    'COM_RES_ID' => $COM_RES_ID,
+                    'COM_TSP_CRE' => Time::now(),
+                    'COM_VISIBILITE' => "A"
+                ];
+                $commentaireModel = new M_Commentaire();
+                $commentaireModel->insert($commentaireData);
+                return redirect()->to(site_url('/ressource/' . $COM_RES_ID));
+            }elseif ($this->request->getPost() && !empty($this->request->getPost('commentaire_contenu')) && empty($this->request->getPost('commentaire_contenu_reponse'))) {
                 if (empty($this->request->getPost('commentaire_contenu'))) {
                     session()->setFlashdata('error', 'Veuillez remplir tous les champs');
                 }
@@ -108,8 +93,8 @@ class Commentaire extends BaseController
                 ];
                 $commentaireModel = new M_Commentaire();
                 $commentaireModel->insert($commentaireData);
-                return redirect()->to(site_url('/ressource/' . $COM_RES_ID));
-            }else {
+                return redirect()->to(site_url('/ressource/' . $COM_RES_ID)); 
+            } else {
                 $content = view("scr_Ressource");
                 return $content;
             }
@@ -145,8 +130,15 @@ class Commentaire extends BaseController
     public function modifierCommentaire()
     {
         try {
-        $commentaireId = $this->request->getPost('commentaire_id');
-        $nouveauContenu = $this->request->getPost('nouveau_contenu');
+        // Méthode de test 
+        if(!empty($_POST['commentaire_id']) && !empty($_POST['nouveau_contenu'])){
+            $commentaireId = $_POST['commentaire_id'];
+            $nouveauContenu = $_POST['nouveau_contenu'];
+        }
+        else{
+            $commentaireId = $this->request->getPost('commentaire_id');
+            $nouveauContenu = $this->request->getPost('nouveau_contenu');
+        }
 
         // Vérifier si les données requises sont présentes
         if (empty($commentaireId) || empty($nouveauContenu)) {
