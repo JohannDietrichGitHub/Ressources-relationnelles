@@ -1,0 +1,28 @@
+name: K6 Scalability Test
+
+on: [push]
+
+jobs:
+  k6:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install k6
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg
+          curl -fsSL https://dl.k6.io/key.gpg | sudo apt-key add -
+          echo "deb https://dl.k6.io/deb/ stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Verify file location
+        run: |
+          echo "Displaying directory structure..."
+          ls -R
+
+      - name: Run stress test
+        run: k6 run web/tests/performance/scalabilityTest.js
