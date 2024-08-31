@@ -1,0 +1,19 @@
+name: K6 Stress Test
+
+on: [push]
+
+jobs:
+  k6:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install K6
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Run stress test
+        run: k6 run web/tests/performance/stressTest.js
