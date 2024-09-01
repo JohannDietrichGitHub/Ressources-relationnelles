@@ -3,7 +3,7 @@ import { check, sleep } from 'k6';
 import { Counter } from 'k6/metrics';
 
 // URL Ressources Relationnelles
-const BASE_URL = 'http://192.162.69.115';
+const BASE_URL = 'https://www.ressources-relationnelles.fr/';
 
 // Lancement du test de stress avec les paliers de charge
 // duration : correspond à la durée du test

@@ -10,7 +10,7 @@ export let options = {
 };
 
 export default function () {
-  const res = http.get('http://192.162.69.115');
+  const res = http.get('https://www.ressources-relationnelles.fr/');
   check(res, {
       'Code statut est 200': (r) => r.status === 200,
       'Body contient le texte suivant': (r) => r.body.includes('La plateforme pour améliorer vos relations'),

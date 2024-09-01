@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 // URL Ressources Relationnelles
-const BASE_URL = 'http://192.162.69.115';
+const BASE_URL = 'https://www.ressources-relationnelles.fr/';
 
 export const options = {
   stages: [
